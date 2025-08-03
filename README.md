@@ -19,9 +19,43 @@ Repo contents:
 
 ## High Level Design
 
-### System Block Diagram
+### Machine Model
 
-![system](https://github.com/dervish77/RetroAV/blob/master/docs/RetroAV-System-Block-Diagram.png?raw=true)
+![model](https://github.com/dervish77/StackCPU/blob/master/docs/StackCPU-Machine-Model.png?raw=true)
+
+### Registers (all 16 bits)
+
+'''
+    PC         program counter - grows up from <bottom of mem>
+    SP         stack pointer - grows down from <top of mem>
+    DR         data register (hidden) - points to <mem above top of program>
+	
+    AC         accumulator (hidden) - used for math operations
+
+    INP        input register - external input
+    OUT        output register - external output 
+    PRT        print register - external output (used by print instructions)
+'''
+
+### Instruction Model
+
+'''
+    OPERATION
+
+    OPERATION <direct operand>               #dd or "c"
+
+    OPERATION <memory address>               $hhhh
+
+    OPERATION <label>                        &label
+'''
+
+### Architecture Diagram
+
+![architecture](https://github.com/dervish77/StackCPU/blob/master/docs/StackCPU-Architecture.png?raw=true)
+
+### Instructions
+
+TBD
 
 
 ## Detailed Design
@@ -34,7 +68,11 @@ The TBD is TBD.
 
 ### Software
 
-#### TBD
+#### Simulator
+
+The TBD coordinates TBD.
+
+#### Assembler
 
 The TBD coordinates TBD.
 
