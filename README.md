@@ -21,6 +21,33 @@ Repo contents:
 
 ### Machine Model
 
+```
+              memory
+                |
+                |
+      program--CPU--stack
+                |
+                |
+         program counter (PC)
+
+
+                   +------------+
+    SP      0x0FFF |   Stack    |
+                   |            |
+            0x0F00 |------------|
+                   |    Data    |
+                   |            |
+    DR      0x0C00 |------------|
+                   |            |
+                   |            |
+                   |            |
+                   |  Program   |
+                   |            |
+                   |            |
+    PC      0x0000 |            |
+	                  +------------+
+```
+
 ![model](https://github.com/dervish77/StackCPU/blob/master/docs/StackCPU-Machine-Model.png?raw=true)
 
 ### Register Model 
@@ -79,6 +106,7 @@ The TBD coordinates TBD.
 #### Assembler
 
 The TBD coordinates TBD.
+
 
 
 
