@@ -36,6 +36,7 @@ Repo contents:
  INP        input register - external input
  OUT        output register - external output 
  PRT        print register - external output (used by print instructions)
+ SER        serial register - external input (serial data input)
 ```
 
 ### Instruction Model
@@ -138,15 +139,17 @@ BRU <label>   branch unconditionally                      <label> -> PC
 
 Special instructions
 
-INP           inputs to top of stack                      <inp> -> S[0]
+INP           inputs I/O to top of stack                  <inp> -> S[0]
 
-OUT           outputs top of stack, stack is popped       S[0] -> <out>
+OUT           outputs top stack to I/O, stack is popped   S[0] -> <out>
 
 PRT           prints top of stack, stack is popped        S[0] -> <prt>
 
+SER           inputs serial to top of stack               <ser> -> S[0]
+
 PRD           prints current stack depth                  depth of S -> <prt>
 
-(Note, <print> is std output interface)
+(Note, <prt> is serial output interface)
 ```
 
 [Instruction op-code details](https://github.com/dervish77/StackCPU/blob/master/docs/StackCPU-Instruction-Op-Codes.pdf)
@@ -242,6 +245,7 @@ The StackCPU Simulator is TBD.
 #### Assembler
 
 The StackCPU Assembler is TBD.
+
 
 
 
