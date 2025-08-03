@@ -21,34 +21,7 @@ Repo contents:
 
 ### Machine Model
 
-```
-              memory
-                |
-                |
-      program--CPU--stack
-                |
-                |
-         program counter (PC)
-
-
-                   +------------+
-    SP      0x0FFF |   Stack    |  mem top
-                   |            |
-            0x0F00 |------------|
-                   |    Data    |
-                   |            |
-    DR      0x0C00 |------------|
-                   |            |
-                   |            |
-                   |            |
-                   |  Program   |
-                   |            |
-                   |            |
-    PC      0x0000 |            |  mem bottom
-                   +------------+
-```
-
-![model](https://github.com/dervish77/StackCPU/blob/master/docs/StackCPU-Machine-Model.png?raw=true)
+![model](https://github.com/dervish77/StackCPU/blob/main/docs/StackCPU-Machine-Model.png?raw=true)
 
 ### Register Model 
 
@@ -76,7 +49,7 @@ Repo contents:
 
 ### Architecture Diagram
 
-![architecture](https://github.com/dervish77/StackCPU/blob/master/docs/StackCPU-Architecture.png?raw=true)
+![architecture](https://github.com/dervish77/StackCPU/blob/main/docs/StackCPU-Architecture.png?raw=true)
 
 ### Instructions
 
@@ -269,5 +242,7 @@ The StackCPU Simulator is TBD.
 #### Assembler
 
 The StackCPU Assembler is TBD.
+
+
 
 
