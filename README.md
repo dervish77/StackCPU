@@ -26,6 +26,7 @@ Repo contents:
 ### Registers (all 16 bits)
 
 '''
+
     PC         program counter - grows up from <bottom of mem>
     SP         stack pointer - grows down from <top of mem>
     DR         data register (hidden) - points to <mem above top of program>
@@ -40,6 +41,7 @@ Repo contents:
 ### Instruction Model
 
 '''
+
     OPERATION
 
     OPERATION <direct operand>               #dd or "c"
@@ -75,4 +77,5 @@ The TBD coordinates TBD.
 #### Assembler
 
 The TBD coordinates TBD.
+
 
