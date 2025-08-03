@@ -25,7 +25,8 @@ Repo contents:
 
 ### Registers (all 16 bits)
 
-`PC         program counter - grows up from <bottom of mem>
+```
+PC         program counter - grows up from <bottom of mem>
 SP         stack pointer - grows down from <top of mem>
 DR         data register (hidden) - points to <mem above top of program>
 	
@@ -33,15 +34,17 @@ AC         accumulator (hidden) - used for math operations
 
 INP        input register - external input
 OUT        output register - external output 
-PRT        print register - external output (used by print instructions)`
+PRT        print register - external output (used by print instructions)
+```
 
 ### Instruction Model
 
-`
-OPERATION
-OPERATION <direct operand>               #dd or "c"
-OPERATION <memory address>               $hhhh
-OPERATION <label>                        &label`
+```
+ OPERATION
+ OPERATION <direct operand>               #dd or "c"
+ OPERATION <memory address>               $hhhh
+ OPERATION <label>                        &label
+```
 
 ### Architecture Diagram
 
@@ -69,6 +72,7 @@ The TBD coordinates TBD.
 #### Assembler
 
 The TBD coordinates TBD.
+
 
 
 
