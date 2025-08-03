@@ -32,7 +32,7 @@ Repo contents:
 
 
                    +------------+
-    SP      0x0FFF |   Stack    |
+    SP      0x0FFF |   Stack    |  mem top
                    |            |
             0x0F00 |------------|
                    |    Data    |
@@ -44,7 +44,7 @@ Repo contents:
                    |  Program   |
                    |            |
                    |            |
-    PC      0x0000 |            |
+    PC      0x0000 |            |  mem bottom
                    +------------+
 ```
 
@@ -83,95 +83,95 @@ Repo contents:
 ```
 (Note, unless otherwise noted all instruction end with PC + 1 -> PC)
 
-CLS         clear the stack                             <mem top> -> SP
+CLS           clear the stack                             <mem top> -> SP
 
-END         end of program (aka HALT)                   PC -> PC
+END           end of program (aka HALT)                   PC -> PC
 
-NOP         no operation                                no state change
+NOP           no operation                                no state change
 
-RST         reset cpu                                   0 -> AC
-                                                        0 -> DR
-                                                        <mem top> -> SP
-                                                        0 -> PC
+RST           reset cpu                                   0 -> AC
+                                                          0 -> DR
+                                                          <mem top> -> SP
+                                                          0 -> PC
 
-LDM <mem>   loads data from memory to top of stack      <mem> -> DR
-                                                        M[DR] -> S[0]
+LDM <mem>     loads data from memory to top of stack      <mem> -> DR
+                                                          M[DR] -> S[0]
 
-LDI         increments DR, load data mem to TOS         DR + 1 -> DR
-                                                        M[DR] -> S[0]
+LDI           increments DR, load data mem to TOS         DR + 1 -> DR
+                                                          M[DR] -> S[0]
 
-STM <mem>   stores data from top of stack to memory     <mem> -> DR
-                                                        S[0] -> M[DR]
+STM <mem>     stores data from top of stack to memory     <mem> -> DR
+                                                          S[0] -> M[DR]
 
-STI         increments DR, stores TOS to data mem       DR + 1 -> DR
-                                                        S[0] -> M[DR]
+STI           increments DR, stores TOS to data mem       DR + 1 -> DR
+                                                          S[0] -> M[DR]
 
-PSH <do>    push direct data to top of stack            <do> -> AC
-                                                        push AC -> S[0]
+PSH <do>      push direct data to top of stack            <do> -> AC
+                                                          push AC -> S[0]
 
-POP         pops top of stack                           pop S[0] -> AC
-                                                        0 -> AC
+POP           pops top of stack                           pop S[0] -> AC
+                                                          0 -> AC
 
-ADD         adds top two stack values                   S[1] -> AC
-                                                        AC = AC + S[0]
-                                                        push AC -> S[0]
+ADD           adds top two stack values                   S[1] -> AC
+                                                          AC = AC + S[0]
+                                                          push AC -> S[0]
 
-SUB         subtracts top two stack values              S[1] -> AC
-                                                        AC = AC - S[0]
-                                                        push AC -> S[0]
+SUB           subtracts top two stack values              S[1] -> AC
+                                                          AC = AC - S[0]
+                                                          push AC -> S[0]
 
-NEG         negates top of stack                        0 -> AC
-                                                        AC = AC - S[0]
-                                                        push AC -> S[0]
+NEG           negates top of stack                        0 -> AC
+                                                          AC = AC - S[0]
+                                                          push AC -> S[0]
 
-AND <do>    AND top of stack with data                  S[0] -> AC               
-                                                        AC & <do> -> AC
-							push AC -> S[0]
+AND <do>      AND top of stack with data                  S[0] -> AC               
+                                                          AC & <do> -> AC
+							  push AC -> S[0]
 
-ORR <do>    OR top of stack with data                   S[0] -> AC               
-                                                        AC | <do> -> AC
-							push AC -> S[0]
+ORR <do>      OR top of stack with data                   S[0] -> AC               
+                                                          AC | <do> -> AC
+							  push AC -> S[0]
 
-INV         Invert top of stack                         S[0] -> AC
-                                                        invert AC -> AC
-							push AC -> S[0]
+INV           Invert top of stack                         S[0] -> AC
+                                                          invert AC -> AC
+							  push AC -> S[0]
 
-CPE <do>    compare if top of stack is equal            <do> -> AC
-                                                        if S[0] equal AC,
-                                                          push 0 -> S[0]
-                                                        else, 
-                                                          push 1 -> S[0]
+CPE <do>      compare if top of stack is equal            <do> -> AC
+                                                          if S[0] equal AC,
+                                                            push 0 -> S[0]
+                                                          else, 
+                                                            push 1 -> S[0]
 
-CNE <do>    compare if top of stack is not equal        <do> -> AC
-                                                        if S[0] not equal AC,
-                                                          push 1 -> S[0]
-                                                        else, 
-                                                          push 0 -> S[0]
+CNE <do>      compare if top of stack is not equal        <do> -> AC
+                                                          if S[0] not equal AC,
+                                                            push 1 -> S[0]
+                                                          else, 
+                                                            push 0 -> S[0]
 
-BRZ <label> branch if top of stack is zero              pop S[0] -> AC
-                                                        if AC equal to 0, 
-                                                          <label> -> PC
-                                                        else,
-                                                          PC + 1 -> PC
+BRZ <label>   branch if top of stack is zero              pop S[0] -> AC
+                                                          if AC equal to 0, 
+                                                            <label> -> PC
+                                                          else,
+                                                            PC + 1 -> PC
 
-BRN <label> branch if top of stack is not zero          pop S[0] -> AC
-                                                        if AC not equal to 0,
-                                                          <label> -> PC
-                                                        else, 
-                                                          PC + 1 -> PC
+BRN <label>   branch if top of stack is not zero          pop S[0] -> AC
+                                                          if AC not equal to 0,
+                                                            <label> -> PC
+                                                          else, 
+                                                            PC + 1 -> PC
 
-BRU <label> branch unconditionally                      <label> -> PC
+BRU <label>   branch unconditionally                      <label> -> PC
 
 
 Special instructions
 
-INP         inputs to top of stack                      <inp> -> S[0]
+INP           inputs to top of stack                      <inp> -> S[0]
 
-OUT         outputs top of stack, stack is popped       S[0] -> <out>
+OUT           outputs top of stack, stack is popped       S[0] -> <out>
 
-PRT         prints top of stack, stack is popped        S[0] -> <prt>
+PRT           prints top of stack, stack is popped        S[0] -> <prt>
 
-PRD         prints current stack depth                  depth of S -> <prt>
+PRD           prints current stack depth                  depth of S -> <prt>
 
 (Note, <print> is std output interface)
 ```
@@ -269,6 +269,7 @@ The TBD coordinates TBD.
 #### Assembler
 
 The TBD coordinates TBD.
+
 
 
 
