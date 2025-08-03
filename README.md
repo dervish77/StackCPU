@@ -48,7 +48,7 @@ Repo contents:
                    +------------+
 ```
 
-![model](https://github.com/dervish77/StackCPU/blob/master/docs/StackCPU-Machine-Model.png?raw=true)
+![model](https://github.com/dervish77/StackCPU/blob/main/docs/StackCPU-Machine-Model.png?raw=true)
 
 ### Register Model 
 
@@ -269,5 +269,6 @@ The StackCPU Simulator is TBD.
 #### Assembler
 
 The StackCPU Assembler is TBD.
+
 
 
