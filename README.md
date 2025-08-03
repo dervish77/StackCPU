@@ -29,8 +29,8 @@ Repo contents:
 ```
  PC         program counter - grows up from <bottom of mem>
  SP         stack pointer - grows down from <top of mem>
+
  DR         data register (hidden) - points to <mem above top of program>
-	
  AC         accumulator (hidden) - used for math operations
 
  INP        input register - external input
@@ -79,6 +79,7 @@ The TBD coordinates TBD.
 #### Assembler
 
 The TBD coordinates TBD.
+
 
 
 
