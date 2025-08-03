@@ -176,6 +176,8 @@ PRD         prints current stack depth                  depth of S -> <prt>
 (Note, <print> is std output interface)
 ```
 
+[Instruction op-code details](https://github.com/dervish77/StackCPU/blob/master/docs/StackCPU-Instruction-Op-Codes.pdf)
+
 ### Examples
 
 #### Hello
@@ -267,6 +269,7 @@ The TBD coordinates TBD.
 #### Assembler
 
 The TBD coordinates TBD.
+
 
 
 
