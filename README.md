@@ -1,7 +1,7 @@
 # Stack CPU
 Custom stack-based CPU design 
 
-The StackCPU design is TBD.  
+StackCPU is a custom CPU design that utilizes a stack-based memory model instead of the usual memeory models seen in processors such as 6502 or Z80.  The StackCPU design definition has a limited memory size (4K bytes) to simplify the implementation of any custom hardware designs using the specification.
 
 Repo contents:
 
@@ -255,33 +255,18 @@ aloop:  LDM $0C00
 
 ### Hardware
 
-#### TBD
+#### TBD Implementation
 
-The TBD is TBD.
+The TBD Implementation is TBD.
 
 
 ### Software
 
 #### Simulator
 
-The TBD coordinates TBD.
+The StackCPU Simulator is TBD.
 
 #### Assembler
 
-The TBD coordinates TBD.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+The StackCPU Assembler is TBD.
 
