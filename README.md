@@ -151,8 +151,6 @@ PRT           prints top of stack, stack is popped        S[0] -> PR
 
 SER           inputs serial to top of stack               SR -> S[0]
 
-PRD           prints current stack depth                  depth of S -> PR
-
 (Note, PR is serial output interface, SR is serial input interface)
 ```
 
@@ -249,6 +247,7 @@ The StackCPU Simulator is TBD.
 #### Assembler
 
 The StackCPU Assembler is TBD.
+
 
 
 
