@@ -1,7 +1,7 @@
 # Stack CPU
 Custom stack-based CPU design 
 
-StackCPU is a custom CPU design that utilizes a stack-based memory model instead of the usual memory models seen in processors such as 6502 or Z80.  The StackCPU project was undertaken mostly as an exercise in virtual CPU design that could be implemented via a simulator and utilize custom assembler tools.  The StackCPU design definition has a limited memory size (4K bytes) to simplify the implementation of any custom hardware designs using the specification.  The StackCPU design should be simple enough to be implemented in hardware via an FPGA or perhaps even using discrete TTL devices.
+StackCPU is a custom CPU design that utilizes a stack-based memory model instead of the usual memory models seen in processors such as 6502 or Z80.  The StackCPU project was undertaken mostly as an exercise in virtual CPU design that could be implemented via a simulator and utilize custom assembler tools.  The StackCPU design definition has a limited memory size (4K bytes) to simplify any hardware implementations using the specification.  The StackCPU design should be simple enough to be implemented in hardware via an FPGA or perhaps even using discrete TTL devices.
 
 The stack-based design for StackCPU uses the stack for nearly all operations.  Thus data is constantly moved on and off the stack during normal operation.  Some instructions use a combination of the stack and the accumulator register (i.e. math and logic operations).  The data memory region is used to store and retrieve temporary variables when stack operations might result in those values being lost or destroyed.
 
@@ -247,6 +247,7 @@ The StackCPU Simulator is TBD.
 #### Assembler
 
 The StackCPU Assembler is TBD.
+
 
 
 
