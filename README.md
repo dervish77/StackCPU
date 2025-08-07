@@ -122,9 +122,9 @@ CPE <do>      compare if top of stack is equal            <do> -> AC
 
 CNE <do>      compare if top of stack is not equal        <do> -> AC
                                                           if S[0] not equal AC,
-                                                            push 1 -> S[0]
-                                                          else, 
                                                             push 0 -> S[0]
+                                                          else, 
+                                                            push 1 -> S[0]
 
 BRZ <label>   branch if top of stack is zero              pop S[0] -> AC
                                                           if AC equal to 0, 
@@ -247,10 +247,6 @@ The StackCPU Simulator is TBD.
 #### Assembler
 
 The StackCPU Assembler is TBD.
-
-
-
-
 
 
 
