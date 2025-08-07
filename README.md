@@ -5,7 +5,12 @@ StackCPU is a custom CPU design that utilizes a stack-based memory model instead
 
 The stack-based design for StackCPU uses the stack for nearly all operations.  Thus data is constantly moved on and off the stack during normal operation.  Some instructions use a combination of the stack and the accumulator register (i.e. math and logic operations).  The data memory region is used to store and retrieve temporary variables when stack operations might result in those values being lost or destroyed.  While the accumulator register (AC) is used for arithmetic and logic operations, it is not directly accessible via any machine instructions.  Likewise the data register (DR) is used to perform transfers to and from the data memory region, the register itself is not directly accessible via any machine instructions.
 
-The StackCPU design also includes registers for getting input from the outside world (IR) and (SR) and sending output to outside world (OR) and (PR).  The IR and OR registers are used to input and output numerical values directly, or use them to read/write control signals for external devices.  The SR and PR registers are used to input and output ascii characters to a serial terminal via an RS232 port.
+The StackCPU design includes registers for getting input from the outside world (IR) and (SR) and sending output to outside world (OR) and (PR).  The IR and OR registers are used to input and output numerical values directly, or use them to read/write control signals for external devices.  The SR and PR registers are used to input and output ascii characters to a serial terminal via an RS232 port.
+
+The StackCPU design's memory model is limited to 4K bytes, thus the external address bus is 12 bits.  Additional memory could be accessed by using 1 to 4 OR register pins as additional address pins.  The memory model is further divided into three sections - program, data, and stack.  By default, the program section starts at address 0x0000 and is 3K bytes in size.  By default, the data section starts at address 0x0C00 and is 768 bytes in size.  The stack section starts at address 0x0F00 and is 256 bytes in size.  Note that the program and data sections are flexible with respect to their division if more or less program space is required (of course by also adjusting the space allocated to the data space). The stack section, however, is fixed and cannot be expanded or contracted.
+
+All of the StackCPU design's internal registers are 16 bits.  But the external data bus is only 8 bits, so when reading data from memory into any internal register, that data will typically only occupy the lower half of the internal register (unless a specific instruction takes care of loading both halves of the internal register).
+
 
 Repo contents:
 
@@ -247,6 +252,7 @@ The StackCPU Simulator is TBD.
 #### Assembler
 
 The StackCPU Assembler is TBD.
+
 
 
 
