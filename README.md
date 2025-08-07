@@ -166,8 +166,9 @@ SER           inputs serial to top of stack               SR -> S[0]
 #### Hello
 
 ```
-    // prints Hello
-
+; prints Hello
+.ORG 0x0000
+.DAT 0x0C00
         CLS
         PSH "H"
         PRT
@@ -179,9 +180,9 @@ SER           inputs serial to top of stack               SR -> S[0]
         PRT
         PSH "O"
         PRT
-        PSH #13          // CR
+        PSH #13          ; CR
         PRT
-        PSH #10          // LF
+        PSH #10          ; LF
         PRT
         END
 ```
@@ -189,8 +190,9 @@ SER           inputs serial to top of stack               SR -> S[0]
 #### Add Numbers from 1 to 5
 
 ```
-    // adds numbers from 1 to 5, outputs sum
-
+; Adds numbers from 1 to 5, outputs sum
+.ORG 0x0000
+.DAT 0x0C00
         CLS
         PSH #1
         PSH #2
@@ -208,28 +210,29 @@ SER           inputs serial to top of stack               SR -> S[0]
 #### Add Numbers from 1 to 10 in a Loop
 
 ```
-    // adds numbers from 1 to 10 in a loop, outputs sum
-
+; Adds numbers from 1 to 10 in a loop, outputs sum
+.ORG 0x0000
+.DAT 0x0C00
         CLS
         PSH #0
-        STM $0C00        // clear sum in memory
+        STM $0C00        ; clear sum in memory
         NOP
-        PSH #0           // push "last" value on stack
+        PSH #0           ; push "last" value on stack
         NOP
         PSH #1
-iloop:  PSH #1           // incr value
+iloop:  PSH #1           ; incr value
         ADD
         CPE #10
-        BRN &iloop       // loop to push next incr value on stack
+        BRN &iloop       ; loop to push next incr value on stack
         NOP
 aloop:  LDM $0C00
         ADD
-        STM $0C00        // store sum to memory
+        STM $0C00        ; store sum to memory
         CPE #0
-        BRN &aloop       // loop to add next num to sum
+        BRN &aloop       ; loop to add next num to sum
         NOP
         LDM $0C00
-        OUT              // output sum
+        OUT              ; output sum
         END
 ```
 
@@ -252,13 +255,5 @@ The StackCPU Simulator is TBD.
 #### Assembler
 
 The StackCPU Assembler is TBD.
-
-
-
-
-
-
-
-
 
 
