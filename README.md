@@ -184,7 +184,7 @@ SER           inputs serial to top of stack               SR -> S[0]
 #### Add Numbers from 1 to 5
 
 ```
-    // adds numbers from 1 to 5, prints sum
+    // adds numbers from 1 to 5, outputs sum
 
         CLS
         PSH #1
@@ -196,14 +196,14 @@ SER           inputs serial to top of stack               SR -> S[0]
         ADD
         PSH #5
         ADD
-        PRT
+        OUT
         END
 ```
 
 #### Add Numbers from 1 to 10 in a Loop
 
 ```
-    // adds numbers from 1 to 10 in a loop, prints sum
+    // adds numbers from 1 to 10 in a loop, outputs sum
 
         CLS
         PSH #0
@@ -224,7 +224,7 @@ aloop:  LDM $0C00
         BRN &aloop       // loop to add next num to sum
         NOP
         LDM $0C00
-        PRT              // print sum
+        OUT              // output sum
         END
 ```
 
@@ -247,6 +247,7 @@ The StackCPU Simulator is TBD.
 #### Assembler
 
 The StackCPU Assembler is TBD.
+
 
 
 
