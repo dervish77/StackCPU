@@ -5,7 +5,7 @@ StackCPU is a custom CPU design that utilizes a stack-based memory model instead
 
 The stack-based design for StackCPU uses the stack for nearly all operations.  Thus data is constantly moved on and off the stack during normal operation.  Some instructions use a combination of the stack and the accumulator register (i.e. math and logic operations).  The data memory region is used to store and retrieve temporary variables when stack operations might result in those values being lost or destroyed.  While the accumulator register (AC) is used for arithmetic and logic operations, it is not directly accessible via any machine instructions.  Likewise the data register (DR) is used to perform transfers to and from the data memory region, the register itself is not directly accessible via any machine instructions.
 
-The StackCPU design also includes registers for getting input from the outside world (IR) and (SR) and sending output to outside world (OR) and (PR).
+The StackCPU design also includes registers for getting input from the outside world (IR) and (SR) and sending output to outside world (OR) and (PR).  The IR and OR registers are used to input and output numerical values directly, or use them to read/write control signals for external devices.  The SR and PR registers are used to input and output ascii characters to a serial terminal via an RS232 port.
 
 Repo contents:
 
@@ -247,6 +247,7 @@ The StackCPU Simulator is TBD.
 #### Assembler
 
 The StackCPU Assembler is TBD.
+
 
 
 
