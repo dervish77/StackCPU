@@ -1,0 +1,22 @@
+CHANGES - StackCPU
+==================
+
+08/08/2025
+- minor tweak to machine model
+- cleanup on code examples
+- added example source code asm files
+
+08/06/2025
+- fixed error in internal data bus direction to fetch block
+- fixed handling of compare instructions
+
+08/04/2025
+- renamed I/O and serial registers
+- added op codes doc
+
+08/03/2025
+- added design materials from previous version of project
+- converted all diagrams from text to drawio versions
+
+08/02/2025
+- originated

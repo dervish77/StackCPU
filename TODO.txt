@@ -1,0 +1,23 @@
+TODO - StackCPU
+===============
+
+- Specify requirements
+-- not yet specified
+
+- Design high level models
+-- designs completed
+
+- Design system architecture
+-- designs completed 
+
+- Specify instructions
+-- instructions specified
+
+- Develop coding examples
+-- examples developed
+
+- Detailed design of HW 
+
+- Detailed design of SW
+
+
