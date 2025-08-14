@@ -241,15 +241,35 @@ aloop:  LDM $0C00
 
 ### Hardware
 
-#### Emulated Implementation
+#### Logic Blocks
+
+##### Fetch Logic
+
+TBD
+
+##### Instruction Decode Logic
+
+TBD
+
+##### ALU Logic
+
+TBD
+
+##### Control SM Logic
+
+TBD
+
+#### Implementations
+
+##### Emulated Implementation
 
 The Emulated Implementation is a simulation of the StackCPU running on a Pi Pico microcontroller.  Basically this is a version of the Core Simulator noted below running on a Pi Pico.
 
-#### FPGA Implementation
+##### FPGA Implementation
 
 The FPGA Implementation is a HW design of the StackCPU device implemented on a TBD FPGA.
 
-#### Discrete Implementation
+##### Discrete Implementation
 
 The Discrete Implementation is a HW design of the StackCPU device implemented using discrete logic devices such as standard 7400 series TTL devices.
 
@@ -267,6 +287,7 @@ The StackCPU Simulator is a simulation of the StackCPU implemented in C and Pyth
 The StackCPU Assembler is a set of tools (implemented in C) for compiling StackCPU assembly source code into machine code that can be executed by a StackCPU simulator or a StackCPU HW implementation.  This set of tools includes an assembler, an archiver, and a linker.
 
 ![assembler](https://github.com/dervish77/StackCPU/blob/main/docs/StackCPU-SW-Assembler.png?raw=true)
+
 
 
 
