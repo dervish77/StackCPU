@@ -260,9 +260,13 @@ The Discrete Implementation is a HW design of the StackCPU device implemented us
 
 The StackCPU Simulator is a simulation of the StackCPU implemented in C and Python that can be executed on Windows (via Cygwin) or Linux environments.  The simulator is divided into three parts - Core Simulator, UI Simulator, and Memory Simulator.  The Core Simulator runs the core machine model that executes StackCPU machine code.  The UI Simulator wraps around the Core Simulator to provide a view into and control over the internals of the StackCPU device.  The Memory Simulator provides an emulation of the system memory that is accessed by the StackCPU device during runtime.
 
+![simulator](https://github.com/dervish77/StackCPU/blob/main/docs/StackCPU-SW-Simulator.png?raw=true)
+
 #### Assembler
 
 The StackCPU Assembler is a set of tools (implemented in C) for compiling StackCPU assembly source code into machine code that can be executed by a StackCPU simulator or a StackCPU HW implementation.  This set of tools includes an assembler, an archiver, and a linker.
+
+![assembler](https://github.com/dervish77/StackCPU/blob/main/docs/StackCPU-SW-Assembler.png?raw=true)
 
 
 
