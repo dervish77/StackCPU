@@ -278,17 +278,26 @@ The Discrete Implementation is a HW design of the StackCPU device implemented us
 
 #### Simulator
 
-The StackCPU Simulator is a simulation of the StackCPU implemented in C and Python that can be executed on Windows (via Cygwin) or Linux environments.  The simulator is divided into three parts - Core Simulator, UI Simulator, and Memory Simulator.  The Core Simulator runs the core machine model that executes StackCPU machine code.  The UI Simulator wraps around the Core Simulator to provide a view into and control over the internals of the StackCPU device.  The Memory Simulator provides an emulation of the system memory that is accessed by the StackCPU device during runtime.
+The StackCPU Simulator is a simulation of the StackCPU implemented in C/C++ and Python that can be executed on Windows (via Cygwin) or Linux environments.  The simulator is divided into three parts - UI Simulator, Core Simulator, and Memory Simulator.  The UI Simulator wraps around the Core Simulator to provide a view into and control over the internals of the StackCPU device.  The Core Simulator runs the core machine model that executes StackCPU machine code.  The Memory Simulator provides an emulation of the system memory that is accessed by the StackCPU device during runtime.
 
 ![simulator](https://github.com/dervish77/StackCPU/blob/main/docs/StackCPU-SW-Simulator.png?raw=true)
 
 ##### UI Simulator
 
-The initial version of the UI simulator is a CLI interface that enables the loading of binary images into the Memory simulator, access and control over registers in the Core simulator, and control over execution of code stored in memory.
+The UI simulator is a CLI interface that enables the loading of binary images into the Memory simulator, access and control over registers in the Core simulator, and control over execution of code stored in memory.  The host interface of the UI simulator is provided in two parts -- command line arguments and the CLI itself.
 
+Command line arguments:
 ```
-CLI Commands:
+stacksim [-l filename][-m <mode>][-h][-v]
 
+-l filename            - load memory with data from "filename" (default is "file.bin")
+-m <mode>              - enter <mode> on startup, where <mode> is 0 for halt (default), 1 for run, 2 for single step
+-h                     - display command arguments
+-v                     - display version
+```
+
+The CLI commands:
+```
 l filename             - load binary "file" into memory simulator
 s filename             - save memory simulator to binary "file"
 
@@ -306,7 +315,7 @@ x cc                   - read register "cc"
 y cc dd                - write dd to register "cc"
 z                      - dump contents of all registers
 
-?                      - display command help
+?                      - display CLI help
 
 q                      - quit the simulator
 ```
@@ -330,6 +339,7 @@ The StackCPU Assembler is a set of tools (implemented in C) for compiling StackC
 ##### Archiver
 
 ##### Linker
+
 
 
 
