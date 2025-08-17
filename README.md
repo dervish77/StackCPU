@@ -282,11 +282,49 @@ The StackCPU Simulator is a simulation of the StackCPU implemented in C and Pyth
 
 ![simulator](https://github.com/dervish77/StackCPU/blob/main/docs/StackCPU-SW-Simulator.png?raw=true)
 
-#### Assembler
+##### UI Simulator
+
+The initial version of the UI simulator is a CLI interface that enables the loading of binary images into the Memory simulator, access and control over registers in the Core simulator, and control over execution of code stored in memory.
+
+```
+CLI Commands:
+
+l filename             - load "file" into memory simulator
+s filename             - save memory simulator to "file"
+
+r hhhh                 - read memory at addess hhhh
+w hhhh dd              - write dd to memory at address hhhh
+b ssss eeee            - dump memory block from ssss to eeee
+
+g                      - go - i.e. enter "run" mode
+j hhhh                 - jump to address hhhh (load pc with hhhh and reset) - i.e. enter "run" mode
+k hhhh                 - jump to address hhhh (load pc with hhhh and begin "single step" mode)
+n                      - single step to next instruction
+
+x cc                   - read register "cc" 
+y cc dd                - write dd to register "cc"
+z                      - dump contents of all registers
+
+h                      - display command help
+
+q                      - quit the simulator
+```
+
+##### Core Simulator
+
+##### Memory Simulator
+
+#### Assembler Tools
 
 The StackCPU Assembler is a set of tools (implemented in C) for compiling StackCPU assembly source code into machine code that can be executed by a StackCPU simulator or a StackCPU HW implementation.  This set of tools includes an assembler, an archiver, and a linker.
 
 ![assembler](https://github.com/dervish77/StackCPU/blob/main/docs/StackCPU-SW-Assembler.png?raw=true)
+
+##### Assembler
+
+##### Archiver
+
+##### Linker
 
 
 
