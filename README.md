@@ -289,30 +289,35 @@ The initial version of the UI simulator is a CLI interface that enables the load
 ```
 CLI Commands:
 
-l filename             - load "file" into memory simulator
-s filename             - save memory simulator to "file"
+l filename             - load binary "file" into memory simulator
+s filename             - save memory simulator to binary "file"
 
 r hhhh                 - read memory at addess hhhh
 w hhhh dd              - write dd to memory at address hhhh
 b ssss eeee            - dump memory block from ssss to eeee
 
 g                      - go - i.e. enter "run" mode
-j hhhh                 - jump to address hhhh (load pc with hhhh and reset) - i.e. enter "run" mode
-k hhhh                 - jump to address hhhh (load pc with hhhh and begin "single step" mode)
+h                      - halt - i.e. enter "halt" mode
+j hhhh                 - jump to address hhhh and reset into "run" mode
+k hhhh                 - jump to address hhhh and begin "single step" mode
 n                      - single step to next instruction
 
 x cc                   - read register "cc" 
 y cc dd                - write dd to register "cc"
 z                      - dump contents of all registers
 
-h                      - display command help
+?                      - display command help
 
 q                      - quit the simulator
 ```
 
 ##### Core Simulator
 
+The Core simulator emulates the internals of the StackCPU device.  It provides interfaces for connecting to the Memory simulator (i.e. address, data, and control).  It also provides debug interfaces for connecting with the UI simulator (i.e. control over operating modes, read/write of registers, etc).
+
 ##### Memory Simulator
+
+The Memory simulator emulates the system memory of the StackCPU system.  It provides interfaces for connecting to the Core simulator (i.e. address, data, and control).  It also provides debug interfaces for connecting with the UI simulator (i.e. loading memory from binary files, saving memory to binary files, and read/write of locations in memory).
 
 #### Assembler Tools
 
@@ -325,6 +330,7 @@ The StackCPU Assembler is a set of tools (implemented in C) for compiling StackC
 ##### Archiver
 
 ##### Linker
+
 
 
 
