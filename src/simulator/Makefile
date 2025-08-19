@@ -99,8 +99,8 @@ test-unit: all
 	$(TARGET) -h 
 	$(TARGET) -v
 	$(TARGET) -m 0
-	$(TARGET) -m 0 -f file.bin
-	$(TARGET) -f file.bin -m 0
+	$(TARGET) -m 0 -f memory.bin
+	$(TARGET) -f memory.bin -m 0
 	$(TARGET) -m 77
 	$(TARGET) -f fail.bin
 	$(TARGET) -z
