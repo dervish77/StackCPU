@@ -288,10 +288,12 @@ The UI simulator is a CLI interface that enables the loading of binary images in
 
 Command line arguments:
 ```
-stacksim [-l filename][-m <mode>][-h][-v]
+stacksim [-f filename][-m <mode>][-h][-v][-d filename]
 
--l filename            - load memory with data from "filename" (default is "file.bin")
--m <mode>              - enter <mode> on startup, where <mode> is 0 for halt (default), 1 for run, 2 for single step
+-f filename            - load memory with data from "filename" (default is "file.bin")
+-d filename            - output debug data to log "filename" (default is off)
+-m <mode>              - enter <mode> on startup
+                           where <mode> is 0 for idle, 1 for halt (default), 2 for run, 3 for single step
 -h                     - display command arguments
 -v                     - display version
 ```
@@ -300,10 +302,12 @@ The CLI commands:
 ```
 l filename             - load binary "file" into memory simulator
 s filename             - save memory simulator to binary "file"
+d filename             - dump memory to "hex file"
 
 r hhhh                 - read memory at addess hhhh
 w hhhh dd              - write dd to memory at address hhhh
 b ssss eeee            - dump memory block from ssss to eeee
+f ssss eeee dd         - fill memory block from ssss to eeee with dd
 
 g                      - go - i.e. enter "run" mode
 h                      - halt - i.e. enter "halt" mode
@@ -312,8 +316,10 @@ k hhhh                 - jump to address hhhh and begin "single step" mode
 n                      - single step to next instruction
 
 x cc                   - read register "cc" 
-y cc dd                - write dd to register "cc"
+y cc dddd              - write dddd to register "cc"
 z                      - dump contents of all registers
+
+t rate                 - set clock tick to rate
 
 ?                      - display CLI help
 
@@ -339,6 +345,7 @@ The StackCPU Assembler is a set of tools (implemented in C) for compiling StackC
 ##### Archiver
 
 ##### Linker
+
 
 
 
