@@ -107,17 +107,25 @@ NEG           negates top of stack                        0 -> AC
                                                           AC = AC - S[0]
                                                           push AC -> S[0]
 
+LSR           logical shift top of stack right
+
+LSL           logical shift top of stack left
+
 AND <do>      AND top of stack with data                  S[0] -> AC               
                                                           AC & <do> -> AC
-							  push AC -> S[0]
+                                                          push AC -> S[0]
 
 ORR <do>      OR top of stack with data                   S[0] -> AC               
                                                           AC | <do> -> AC
-							  push AC -> S[0]
+                                                          push AC -> S[0]
+
+XOR <do>      XOR top of stack with data                  S[0] -> AC               
+                                                          AC ^ <do> -> AC
+                                                          push AC -> S[0]
 
 INV           Invert top of stack                         S[0] -> AC
                                                           invert AC -> AC
-							  push AC -> S[0]
+                                                          push AC -> S[0]
 
 CPE <do>      compare if top of stack is equal            <do> -> AC
                                                           if S[0] equal AC,
@@ -345,6 +353,7 @@ The StackCPU Assembler is a set of tools (implemented in C) for compiling StackC
 ##### Archiver
 
 ##### Linker
+
 
 
 
