@@ -107,9 +107,13 @@ NEG           negates top of stack                        0 -> AC
                                                           AC = AC - S[0]
                                                           push AC -> S[0]
 
-LSR           logical shift top of stack right
+LSR           logical shift top of stack right            S[0] -> AC
+                                                          AC = AC >> 1
+                                                          push AC -> S[0]
 
-LSL           logical shift top of stack left
+LSL           logical shift top of stack left             S[0] -> AC
+                                                          AC = AC << 1
+                                                          push AC -> S[0]
 
 AND <do>      AND top of stack with data                  S[0] -> AC               
                                                           AC & <do> -> AC
@@ -160,9 +164,9 @@ INP           inputs I/O to top of stack                  IR -> S[0]
 
 OUT           outputs top stack to I/O, stack is popped   S[0] -> OR
 
-PRT           prints top of stack, stack is popped        S[0] -> PR
-
 SER           inputs serial to top of stack               SR -> S[0]
+
+PRT           prints top of stack, stack is popped        S[0] -> PR
 
 (Note, PR is serial output interface, SR is serial input interface)
 ```
@@ -353,6 +357,7 @@ The StackCPU Assembler is a set of tools (implemented in C) for compiling StackC
 ##### Archiver
 
 ##### Linker
+
 
 
 
