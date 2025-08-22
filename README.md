@@ -43,9 +43,9 @@ Repo contents:
  AC         accumulator (hidden) - used for math operations
 
  IR         input register - external input
- OR         output register - external output 
- PR         print register - external output (used by print instructions)
+ OR         output register - external output
  SR         serial register - external input (serial data input)
+ PR         print register - external output (used by print instructions)
 ```
 
 ### Instruction Model
@@ -357,6 +357,7 @@ The StackCPU Assembler is a set of tools (implemented in C) for compiling StackC
 ##### Archiver
 
 ##### Linker
+
 
 
 
