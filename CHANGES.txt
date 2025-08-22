@@ -1,6 +1,33 @@
 CHANGES - StackCPU
 ==================
 
+08/22/2025
+    added LSR, LSL, and XOR instructions
+    Edited LSR and LSL descriptions
+    added UML diagrams for stackSim code
+	
+08/19/2025
+    initial code for StackCPU simulator
+    added bin files for testing
+    modified Makefile to make use of new bin files for unit testing
+    added -d to command line arguments
+    added d,f,t commands to CLI
+
+08/16/2025
+    split HW section into logic blocks and implementations
+    Added description of CLI interface for UI simulator
+    modified SW simulator diagram to include host CLI interface
+    added descriptions of cpu and memory simulators
+    added command line arguments for stacksim
+
+08/13/2025
+    fleshed out HW and SW sections
+    detailed HW emulated, fpga, and discrete implementations
+    detailed SW simulator high level design
+    detailed SW assembly tools high level design
+    added sw simulator and assembler diagrams
+    added dirs for simulator and tools code
+
 08/08/2025
 - minor tweak to machine model
 - cleanup on code examples
