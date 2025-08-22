@@ -43,9 +43,9 @@ Repo contents:
  AC         accumulator (hidden) - used for math operations
 
  IR         input register - external input
- OR         output register - external output 
- PR         print register - external output (used by print instructions)
+ OR         output register - external output
  SR         serial register - external input (serial data input)
+ PR         print register - external output (used by print instructions)
 ```
 
 ### Instruction Model
@@ -107,17 +107,29 @@ NEG           negates top of stack                        0 -> AC
                                                           AC = AC - S[0]
                                                           push AC -> S[0]
 
+LSR           logical shift top of stack right            S[0] -> AC
+                                                          AC = AC >> 1
+                                                          push AC -> S[0]
+
+LSL           logical shift top of stack left             S[0] -> AC
+                                                          AC = AC << 1
+                                                          push AC -> S[0]
+
 AND <do>      AND top of stack with data                  S[0] -> AC               
                                                           AC & <do> -> AC
-							  push AC -> S[0]
+                                                          push AC -> S[0]
 
 ORR <do>      OR top of stack with data                   S[0] -> AC               
                                                           AC | <do> -> AC
-							  push AC -> S[0]
+                                                          push AC -> S[0]
+
+XOR <do>      XOR top of stack with data                  S[0] -> AC               
+                                                          AC ^ <do> -> AC
+                                                          push AC -> S[0]
 
 INV           Invert top of stack                         S[0] -> AC
                                                           invert AC -> AC
-							  push AC -> S[0]
+                                                          push AC -> S[0]
 
 CPE <do>      compare if top of stack is equal            <do> -> AC
                                                           if S[0] equal AC,
@@ -152,9 +164,9 @@ INP           inputs I/O to top of stack                  IR -> S[0]
 
 OUT           outputs top stack to I/O, stack is popped   S[0] -> OR
 
-PRT           prints top of stack, stack is popped        S[0] -> PR
-
 SER           inputs serial to top of stack               SR -> S[0]
+
+PRT           prints top of stack, stack is popped        S[0] -> PR
 
 (Note, PR is serial output interface, SR is serial input interface)
 ```
@@ -288,10 +300,12 @@ The UI simulator is a CLI interface that enables the loading of binary images in
 
 Command line arguments:
 ```
-stacksim [-l filename][-m <mode>][-h][-v]
+stacksim [-f filename][-m <mode>][-h][-v][-d filename]
 
--l filename            - load memory with data from "filename" (default is "file.bin")
--m <mode>              - enter <mode> on startup, where <mode> is 0 for halt (default), 1 for run, 2 for single step
+-f filename            - load memory with data from "filename" (default is "file.bin")
+-d filename            - output debug data to log "filename" (default is off)
+-m <mode>              - enter <mode> on startup
+                           where <mode> is 0 for idle, 1 for halt (default), 2 for run, 3 for single step
 -h                     - display command arguments
 -v                     - display version
 ```
@@ -300,10 +314,12 @@ The CLI commands:
 ```
 l filename             - load binary "file" into memory simulator
 s filename             - save memory simulator to binary "file"
+d filename             - dump memory to "hex file"
 
 r hhhh                 - read memory at addess hhhh
 w hhhh dd              - write dd to memory at address hhhh
 b ssss eeee            - dump memory block from ssss to eeee
+f ssss eeee dd         - fill memory block from ssss to eeee with dd
 
 g                      - go - i.e. enter "run" mode
 h                      - halt - i.e. enter "halt" mode
@@ -312,8 +328,10 @@ k hhhh                 - jump to address hhhh and begin "single step" mode
 n                      - single step to next instruction
 
 x cc                   - read register "cc" 
-y cc dd                - write dd to register "cc"
+y cc dddd              - write dddd to register "cc"
 z                      - dump contents of all registers
+
+t rate                 - set clock tick to rate
 
 ?                      - display CLI help
 
@@ -339,6 +357,10 @@ The StackCPU Assembler is a set of tools (implemented in C) for compiling StackC
 ##### Archiver
 
 ##### Linker
+
+
+
+
 
 
 
