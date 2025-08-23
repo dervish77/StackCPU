@@ -50,10 +50,10 @@ void uiSim::Load(char *name, FILE *file_p)
 		DebugPrintNumber("mem size", size);
 		uint8_t data;
 		Mem.ClearMemory();
-		data = Mem.Read( 0xAAA );
+		data = Mem.Read( MEM_DATA_START );
 		DebugPrintHex("mem read", data);
 		Mem.FillMemory( 0xFF );
-		data = Mem.Read( 0xAAA );
+		data = Mem.Read( MEM_DATA_START );
 		DebugPrintHex("mem read", data);
 	}
 
@@ -81,6 +81,7 @@ void uiSim::Start(int mode)
 		data = Mem.Read( 0xAA );
 		DebugPrintHex("mem read", data);
 	}
+	
 }
 
 // operator - run CLI interface

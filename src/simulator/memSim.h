@@ -11,10 +11,28 @@
 
 #include "memArray.h"
 
+
+// memory size
 #define DEFAULT_MEM_SIZE	4096
 
-#define ERROR		1
+
+// memory address ranges
+#define MEM_BOTTOM			0x0000
+#define MEM_TOP				0xFFFF
+
+#define MEM_PROG_START		MEM_BOTTOM
+#define MEM_PROG_END		0x0BFF
+
+#define MEM_DATA_START		0x0C00
+#define MEM_DATA_END		0x0EFF
+
+#define MEM_STACK_START		0x0F00
+#define MEM_STACK_END		MEM_TOP
+
+
+// error codes
 #define NOERROR		0
+#define ERROR		1
 
 
 class memSim

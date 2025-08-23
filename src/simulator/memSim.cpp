@@ -98,3 +98,10 @@ void memSim::FillMemory(uint8_t data)
 	}
 }
 	
+
+//
+// PRIVATE METHODS
+//
+
+
+// end of file
