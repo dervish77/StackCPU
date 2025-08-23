@@ -11,6 +11,9 @@
 #define DEBUG
 
 
+#define UNUSED(x) (void)(x)
+
+
 //
 // prototypes
 //
