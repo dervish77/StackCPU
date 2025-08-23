@@ -7,6 +7,9 @@
 #ifndef __coreSim_h
 #define __coreSim_h
 
+#include <cstdint>
+
+#include "memSim.h"
 
 
 
@@ -15,9 +18,12 @@ class coreSim
 public:
 
     coreSim();                  // ctor
+    coreSim(memSim *mem);       // ctor
     ~coreSim();                 // dtor
 
     // accessors
+	void SetMemRef(memSim *mem);
+	memSim* GetMemRef();
 
 
     // operators
@@ -26,7 +32,7 @@ public:
 private:
 
     // private data
-
+	memSim *pMemSim;
 
 };
 
