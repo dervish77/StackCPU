@@ -30,6 +30,9 @@ public:
     // operators
     void Load(char *name, FILE *file_p);
     void Start(int mode);
+	
+	void RunCLI();
+	
 
 private:
 
@@ -40,6 +43,9 @@ private:
 	
 	coreSim Core;
 	memSim Mem;
+	
+	// private methods
+	
 
 };
 

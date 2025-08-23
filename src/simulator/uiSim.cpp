@@ -50,10 +50,10 @@ void uiSim::Load(char *name, FILE *file_p)
 		DebugPrintNumber("mem size", size);
 		uint8_t data;
 		Mem.ClearMemory();
-		data = Mem.Read( 0xAA );
+		data = Mem.Read( 0xAAA );
 		DebugPrintHex("mem read", data);
-		Mem.FillMemory( 0xF0 );
-		data = Mem.Read( 0xAA );
+		Mem.FillMemory( 0xFF );
+		data = Mem.Read( 0xAAA );
 		DebugPrintHex("mem read", data);
 	}
 
@@ -66,9 +66,12 @@ void uiSim::Start(int mode)
 
     current_mode = mode;
 
+
 	// unit test of memSim
 	{
 		uint8_t data;
+		data = Mem.Read( 0xAA );
+		DebugPrintHex("mem read", data);
 		Mem.Write( 0xAA, 0xAA );
 		DebugPrintHexHex("mem write", 0xAA, 0xAA);
 		data = Mem.Read( 0xAA );
@@ -80,3 +83,17 @@ void uiSim::Start(int mode)
 	}
 }
 
+// operator - run CLI interface
+void uiSim::RunCLI()
+{
+
+}
+
+//
+// PRIVATE METHODS
+//
+
+
+
+
+// end of file
