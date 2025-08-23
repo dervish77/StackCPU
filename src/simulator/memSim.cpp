@@ -36,6 +36,7 @@ int memSim::Write(uint16_t address, uint8_t data)
 	}
 	else
 	{
+		DebugPrintHexHex("memSim::Write", address, data);
 		return NOERROR;
 	}
 }
@@ -46,7 +47,9 @@ uint8_t memSim::Read(uint16_t address)
 	uint8_t data;
 	
 	data = pMemory->Get( (int) address );
-	
+			
+	DebugPrintHexHex("memSim::Read", address, data);
+
 	return data;
 }
 
@@ -60,6 +63,8 @@ void memSim::ClearMemory()
 	size = pMemory->GetSize();
 	
 	address = 0;
+	
+	DebugPrint("memSim::ClearMemory");
 	
 	while (address < size)
 	{
@@ -77,7 +82,9 @@ void memSim::FillMemory(uint8_t data)
 	size = pMemory->GetSize();
 	
 	address = 0;
-	
+		
+	DebugPrintHex("memSim::FillMemory with", data);
+
 	while (address < size)
 	{
 		pMemory->Set( address, data );

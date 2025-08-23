@@ -15,17 +15,17 @@
 // prototypes
 //
 
-void DebugPrint(char *msg);
+void DebugPrint(const char *msg);
 
-void DebugPrintNumber(char *msg, int value);
+void DebugPrintNumber(const char *msg, int value);
 
-void DebugPrintHex(char *msg, int value);
+void DebugPrintHex(const char *msg, int value);
 
-void DebugPrintHexHex(char *msg, int value1, int value2);
+void DebugPrintHexHex(const char *msg, int value1, int value2);
 
-void DebugPrintFloat(char *msg, float value);
+void DebugPrintFloat(const char *msg, float value);
 
-void DebugPrintString(char *msg, char *str);
+void DebugPrintString(const char *msg, char *str);
 
 
 #endif /* __debug_h */
