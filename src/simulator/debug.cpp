@@ -25,6 +25,20 @@ void DebugPrintNumber(char *msg, int value)
 	#endif
 }
 
+void DebugPrintHex(char *msg, int value)
+{
+	#ifdef DEBUG
+	printf("%s 0x%x\n", msg, value);
+	#endif
+}
+
+void DebugPrintHexHex(char *msg, int value1, int value2)
+{
+	#ifdef DEBUG
+	printf("%s 0x%x 0x%x\n", msg, value1, value2);
+	#endif
+}
+
 void DebugPrintFloat(char *msg, float value)
 {
 	#ifdef DEBUG

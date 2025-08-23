@@ -19,6 +19,10 @@ void DebugPrint(char *msg);
 
 void DebugPrintNumber(char *msg, int value);
 
+void DebugPrintHex(char *msg, int value);
+
+void DebugPrintHexHex(char *msg, int value1, int value2);
+
 void DebugPrintFloat(char *msg, float value);
 
 void DebugPrintString(char *msg, char *str);
