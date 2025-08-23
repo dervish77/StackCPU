@@ -11,7 +11,8 @@
 #include "memSim.h"
 
 
-#define MODE_EXIT		0
+// simulator modes
+#define MODE_EXIT       0
 #define MODE_HALT       1
 #define MODE_RUN        2
 #define MODE_SSTEP      3
@@ -41,8 +42,8 @@ private:
 	char *mem_file_name;
     int current_mode;
 	
-	coreSim Core;
-	memSim Mem;
+	coreSim *pCore;
+	memSim *pMem;
 	
 	// private methods
 	

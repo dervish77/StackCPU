@@ -21,12 +21,19 @@ uiSim::uiSim()
 	mem_file_name = NULL;
     current_mode = MODE_HALT;
 	
+	pCore = NULL;
+	pMem = new memSim();
+	if (pMem != NULL)
+	{
+		pCore = new coreSim( pMem );
+	}
 }
 
 // destructor
 uiSim::~uiSim()
 {
-
+	delete pCore;
+	delete pMem;
 }
 
 
@@ -46,14 +53,14 @@ void uiSim::Load(char *name, FILE *file_p)
 	// unit test of memSim
 	{
 		int size;
-		size = Mem.GetSize();
+		size = pMem->GetSize();
 		DebugPrintNumber("mem size", size);
 		uint8_t data;
-		Mem.ClearMemory();
-		data = Mem.Read( MEM_DATA_START );
+		pMem->ClearMemory();
+		data = pMem->Read( MEM_DATA_START );
 		DebugPrintHex("mem read", data);
-		Mem.FillMemory( 0xFF );
-		data = Mem.Read( MEM_DATA_START );
+		pMem->FillMemory( 0xFF );
+		data = pMem->Read( MEM_DATA_START );
 		DebugPrintHex("mem read", data);
 	}
 
@@ -70,15 +77,15 @@ void uiSim::Start(int mode)
 	// unit test of memSim
 	{
 		uint8_t data;
-		data = Mem.Read( 0xAA );
+		data = pMem->Read( 0xAA );
 		DebugPrintHex("mem read", data);
-		Mem.Write( 0xAA, 0xAA );
+		pMem->Write( 0xAA, 0xAA );
 		DebugPrintHexHex("mem write", 0xAA, 0xAA);
-		data = Mem.Read( 0xAA );
+		data = pMem->Read( 0xAA );
 		DebugPrintHex("mem read", data);
-		Mem.Write( 0xAA, 0x55 );
+		pMem->Write( 0xAA, 0x55 );
 		DebugPrintHexHex("mem write", 0xAA, 0x55);
-		data = Mem.Read( 0xAA );
+		data = pMem->Read( 0xAA );
 		DebugPrintHex("mem read", data);
 	}
 	
