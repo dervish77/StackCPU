@@ -311,6 +311,8 @@ options:
                            where <mode> is 0 for idle, 1 for halt (default), 2 for run, 3 for single step
 -h                     - display command arguments
 -v                     - display version
+
+Example: stacksim -m 1 -f myprog.bin
 ```
 
 The CLI commands:
@@ -420,4 +422,5 @@ options:
 
 Example: stackld -m prog.map -o prog.bin math.lib addloop.obj
 ```
+
 
