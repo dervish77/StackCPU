@@ -10,8 +10,8 @@
 #include <cstdint>
 
 // array sizes
-#define DEFAULT_SIZE	256
-#define MAX_SIZE 		65536
+#define DEFAULT_ARRAY_SIZE	256
+#define MAX_ARRAY_SIZE 		65536
 
 
 class memArray

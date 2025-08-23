@@ -32,12 +32,12 @@ int memSim::Write(uint16_t address, uint8_t data)
 {
 	if (pMemory->Set( (int) address, data ))
 	{
-		return ERROR;
+		return MEM_ERROR;
 	}
 	else
 	{
 		DebugPrintHexHex("memSim::Write", address, data);
-		return NOERROR;
+		return MEM_NOERROR;
 	}
 }
 	

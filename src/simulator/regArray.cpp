@@ -1,5 +1,5 @@
 //
-// memArray.cpp
+// regArray.cpp
 //
 // implementation of Memory Array class
 //
@@ -10,23 +10,23 @@
 
 using namespace std;
 
-#include "memArray.h"
+#include "regArray.h"
 
 
 // default constructor
-memArray::memArray()
+regArray::regArray()
 {
-	array = new uint8_t[DEFAULT_ARRAY_SIZE];
+	array = new uint16_t[DEFAULT_REG_SIZE];
 }
 
 // constructor
-memArray::memArray(int size)
+regArray::regArray(int size)
 {
-	if (size < MAX_ARRAY_SIZE)
+	if (size < MAX_REG_SIZE)
 	{
 		array_size = size;
 	
-		array = new uint8_t[size];
+		array = new uint16_t[size];
 		if (array == NULL)
 		{
 			cerr << "Error: array allocate failed!" << endl;
@@ -39,14 +39,14 @@ memArray::memArray(int size)
 }
 
 // destructor
-memArray::~memArray()
+regArray::~regArray()
 {
 	delete array;
 }
 
 
 // accessor - set data value at index
-int memArray::Set(int index, uint8_t data)
+int regArray::Set(int index, uint16_t data)
 {
 	int code = 1;
 	
@@ -60,9 +60,9 @@ int memArray::Set(int index, uint8_t data)
 }
 
 // accessor - get data value from index
-uint8_t memArray::Get(int index)
+uint16_t regArray::Get(int index)
 {
-	uint8_t data = 0;
+	uint16_t data = 0;
 	
 	if (index < array_size)
 	{
@@ -77,16 +77,16 @@ uint8_t memArray::Get(int index)
 }
 
 // operator - set size of memory array
-int memArray::SetSize(int size)
+int regArray::SetSize(int size)
 {
 	int code = 1;
 	
-	if (size < MAX_ARRAY_SIZE)
+	if (size < MAX_REG_SIZE)
 	{
 		array_size = size;
 	
 		delete array;
-		array = new uint8_t[size];
+		array = new uint16_t[size];
 		if (array != NULL)
 		{
 			code = 0;
@@ -98,7 +98,7 @@ int memArray::SetSize(int size)
 
 
 // operator - get size of memory array
-int memArray::GetSize()
+int regArray::GetSize()
 {
 	return array_size;
 }

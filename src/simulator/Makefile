@@ -19,7 +19,7 @@ VERSION=0.1.0
 
 PLATFILES = debug.xxx
 
-SIMFILES  = uiSim.xxx coreSim.xxx memArray.xxx memSim.xxx
+SIMFILES  = uiSim.xxx regArray.xxx coreSim.xxx memArray.xxx memSim.xxx
 
 FILES	  = $(PLATFILES) $(SIMFILES) main.xxx
 

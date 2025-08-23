@@ -31,8 +31,8 @@
 
 
 // error codes
-#define NOERROR		0
-#define ERROR		1
+#define MEM_NOERROR		0
+#define MEM_ERROR		1
 
 
 class memSim
