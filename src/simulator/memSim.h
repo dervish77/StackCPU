@@ -27,6 +27,8 @@ public:
     // accessors
 	int Write(uint16_t address, uint8_t data);
 	uint8_t Read(uint16_t address);
+	
+	int GetSize();
 
     // operators
 	void ClearMemory();

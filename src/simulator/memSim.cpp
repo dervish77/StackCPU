@@ -53,6 +53,12 @@ uint8_t memSim::Read(uint16_t address)
 	return data;
 }
 
+// accessor - get size of memory
+int memSim::GetSize()
+{
+	return pMemory->GetSize();
+}
+
 
 // operator - clear the memory
 void memSim::ClearMemory()
