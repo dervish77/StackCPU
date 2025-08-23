@@ -21,6 +21,8 @@
 
 #include "uisim.h"
 
+#include "debug.h"
+
 
 /*
  *  STATICS
@@ -45,7 +47,7 @@ int main(int argc, char **argv)
 {
 	FILE *in_file_p;
 	char filename[BUFFER_LEN];
-	int mode = MODE_HALT;
+	int mode = MODE_EXIT;
     int play = 1;
     int i;
 
@@ -150,7 +152,7 @@ void PrintBanner()
 
 void PrintUsage()
 {
-    printf("Usage:  stacksim [-f|-s|-w] [-h] [-v]\n");
+    printf("Usage:  stacksim [-f file] [-m mode] [-h] [-v]\n");
     printf("\n");
     printf("   -h           display help\n");
     printf("   -v           display version\n");

@@ -98,9 +98,10 @@ test-unit: all
 	$(TARGET)
 	$(TARGET) -h 
 	$(TARGET) -v
-	$(TARGET) -m 0
-	$(TARGET) -m 0 -f memory.bin
-	$(TARGET) -f memory.bin -m 0
+	$(TARGET) -m 1
+	$(TARGET) -m 2 -f memory.bin
+	$(TARGET) -f memory.bin -m 2
+	$(TARGET) -m 3
 	$(TARGET) -m 77
 	$(TARGET) -f fail.bin
 	$(TARGET) -z
