@@ -19,19 +19,24 @@
 
 
 // register indexes
-#define REG_INDEX_PC	0
-#define REG_INDEX_SP	1
-#define REG_INDEX_DR	2
-#define REG_INDEX_AC	3
-#define REG_INDEX_IR	4
-#define REG_INDEX_OR	5
-#define REG_INDEX_SR	6
-#define REG_INDEX_PR	7
+#define REG_INDEX_PC	0		// full 16 bits
+#define REG_INDEX_SP	1		// full 16 bits
+#define REG_INDEX_DR	2		// full 16 bits
+#define REG_INDEX_AC	3		// only lower 8 bits
+#define REG_INDEX_IR	4		// only lower 8 bits
+#define REG_INDEX_OR	5		// only lower 8 bits
+#define REG_INDEX_SR	6		// only lower 8 bits
+#define REG_INDEX_PR	7		// only lower 8 bits
 
 
 // state ids
 
 
+
+// fetch operation
+#define FETCH_OP_NONE	0
+#define FETCH_OP_INCR	1
+#define FETCH_OP_DECR	2
 
 
 // error codes
@@ -51,18 +56,40 @@ public:
 	void SetMemRef(memSim *mem);
 	memSim* GetMemRef();
 
+	void SetReg(int index, uint16_t data);
+	uint16_t GetReg(int index);
+	
+	void SetState(int index, int state);
+	int GetState(int index);
+	
 
     // operators
-
+	void ClockTick();
+	
 
 private:
 
     // private data
 	memSim *pMemSim;
-
 	regArray *pRegisters;
-
 	int memsize;
+	
+	// private methods
+	void _clearRegisters();
+	void _fillRegisters(uint16_t data);
+	
+	void _incrememtRegister(int index);
+	void _decrementRegister(int index);
+	
+	uint8_t _fetchMemory(int reg, int operation);
+	uint8_t _readMemory(uint16_t address);
+	void _writeMemory(uint16_t address, uint8_t data);
+	
+	void _pushStack(uint8_t data);
+	uint8_t _popStack();
+	
+	void _copyRegister(int fromreg, int toreg);
+	
 };
 
 #endif // __coreSim_h

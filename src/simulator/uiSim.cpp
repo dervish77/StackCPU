@@ -37,7 +37,7 @@ uiSim::~uiSim()
 }
 
 
-// accessor - set
+// accessor - tbd
 
 
 
@@ -89,6 +89,24 @@ void uiSim::Start(int mode)
 		DebugPrintHex("mem read", data);
 	}
 	
+	// unit test of coreSim
+	{
+		uint16_t data;
+		data = pCore->GetReg(REG_INDEX_PC);
+		DebugPrintHex("reg pc", data);
+		data = pCore->GetReg(REG_INDEX_SP);
+		DebugPrintHex("reg sp", data);
+		data = pCore->GetReg(REG_INDEX_DR);
+		DebugPrintHex("reg dr", data);
+
+		data = pCore->GetReg(REG_INDEX_AC);
+		DebugPrintHex("reg ac", data);
+		pCore->SetReg( REG_INDEX_AC, 0x55 );
+		DebugPrintHex("write ac", data);
+		data = pCore->GetReg(REG_INDEX_AC);
+		DebugPrintHex("reg ac", data);
+	}
+
 }
 
 // operator - run CLI interface
