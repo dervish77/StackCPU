@@ -294,16 +294,19 @@ The StackCPU Simulator is a simulation of the StackCPU implemented in C/C++ and 
 
 ![simulator](https://github.com/dervish77/StackCPU/blob/main/docs/StackCPU-SW-Simulator.png?raw=true)
 
+![simulator](https://github.com/dervish77/StackCPU/blob/main/docs/SW-stackSim-class-diagram.png?raw=true)
+
 ##### UI Simulator
 
 The UI simulator is a CLI interface that enables the loading of binary images into the Memory simulator, access and control over registers in the Core simulator, and control over execution of code stored in memory.  The host interface of the UI simulator is provided in two parts -- command line arguments and the CLI itself.
 
 Command line arguments:
 ```
-stacksim [-f filename][-m <mode>][-h][-v][-d filename]
+Usage: stacksim [options]
 
--f filename            - load memory with data from "filename" (default is "file.bin")
+options:
 -d filename            - output debug data to log "filename" (default is off)
+-f filename            - load memory with data from "filename" (default is "file.bin")
 -m <mode>              - enter <mode> on startup
                            where <mode> is 0 for idle, 1 for halt (default), 2 for run, 3 for single step
 -h                     - display command arguments
@@ -342,9 +345,13 @@ q                      - quit the simulator
 
 The Core simulator emulates the internals of the StackCPU device.  It provides interfaces for connecting to the Memory simulator (i.e. address, data, and control).  It also provides debug interfaces for connecting with the UI simulator (i.e. control over operating modes, read/write of registers, etc).
 
+![simulator](https://github.com/dervish77/StackCPU/blob/main/docs/SW-coreSim-class-diagram.png?raw=true)
+
 ##### Memory Simulator
 
 The Memory simulator emulates the system memory of the StackCPU system.  It provides interfaces for connecting to the Core simulator (i.e. address, data, and control).  It also provides debug interfaces for connecting with the UI simulator (i.e. loading memory from binary files, saving memory to binary files, and read/write of locations in memory).
+
+![simulator](https://github.com/dervish77/StackCPU/blob/main/docs/SW-memSim-class-diagram.png?raw=true)
 
 #### Assembler Tools
 
@@ -354,16 +361,63 @@ The StackCPU Assembler is a set of tools (implemented in C) for compiling StackC
 
 ##### Assembler
 
+The Assembler tool compiles a StackCPU assembly source file into an object module.  Various options allow some control over enabling of debug info, setting warning level, include search path, etc.
+
+A special mode enables the direct output of an executable binary file from a single assembly source file using the "-b" option, but this not compatible with also outputting an object file.  This is primarily intended as an early method of assembling a source file into a binary that can be executed on the simulator without the need for the linker.
+
+```
+Usage: stackasm [options] [source file]
+
+options:
+-g                     - add debug info to object file
+-D name[=val]          - define a symbol
+-W n                   - set warning level n
+-I dir                 - include directory search path
+-b file.bin            - output binary executable (bypass object output)
+-o file.obj            - object file output filename
+-h                     - display command arguments
+-v                     - verbose mode
+-V                     - display version
+
+Example: stackasm -g -I ./inc -o addloop.obj addloop.asm
+```
+
 ##### Archiver
+
+The Archiver tool collects object files into the specified library file.  Various options enable control over whether to add, replace, or delete a file from the library.
+
+```
+Usage: stackar [options] [obj files]
+
+options:
+-a                     - add object to specified library file
+-d                     - delete object from specified library
+-r                     - replace object in specified library
+-o file.lib            - library file output filename
+-h                     - display command arguments
+-v                     - verbose mode
+-V                     - display version
+
+Example: stackar -a -o math.lib add.obj
+```
 
 ##### Linker
 
+The Linker tool combines several object modules (libaries and objects) producing an executable output file.  Various options enable control over the linking process, and the additional output of a map file or a hex file in addition to the binary executable output.  The map file is useful when debugging code in the simulator since it gives the address location of symbols within the executable program.  The hex file is useful for programming an executable into a HW implementation.
 
+```
+Usage: stackld [options] [lib files] [obj files]
 
+options:
+-C file.cfg            - linker config file input
+-L dir                 - library directory search path
+-o file.bin            - binary executable output filename
+-m file.map            - map file output filename
+-x file.hex            - hex file output filename
+-h                     - display command arguments
+-v                     - verbose mode
+-V                     - display version
 
-
-
-
-
-
+Example: stackld -m prog.map -o prog.bin math.lib addloop.obj
+```
 
