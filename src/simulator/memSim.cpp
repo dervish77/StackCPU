@@ -4,10 +4,12 @@
 // implementation of Memory simulator class
 //
 
+#include <iostream>
 #include <cstdio>
+#include <cstdint>
 
-#include "coreSim.h"
 #include "memSim.h"
+#include "memArray.h"
 
 #include "debug.h"
 
@@ -15,20 +17,71 @@
 // default constructor
 memSim::memSim()
 {
-
+	pMemory = new memArray(DEFAULT_MEM_SIZE);
 }
 
 // destructor
 memSim::~memSim()
 {
-
+	delete pMemory;
 }
 
 
-// accessor - set
+// accessor - write data to address
+int memSim::Write(uint16_t address, uint8_t data)
+{
+	if (pMemory->Set( (int) address, data ))
+	{
+		return ERROR;
+	}
+	else
+	{
+		return NOERROR;
+	}
+}
+	
+// accessor - read data from address
+uint8_t memSim::Read(uint16_t address)
+{
+	uint8_t data;
+	
+	data = pMemory->Get( (int) address );
+	
+	return data;
+}
 
 
+// operator - clear the memory
+void memSim::ClearMemory()
+{
+	int size;
+	uint16_t address;
+	
+	size = pMemory->GetSize();
+	
+	address = 0;
+	
+	while (address < size)
+	{
+		pMemory->Set( address, 0 );
+		address++;
+	}
+}
 
-// operator - tbd
-
-
+// operator - fill the memory
+void memSim::FillMemory(uint8_t data)
+{
+	int size;
+	uint16_t address;
+	
+	size = pMemory->GetSize();
+	
+	address = 0;
+	
+	while (address < size)
+	{
+		pMemory->Set( address, data );
+		address++;
+	}
+}
+	
