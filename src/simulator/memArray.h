@@ -9,6 +9,7 @@
 
 #include <cstdint>
 
+// array sizes
 #define DEFAULT_SIZE	256
 #define MAX_SIZE 		65536
 

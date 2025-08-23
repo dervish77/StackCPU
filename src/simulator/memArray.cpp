@@ -102,3 +102,11 @@ int memArray::GetSize()
 {
 	return array_size;
 }
+
+
+//
+// PRIVATE METHODS
+//
+
+
+// end of file
