@@ -33,7 +33,17 @@ void DebugPrintNumber(const char *msg, int value)
 void DebugPrintHex(const char *msg, int value)
 {
 	#ifdef DEBUG
-	printf("%s 0x%X\n", msg, value);
+	printf("%s 0x%02X\n", msg, value);
+	#else
+	UNUSED(msg);
+	UNUSED(value);
+	#endif
+}
+
+void DebugPrintHex16(const char *msg, int value)
+{
+	#ifdef DEBUG
+	printf("%s 0x%04X\n", msg, value);
 	#else
 	UNUSED(msg);
 	UNUSED(value);
@@ -43,7 +53,7 @@ void DebugPrintHex(const char *msg, int value)
 void DebugPrintHexHex(const char *msg, int value1, int value2)
 {
 	#ifdef DEBUG
-	printf("%s 0x%X 0x%X\n", msg, value1, value2);
+	printf("%s 0x%04X 0x%02X\n", msg, value1, value2);
 	#else
 	UNUSED(msg);
 	UNUSED(value1);

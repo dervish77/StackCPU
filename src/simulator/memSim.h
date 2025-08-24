@@ -18,7 +18,7 @@
 
 // memory address ranges
 #define MEM_BOTTOM			0x0000
-#define MEM_TOP				0xFFFF
+#define MEM_TOP				0x0FFF
 
 #define MEM_PROG_START		MEM_BOTTOM
 #define MEM_PROG_END		0x0BFF

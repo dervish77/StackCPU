@@ -66,6 +66,8 @@ public:
     // operators
 	void ClockTick();
 	
+	// unit test methods
+	void UnitTest(int testnum);
 
 private:
 
@@ -90,6 +92,9 @@ private:
 	
 	void _copyRegister(int fromreg, int toreg);
 	
+	// private debug methods
+	void _debugDumpMemory(const char *header, uint16_t start, int bytes);
+	void _debugDumpRegisters(const char *header);
 };
 
 #endif // __coreSim_h

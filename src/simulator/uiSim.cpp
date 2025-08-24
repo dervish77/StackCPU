@@ -52,6 +52,7 @@ void uiSim::Load(char *name, FILE *file_p)
 	
 	// unit test of memSim
 	{
+		#if 0
 		int size;
 		size = pMem->GetSize();
 		DebugPrintNumber("mem size", size);
@@ -62,6 +63,7 @@ void uiSim::Load(char *name, FILE *file_p)
 		pMem->FillMemory( 0xFF );
 		data = pMem->Read( MEM_DATA_START );
 		DebugPrintHex("mem read", data);
+		#endif
 	}
 
 }
@@ -76,6 +78,7 @@ void uiSim::Start(int mode)
 
 	// unit test of memSim
 	{
+		#if 0
 		uint8_t data;
 		data = pMem->Read( 0xAA );
 		DebugPrintHex("mem read", data);
@@ -87,24 +90,18 @@ void uiSim::Start(int mode)
 		DebugPrintHexHex("mem write", 0xAA, 0x55);
 		data = pMem->Read( 0xAA );
 		DebugPrintHex("mem read", data);
+		#endif
 	}
 	
 	// unit test of coreSim
 	{
-		uint16_t data;
-		data = pCore->GetReg(REG_INDEX_PC);
-		DebugPrintHex("reg pc", data);
-		data = pCore->GetReg(REG_INDEX_SP);
-		DebugPrintHex("reg sp", data);
-		data = pCore->GetReg(REG_INDEX_DR);
-		DebugPrintHex("reg dr", data);
-
-		data = pCore->GetReg(REG_INDEX_AC);
-		DebugPrintHex("reg ac", data);
-		pCore->SetReg( REG_INDEX_AC, 0x55 );
-		DebugPrintHex("write ac", data);
-		data = pCore->GetReg(REG_INDEX_AC);
-		DebugPrintHex("reg ac", data);
+		#if 1
+		pCore->UnitTest(1);
+		#endif
+		
+		pCore->UnitTest(2);
+		pCore->UnitTest(3);
+		pCore->UnitTest(4);
 	}
 
 }
