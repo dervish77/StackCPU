@@ -19,9 +19,9 @@
 
 
 // register indexes
-#define REG_INDEX_PC	0		// full 16 bits
-#define REG_INDEX_SP	1		// full 16 bits
-#define REG_INDEX_DR	2		// full 16 bits
+#define REG_INDEX_PC	0		// full 16 bits - points to next instruction to read
+#define REG_INDEX_SP	1		// full 16 bits - points to last value put on stack
+#define REG_INDEX_DR	2		// full 16 bits - points to last value accessed in memory
 #define REG_INDEX_AC	3		// only lower 8 bits
 #define REG_INDEX_IR	4		// only lower 8 bits
 #define REG_INDEX_OR	5		// only lower 8 bits
@@ -80,7 +80,7 @@ private:
 	void _clearRegisters();
 	void _fillRegisters(uint16_t data);
 	
-	void _incrememtRegister(int index);
+	void _incrementRegister(int index);
 	void _decrementRegister(int index);
 	
 	uint8_t _fetchMemory(int reg, int operation);

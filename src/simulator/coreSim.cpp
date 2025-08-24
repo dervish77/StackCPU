@@ -185,7 +185,7 @@ void coreSim::UnitTest(int testnum)
 			pMemSim->Write(GetReg(REG_INDEX_DR), memdata);
 			
 			memdata = _fetchMemory(REG_INDEX_PC, FETCH_OP_INCR); // STI
-			_incrememtRegister(REG_INDEX_DR);
+			_incrementRegister(REG_INDEX_DR);
 			memdata = _popStack();
 			pMemSim->Write(GetReg(REG_INDEX_DR), memdata);
 			
@@ -199,7 +199,7 @@ void coreSim::UnitTest(int testnum)
 			_pushStack(memdata);
 			
 			memdata = _fetchMemory(REG_INDEX_PC, FETCH_OP_INCR); // LDI
-			_incrememtRegister(REG_INDEX_DR);
+			_incrementRegister(REG_INDEX_DR);
 			memdata = pMemSim->Read(GetReg(REG_INDEX_DR));
 			_pushStack(memdata);
 
@@ -242,7 +242,7 @@ void coreSim::_fillRegisters(uint16_t data)
 	}
 }
 
-void coreSim::_incrememtRegister(int index)
+void coreSim::_incrementRegister(int index)
 {
 	uint16_t regdata;
 	regdata = pRegisters->Get(index);
@@ -271,7 +271,7 @@ uint8_t coreSim::_fetchMemory(int reg, int operation)
 	switch(operation)
 	{
 		case FETCH_OP_INCR:
-			_incrememtRegister(reg);
+			_incrementRegister(reg);
 			break;
 		case FETCH_OP_DECR:
 			_decrementRegister(reg);
@@ -297,9 +297,12 @@ void coreSim::_pushStack(uint8_t data)
 {
 	uint16_t regdata;
 	
+	// decrement SP
+	_decrementRegister(REG_INDEX_SP);
+	
+	// write value to stack
 	regdata = pRegisters->Get(REG_INDEX_SP);
 	pMemSim->Write( regdata, data );
-	_decrementRegister(REG_INDEX_SP);
 
 	//DebugPrintHexHex("pushstack", regdata, data);
 }
@@ -309,12 +312,15 @@ uint8_t coreSim::_popStack()
 	uint8_t memdata;
 	uint16_t regdata;
 
-	if (pRegisters->Get(REG_INDEX_SP) < MEM_STACK_END)
-	{
-		_incrememtRegister(REG_INDEX_SP);
-	}
+	// read value from stack
 	regdata = pRegisters->Get(REG_INDEX_SP);
 	memdata = pMemSim->Read( regdata );
+	
+	// increment SP
+	if (pRegisters->Get(REG_INDEX_SP) < MEM_STACK_END)
+	{
+		_incrementRegister(REG_INDEX_SP);
+	}
 
 	//DebugPrintHexHex("popstack", regdata, memdata);
 	
