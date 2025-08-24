@@ -4,20 +4,18 @@ TODO - StackCPU
 - Specify requirements
 -- not yet specified
 
-- Design high level models
--- designs completed
-
-- Design system architecture
--- designs completed 
-
 - Specify instructions
 -- instructions specified
-
-- Develop coding examples
--- examples developed
-
-- Detailed design of HW 
+--- revisit op codes definitions to make HW imp easier
 
 - Detailed design of SW
+-- UML design is completed
+-- initial sim code in place and partially tested
+-- need to write instruction table
+-- need to write instruction decoder
+-- need to write ALU functions
+-- need to design control SM
 
+- Detailed design of HW 
+-- not yet started
 
