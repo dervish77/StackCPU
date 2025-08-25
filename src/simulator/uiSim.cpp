@@ -97,11 +97,11 @@ void uiSim::Start(int mode)
 	{
 		#if 1
 		pCore->UnitTest(1);
-		#endif
 		
 		pCore->UnitTest(2);
 		pCore->UnitTest(3);
 		pCore->UnitTest(4);
+		#endif
 	}
 
 }

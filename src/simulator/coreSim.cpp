@@ -142,21 +142,21 @@ void coreSim::UnitTest(int testnum)
 			
 		case 2:
 			// put program into memory
-			pMemSim->Write(0x0000, 0x91); // CLS
-			pMemSim->Write(0x0001, 0x34); // PSH 0x22
+			pMemSim->Write(0x0000, 0x92); // CLS
+			pMemSim->Write(0x0001, 0x11); // PSH 0x22
 			pMemSim->Write(0x0002, 0x22);
-			pMemSim->Write(0x0003, 0x34); // PSH 0x55
+			pMemSim->Write(0x0003, 0x11); // PSH 0x55
 			pMemSim->Write(0x0004, 0x55);
-			pMemSim->Write(0x0005, 0x41); // STM 0x0c00
+			pMemSim->Write(0x0005, 0x31); // STM 0x0c00
 			pMemSim->Write(0x0006, 0x0C);
 			pMemSim->Write(0x0007, 0x00);
-			pMemSim->Write(0x0008, 0x42); // STI
+			pMemSim->Write(0x0008, 0x32); // STI
 			pMemSim->Write(0x0009, 0x21); // LDM 0x0c00
 			pMemSim->Write(0x000A, 0x0C); 
 			pMemSim->Write(0x000B, 0x00);
 			pMemSim->Write(0x000C, 0x22); // LDI
-			pMemSim->Write(0x000D, 0x51); // ADD
-			pMemSim->Write(0x000E, 0x92); // OUT	
+			pMemSim->Write(0x000D, 0x41); // ADD
+			pMemSim->Write(0x000E, 0x82); // OUT	
 			pMemSim->Write(0x000F, 0x98); // END
 			_debugDumpMemory("program:", 0x0000, 16);
 			break;
@@ -204,14 +204,15 @@ void coreSim::UnitTest(int testnum)
 			_incrementRegister(REG_INDEX_DR);
 			memdata = pMemSim->Read(GetReg(REG_INDEX_DR));
 			_pushStack(memdata);
-			_debugDumpMemory("stack:", 0x0FFC, 4);
+			//_debugDumpMemory("stack:", 0x0FFC, 4);
 
 			memdata = _fetchMemory(REG_INDEX_PC, FETCH_OP_INCR); // ADD
-			memdata = _popStack();
+			memdata2 = _popStack(); // pop temp
+			memdata = _popStack();  // pop ac
 			pRegisters->Set(REG_INDEX_AC, memdata);
-			memdata2 = pMemSim->Read(GetReg(REG_INDEX_SP));
-			memdata2 = memdata2 + pRegisters->Get(REG_INDEX_AC);
-			pMemSim->Write(GetReg(REG_INDEX_SP), memdata2);
+			memdata = pRegisters->Get(REG_INDEX_AC) + memdata2; // add ac + temp
+			pRegisters->Set(REG_INDEX_AC, memdata);
+			_pushStack(pRegisters->Get(REG_INDEX_AC)); // push ac
 
 			memdata = _fetchMemory(REG_INDEX_PC, FETCH_OP_INCR); // OUT
 			memdata = _popStack();
