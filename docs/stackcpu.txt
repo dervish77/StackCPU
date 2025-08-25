@@ -1,0 +1,186 @@
+stack cpu notes
+===============
+
+consider adding temp reg TR for use in math ops
+or consider using DRL as temp reg for above ops
+
+consider reassigning op codes by functional groups
+
+"Instruction Fetch"
+fetch mem -> inst dec
+
+PSH
+fetch op -> ac
+push ac
+
+PSA
+push ac
+
+POP
+pop -> ac
+
+LDM $hhhh
+fetch op -> DRH
+fetch op -> DRL
+mem rd via DR -> ac
+push ac
+
+LDI
+incr DR
+mem rd via DR -> ac
+push ac
+
+STM $hhhh
+fetch op -> DRH
+fetch op -> DRL
+pop -> ac
+ac -> mem wr via DR
+
+STI
+incr DR
+pop -> ac
+ac -> mem wr via DR
+
+
+ADD
+pop -> temp
+pop -> ac
+ac = ac + temp
+push ac
+
+SUB
+pop -> temp
+pop -> ac
+ac = ac - temp
+push ac
+
+NEG
+pop -> ac
+0 -> temp
+ac = temp - ac
+push ac
+
+
+AND
+fetch op -> temp
+pop -> ac
+ac = ac & temp
+push ac
+
+ORR
+fetch op -> temp
+pop -> ac
+ac = ac | temp
+push ac
+
+XOR
+fetch op -> temp
+pop -> ac
+ac = ac ^ temp
+push ac
+
+INV
+pop -> temp
+ac = invert temp
+push ac
+
+LSR
+pop -> ac
+ac = ac >> 1
+push ac
+
+LSL
+pop -> ac
+ac = ac << 1
+push ac
+
+
+CPE #dd
+fetch op -> temp
+pop -> ac
+push ac
+ac = ac ^ temp
+push ac
+
+CNE #dd
+fetch op -> temp
+pop -> ac
+push ac
+ac = ac ^ temp
+ac = invert ac
+push ac
+
+BRZ &label
+fetch op -> DRH
+fetch op -> DRL
+pop ac
+if ac = 0, DR -> PC
+
+BRN &label
+fetch op -> DRH
+fetch op -> DRL
+pop ac
+if ac != 0, DR -> PC
+
+BRU &label
+fetch op -> DRH
+fetch op -> DRL
+DR -> PC
+
+
+INP
+IR -> AC
+push ac
+
+OUT
+pop -> ac
+AC -> OR
+
+SER
+SR -> AC
+push ac
+
+PRT
+pop -> ac
+AC -> PR
+
+
+NOP
+no operations
+
+CLS
+<mem top> -> SP
+
+END
+decr PC
+
+RST
+0 -> AC
+0 -> OR
+0 -> PR
+<data start> -> DR
+<mem top> -> SP
+<mem bot> -> PC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
