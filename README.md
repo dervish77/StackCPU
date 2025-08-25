@@ -53,7 +53,7 @@ Repo contents:
 ```
  OPERATION
  OPERATION <direct operand>               #dd or "c"
- OPERATION <memory address>               $hhhh
+ OPERATION <memory address>               $hhhh or %variable
  OPERATION <label>                        &label
 ```
 
@@ -92,15 +92,17 @@ STI           increments DR, stores TOS to data mem       DR + 1 -> DR
 PSH <do>      push direct data to top of stack            <do> -> AC
                                                           push AC -> S[0]
 
+PSA           push AC to top of stack                     push AC -> S[0]
+
 POP           pops top of stack                           pop S[0] -> AC
                                                           0 -> AC
 
 ADD           adds top two stack values                   S[1] -> AC
-                                                          AC = AC + S[0]
+              (add replaces top 2 stack with sum)         AC = AC + S[0]
                                                           push AC -> S[0]
 
 SUB           subtracts top two stack values              S[1] -> AC
-                                                          AC = AC - S[0]
+              (sub replaces top 2 stack with diff)        AC = AC - S[0]
                                                           push AC -> S[0]
 
 NEG           negates top of stack                        0 -> AC
@@ -181,7 +183,7 @@ PRT           prints top of stack, stack is popped        S[0] -> PR
 ; prints Hello
 .ORG 0x0000
 .DAT 0x0C00
-        CLS
+:start  CLS
         PSH "H"
         PRT
         PSH "E"
@@ -205,7 +207,7 @@ PRT           prints top of stack, stack is popped        S[0] -> PR
 ; Adds numbers from 1 to 5, outputs sum
 .ORG 0x0000
 .DAT 0x0C00
-        CLS
+:start  CLS
         PSH #1
         PSH #2
         ADD
@@ -225,21 +227,25 @@ PRT           prints top of stack, stack is popped        S[0] -> PR
 ; Adds numbers from 1 to 10 in a loop, outputs sum
 .ORG 0x0000
 .DAT 0x0C00
-        CLS
+.EQU 0x0C00 %sum
+:start  CLS
         PSH #0
-        STM $0C00        ; clear sum in memory
+        STM $0C00        ; clear sum in memory (use direct address ref)
         NOP
         PSH #0           ; push "last" value on stack
         NOP
         PSH #1
-iloop:  PSH #1           ; incr value
-        ADD
+:iloop  POP
+        PSA
+        PSA              ; push a copy
+        PSH #1           ; push incr value
+        ADD              ; add replaces top 2 stack values with sum
         CPE #10
         BRN &iloop       ; loop to push next incr value on stack
         NOP
-aloop:  LDM $0C00
+:aloop  LDM %sum         ; use variable ref
         ADD
-        STM $0C00        ; store sum to memory
+        STM %sum         ; store sum to memory
         CPE #0
         BRN &aloop       ; loop to add next num to sum
         NOP
@@ -422,5 +428,6 @@ options:
 
 Example: stackld -m prog.map -o prog.bin math.lib addloop.obj
 ```
+
 
 
