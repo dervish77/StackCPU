@@ -1,7 +1,7 @@
 ; prints Hello
 .ORG 0x0000
 .DAT 0x0C00
-        CLS
+:start  CLS
         PSH "H"
         PRT
         PSH "E"
