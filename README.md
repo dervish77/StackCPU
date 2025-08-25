@@ -53,7 +53,7 @@ Repo contents:
 ```
  OPERATION
  OPERATION <direct operand>               #dd or "c"
- OPERATION <memory address>               $hhhh
+ OPERATION <memory address>               $hhhh or %variable
  OPERATION <label>                        &label
 ```
 
@@ -66,16 +66,14 @@ Repo contents:
 ```
 (Note, unless otherwise noted all instruction end with PC + 1 -> PC)
 
-CLS           clear the stack                             <mem top> -> SP
+Transfer Instructions
+PSH <do>      push direct data to top of stack            <do> -> AC
+                                                          push AC -> S[0]
 
-END           end of program (aka HALT)                   PC -> PC
+PSA           push AC to top of stack                     push AC -> S[0]
 
-NOP           no operation                                no state change
-
-RST           reset cpu                                   0 -> AC
-                                                          0 -> DR
-                                                          <mem top> -> SP
-                                                          0 -> PC
+POP           pops top of stack                           pop S[0] -> AC
+                                                          0 -> AC
 
 LDM <mem>     loads data from memory to top of stack      <mem> -> DR
                                                           M[DR] -> S[0]
@@ -89,18 +87,13 @@ STM <mem>     stores data from top of stack to memory     <mem> -> DR
 STI           increments DR, stores TOS to data mem       DR + 1 -> DR
                                                           S[0] -> M[DR]
 
-PSH <do>      push direct data to top of stack            <do> -> AC
-                                                          push AC -> S[0]
-
-POP           pops top of stack                           pop S[0] -> AC
-                                                          0 -> AC
-
+Math Instructions
 ADD           adds top two stack values                   S[1] -> AC
-                                                          AC = AC + S[0]
+              (add replaces top 2 stack with sum)         AC = AC + S[0]
                                                           push AC -> S[0]
 
 SUB           subtracts top two stack values              S[1] -> AC
-                                                          AC = AC - S[0]
+              (sub replaces top 2 stack with diff)        AC = AC - S[0]
                                                           push AC -> S[0]
 
 NEG           negates top of stack                        0 -> AC
@@ -115,6 +108,7 @@ LSL           logical shift top of stack left             S[0] -> AC
                                                           AC = AC << 1
                                                           push AC -> S[0]
 
+Logical Instructions
 AND <do>      AND top of stack with data                  S[0] -> AC               
                                                           AC & <do> -> AC
                                                           push AC -> S[0]
@@ -131,6 +125,7 @@ INV           Invert top of stack                         S[0] -> AC
                                                           invert AC -> AC
                                                           push AC -> S[0]
 
+Compare/Branch Instructions
 CPE <do>      compare if top of stack is equal            <do> -> AC
                                                           if S[0] equal AC,
                                                             push 0 -> S[0]
@@ -158,8 +153,7 @@ BRN <label>   branch if top of stack is not zero          pop S[0] -> AC
 BRU <label>   branch unconditionally                      <label> -> PC
 
 
-Special instructions
-
+I/O instructions
 INP           inputs I/O to top of stack                  IR -> S[0]
 
 OUT           outputs top stack to I/O, stack is popped   S[0] -> OR
@@ -169,6 +163,18 @@ SER           inputs serial to top of stack               SR -> S[0]
 PRT           prints top of stack, stack is popped        S[0] -> PR
 
 (Note, PR is serial output interface, SR is serial input interface)
+
+Special instructions
+NOP           no operation                                no state change
+
+CLS           clear the stack                             <mem top> -> SP
+
+END           end of program (aka HALT)                   PC -> PC
+
+RST           reset cpu                                   0 -> AC
+                                                          0 -> DR
+                                                          <mem top> -> SP
+                                                          0 -> PC
 ```
 
 [Instruction op-code details](https://github.com/dervish77/StackCPU/blob/master/docs/StackCPU-Instruction-Op-Codes.pdf)
@@ -181,7 +187,7 @@ PRT           prints top of stack, stack is popped        S[0] -> PR
 ; prints Hello
 .ORG 0x0000
 .DAT 0x0C00
-        CLS
+:start  CLS
         PSH "H"
         PRT
         PSH "E"
@@ -205,7 +211,7 @@ PRT           prints top of stack, stack is popped        S[0] -> PR
 ; Adds numbers from 1 to 5, outputs sum
 .ORG 0x0000
 .DAT 0x0C00
-        CLS
+:start  CLS
         PSH #1
         PSH #2
         ADD
@@ -225,24 +231,31 @@ PRT           prints top of stack, stack is popped        S[0] -> PR
 ; Adds numbers from 1 to 10 in a loop, outputs sum
 .ORG 0x0000
 .DAT 0x0C00
-        CLS
+.EQU 0x0C00 %sum
+:start  CLS
         PSH #0
-        STM $0C00        ; clear sum in memory
+        STM $0C00        ; clear sum in memory (use direct address ref)
         NOP
         PSH #0           ; push "last" value on stack
         NOP
+; create list of numbers on stack
         PSH #1
-iloop:  PSH #1           ; incr value
-        ADD
+:iloop  POP              ; pop the "next" number
+        PSA              ; put it back on stack
+        PSA              ; push a copy
+        PSH #1           ; push incr value
+        ADD              ; add replaces top 2 stack values with sum
         CPE #10
         BRN &iloop       ; loop to push next incr value on stack
         NOP
-aloop:  LDM $0C00
+; sum the numbers on the stack
+:aloop  LDM %sum         ; use variable ref
         ADD
-        STM $0C00        ; store sum to memory
+        STM %sum         ; store sum to memory
         CPE #0
         BRN &aloop       ; loop to add next num to sum
         NOP
+; output results
         LDM $0C00
         OUT              ; output sum
         END
@@ -422,5 +435,8 @@ options:
 
 Example: stackld -m prog.map -o prog.bin math.lib addloop.obj
 ```
+
+
+
 
 
