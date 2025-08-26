@@ -65,10 +65,17 @@ Repo contents:
 ### Instructions
 
 ```
-(Note, unless otherwise noted all instruction end with PC + 1 -> PC)
-
-"fetch"                                                   M[PC] -> <inst dec>
+Notes
+"fetch"                                                   M[PC] -> <dest>
                                                           PC + 1 -> PC
+
+"push"                                                    SP - 1 -> SP
+                                                          <source> -> M[SP]
+
+"pop"                                                     M[SP] -> <dest>
+                                                          SP + 1 -> SP
+
+Instruction Fetch                                         fetch op_code -> <inst dec>
 
 Transfer Instructions
 PSH <do>      push direct data to top of stack            fetch op -> AC
@@ -177,16 +184,14 @@ I/O instructions
 INP           inputs I/O to top of stack                  IR -> AC
                                                           push AC
 
-OUT           outputs top stack to I/O, stack is popped   pop -> AC
+OUT           outputs top stack to I/O                    pop -> AC
                                                           AC -> OR
 
 SER           inputs serial to top of stack               SR -> AC
                                                           push AC
 
-PRT           prints top of stack, stack is popped        pop -> AC
+PRT           outputs top of stack to serial              pop -> AC
                                                           AC -> PR
-
-(Note, PR is serial output interface, SR is serial input interface)
 
 Special instructions
 NOP           no operation                                no state change
@@ -461,6 +466,7 @@ options:
 
 Example: stackld -m prog.map -o prog.bin math.lib addloop.obj
 ```
+
 
 
 
