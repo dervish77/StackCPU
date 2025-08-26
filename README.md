@@ -67,101 +67,124 @@ Repo contents:
 ```
 (Note, unless otherwise noted all instruction end with PC + 1 -> PC)
 
+"fetch"                                                   M[PC] -> <inst dec>
+                                                          PC + 1 -> PC
+
 Transfer Instructions
-PSH <do>      push direct data to top of stack            <do> -> AC
-                                                          push AC -> S[0]
+PSH <do>      push direct data to top of stack            fetch op -> AC
+                                                          push AC
 
-PSA           push AC to top of stack                     push AC -> S[0]
+PSA           push AC to top of stack                     push AC
 
-POP           pops top of stack                           pop S[0] -> AC
-                                                          0 -> AC
+POP           pops top of stack                           pop -> AC
 
-LDM <mem>     loads data from memory to top of stack      <mem> -> DR
-                                                          M[DR] -> S[0]
+LDM <mem>     loads data from memory to top of stack      fetch op1 -> DRH
+                                                          fetch op2 -> DRL
+                                                          M[DR] -> AC
+                                                          push AC
 
 LDI           increments DR, load data mem to TOS         DR + 1 -> DR
-                                                          M[DR] -> S[0]
+                                                          M[DR] -> AC
+                                                          push AC
 
-STM <mem>     stores data from top of stack to memory     <mem> -> DR
-                                                          S[0] -> M[DR]
+STM <mem>     stores data from top of stack to memory     fetch op1 -> DRH
+                                                          fetch op2 -> DRL
+                                                          pop -> AC
+                                                          AC -> M[DR]
 
 STI           increments DR, stores TOS to data mem       DR + 1 -> DR
-                                                          S[0] -> M[DR]
+                                                          pop -> AC
+                                                          AC -> M[DR]
 
 Math Instructions
-ADD           adds top two stack values                   S[1] -> AC
-              (add replaces top 2 stack with sum)         AC = AC + S[0]
-                                                          push AC -> S[0]
+ADD           adds top two stack values                   pop -> TR
+              (add replaces top 2 stack with sum)         pop -> AC
+                                                          AC = AC + TR
+                                                          push AC
 
-SUB           subtracts top two stack values              S[1] -> AC
-              (sub replaces top 2 stack with diff)        AC = AC - S[0]
-                                                          push AC -> S[0]
+SUB           subtracts top two stack values              pop -> TR
+              (sub replaces top 2 stack with diff)        pop -> AC
+                                                          AC = AC - TR
+                                                          push AC
 
-NEG           negates top of stack                        0 -> AC
-                                                          AC = AC - S[0]
-                                                          push AC -> S[0]
+NEG           negates top of stack                        pop -> AC
+                                                          0 -> TR
+                                                          AC = TR - AC
+                                                          push AC
 
-LSR           logical shift top of stack right            S[0] -> AC
+LSR           logical shift top of stack right            pop -> AC
                                                           AC = AC >> 1
-                                                          push AC -> S[0]
+                                                          push AC
 
-LSL           logical shift top of stack left             S[0] -> AC
+LSL           logical shift top of stack left             pop -> AC
                                                           AC = AC << 1
-                                                          push AC -> S[0]
+                                                          push AC
 
 Logical Instructions
-AND <do>      AND top of stack with data                  S[0] -> AC               
-                                                          AC & <do> -> AC
-                                                          push AC -> S[0]
+AND <do>      AND top of stack with data                  fetch op -> TR
+                                                          pop -> AC               
+                                                          AC = AC & TR
+                                                          push AC
 
-ORR <do>      OR top of stack with data                   S[0] -> AC               
-                                                          AC | <do> -> AC
-                                                          push AC -> S[0]
+ORR <do>      OR top of stack with data                   fetch op -> TR
+                                                          pop -> AC               
+                                                          AC = AC | TR
+                                                          push AC
 
-XOR <do>      XOR top of stack with data                  S[0] -> AC               
-                                                          AC ^ <do> -> AC
-                                                          push AC -> S[0]
+XOR <do>      XOR top of stack with data                  fetch op -> TR
+                                                          pop -> AC               
+                                                          AC = AC ^ TR
+                                                          push AC
 
-INV           Invert top of stack                         S[0] -> AC
-                                                          invert AC -> AC
-                                                          push AC -> S[0]
+INV           Invert top of stack                         pop -> TR               
+                                                          AC = invert TR
+                                                          push AC
 
 Compare/Branch Instructions
-CPE <do>      compare if top of stack is equal            <do> -> AC
-                                                          if S[0] equal AC,
-                                                            push 0 -> S[0]
+CPE <do>      compare if top of stack is equal            fetch op -> TR
+                                                          pop -> AC
+                                                          push AC
+                                                          if AC equal TR,
+                                                            push 0 
                                                           else, 
-                                                            push 1 -> S[0]
+                                                            push 1 
 
-CNE <do>      compare if top of stack is not equal        <do> -> AC
-                                                          if S[0] not equal AC,
-                                                            push 0 -> S[0]
+CNE <do>      compare if top of stack is not equal        fetch op -> TR
+                                                          pop -> AC
+                                                          push AC
+                                                          if AC not equal TR,
+                                                            push 0 
                                                           else, 
-                                                            push 1 -> S[0]
+                                                            push 1 
 
-BRZ <label>   branch if top of stack is zero              pop S[0] -> AC
+BRZ <label>   branch if top of stack is zero              fetch op1 -> DRH
+                                                          fetch op2 -> DRL
+                                                          pop -> AC
                                                           if AC equal to 0, 
-                                                            <label> -> PC
-                                                          else,
-                                                            PC + 1 -> PC
+                                                            DR -> PC
 
-BRN <label>   branch if top of stack is not zero          pop S[0] -> AC
-                                                          if AC not equal to 0,
-                                                            <label> -> PC
-                                                          else, 
-                                                            PC + 1 -> PC
+BRN <label>   branch if top of stack is not zero          fetch op1 -> DRH
+                                                          fetch op2 -> DRL
+                                                          pop -> AC
+                                                          if AC not equal to 0, 
+                                                            DR -> PC
 
-BRU <label>   branch unconditionally                      <label> -> PC
-
+BRU <label>   branch unconditionally                      fetch op1 -> DRH
+                                                          fetch op2 -> DRL
+                                                          DR -> PC
 
 I/O instructions
-INP           inputs I/O to top of stack                  IR -> S[0]
+INP           inputs I/O to top of stack                  IR -> AC
+                                                          push AC
 
-OUT           outputs top stack to I/O, stack is popped   S[0] -> OR
+OUT           outputs top stack to I/O, stack is popped   pop -> AC
+                                                          AC -> OR
 
-SER           inputs serial to top of stack               SR -> S[0]
+SER           inputs serial to top of stack               SR -> AC
+                                                          push AC
 
-PRT           prints top of stack, stack is popped        S[0] -> PR
+PRT           prints top of stack, stack is popped        pop -> AC
+                                                          AC -> PR
 
 (Note, PR is serial output interface, SR is serial input interface)
 
@@ -170,12 +193,14 @@ NOP           no operation                                no state change
 
 CLS           clear the stack                             <mem top> -> SP
 
-END           end of program (aka HALT)                   PC -> PC
+END           end of program (aka HALT)                   PC - 1 -> PC
 
 RST           reset cpu                                   0 -> AC
-                                                          0 -> DR
+                                                          0 -> OR
+                                                          0 -> PR
+                                                          <data start> -> DR
                                                           <mem top> -> SP
-                                                          0 -> PC
+                                                          <mem bot> -> PC
 ```
 
 [Instruction op-code details](https://github.com/dervish77/StackCPU/blob/master/docs/StackCPU-Instruction-Op-Codes.pdf)
@@ -436,6 +461,7 @@ options:
 
 Example: stackld -m prog.map -o prog.bin math.lib addloop.obj
 ```
+
 
 
 
