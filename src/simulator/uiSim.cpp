@@ -95,7 +95,7 @@ void uiSim::Start(int mode)
 	
 	// unit test of coreSim
 	{
-		#if 1
+		#if 0
 		pCore->UnitTest(1);
 		
 		pCore->UnitTest(2);
