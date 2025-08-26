@@ -9,6 +9,8 @@ consider reassigning op codes by functional groups
 "Instruction Fetch"
 fetch mem -> inst dec
 
+Transfer:
+
 PSH
 fetch op -> ac
 push ac
@@ -20,8 +22,8 @@ POP
 pop -> ac
 
 LDM $hhhh
-fetch op -> DRH
-fetch op -> DRL
+fetch op1 -> DRH
+fetch op2 -> DRL
 mem rd via DR -> ac
 push ac
 
@@ -31,8 +33,8 @@ mem rd via DR -> ac
 push ac
 
 STM $hhhh
-fetch op -> DRH
-fetch op -> DRL
+fetch op1 -> DRH
+fetch op2 -> DRL
 pop -> ac
 ac -> mem wr via DR
 
@@ -41,6 +43,7 @@ incr DR
 pop -> ac
 ac -> mem wr via DR
 
+Math:
 
 ADD
 pop -> temp
@@ -60,6 +63,17 @@ pop -> ac
 ac = temp - ac
 push ac
 
+LSR
+pop -> ac
+ac = ac >> 1
+push ac
+
+LSL
+pop -> ac
+ac = ac << 1
+push ac
+
+Logic:
 
 AND
 fetch op -> temp
@@ -84,16 +98,7 @@ pop -> temp
 ac = invert temp
 push ac
 
-LSR
-pop -> ac
-ac = ac >> 1
-push ac
-
-LSL
-pop -> ac
-ac = ac << 1
-push ac
-
+Compare / Branch:
 
 CPE #dd
 fetch op -> temp
@@ -111,22 +116,23 @@ ac = invert ac
 push ac
 
 BRZ &label
-fetch op -> DRH
-fetch op -> DRL
+fetch op1 -> DRH
+fetch op2 -> DRL
 pop ac
 if ac = 0, DR -> PC
 
 BRN &label
-fetch op -> DRH
-fetch op -> DRL
+fetch op1 -> DRH
+fetch op2 -> DRL
 pop ac
 if ac != 0, DR -> PC
 
 BRU &label
-fetch op -> DRH
-fetch op -> DRL
+fetch op1 -> DRH
+fetch op2 -> DRL
 DR -> PC
 
+I/O:
 
 INP
 IR -> AC
@@ -144,6 +150,7 @@ PRT
 pop -> ac
 AC -> PR
 
+Special:
 
 NOP
 no operations
