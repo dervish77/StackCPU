@@ -5,17 +5,19 @@ TODO - StackCPU
 -- not yet specified
 
 - Specify instructions
--- instructions specified
---- revisit op codes definitions to make HW imp easier
+-- instructions specified DONE
+--- revisit op codes definitions to make HW imp easier DONE
 
 - Detailed design of SW
--- UML design is completed
--- initial sim code in place and partially tested
--- need to write instruction table
+-- UML design completed DONE
+-- initial sim code in place and partially tested DONE
+-- need to write instruction table DONE
+-- need to write memory loading code
 -- need to write instruction decoder
 -- need to write ALU functions
 -- need to design control SM
 
 - Detailed design of HW 
 -- not yet started
+
 
