@@ -40,7 +40,8 @@ Repo contents:
  SP         stack pointer - grows down from <top of mem>
 
  DR         data register (hidden) - points to <mem above top of program>
- AC         accumulator (hidden) - used for math operations
+ AC         accumulator (hidden) - used for math/logic operations
+ TR         temp register (hidden) - used for math/logic operations
 
  IR         input register - external input
  OR         output register - external output
@@ -435,6 +436,7 @@ options:
 
 Example: stackld -m prog.map -o prog.bin math.lib addloop.obj
 ```
+
 
 
 
