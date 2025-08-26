@@ -65,16 +65,6 @@ Repo contents:
 ### Instructions
 
 ```
-Notes
-"fetch"                                                   M[PC] -> <dest>
-                                                          PC + 1 -> PC
-
-"push"                                                    SP - 1 -> SP
-                                                          <source> -> M[SP]
-
-"pop"                                                     M[SP] -> <dest>
-                                                          SP + 1 -> SP
-
 Instruction Fetch                                         fetch op_code -> <inst dec>
 
 Transfer Instructions
@@ -206,6 +196,16 @@ RST           reset cpu                                   0 -> AC
                                                           <data start> -> DR
                                                           <mem top> -> SP
                                                           <mem bot> -> PC
+
+Notes
+"fetch"                                                   M[PC] -> <dest>
+                                                          PC + 1 -> PC
+
+"push"                                                    SP - 1 -> SP
+                                                          <source> -> M[SP]
+
+"pop"                                                     M[SP] -> <dest>
+                                                          SP + 1 -> SP
 ```
 
 [Instruction op-code details](https://github.com/dervish77/StackCPU/blob/master/docs/StackCPU-Instruction-Op-Codes.pdf)
@@ -466,6 +466,7 @@ options:
 
 Example: stackld -m prog.map -o prog.bin math.lib addloop.obj
 ```
+
 
 
 
