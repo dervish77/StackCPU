@@ -1,11 +1,11 @@
 //
-// opcodes.h
+// opCodes.h
 //
 // definition of stack cpu op codes
 //
 
-#ifndef __opcodes_h
-#define __opcodes_h
+#ifndef __opCodes_h
+#define __opCodes_h
 
 #include <cstdint>
 
@@ -64,4 +64,4 @@ typedef struct Instruction_s Instruction_s_t;
 extern Instruction_s_t InstTable[];
 
 
-#endif /* __opcodes_h */
+#endif /* __opCodes_h */

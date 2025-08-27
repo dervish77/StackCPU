@@ -1,5 +1,5 @@
 //
-// opcodes.cpp
+// opCodes.cpp
 //
 // definition of stack cpu instruction op code table
 //
@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "opcodes.h"
+#include "opCodes.h"
 
 
 //
