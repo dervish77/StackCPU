@@ -17,7 +17,7 @@ VERSION=0.1.0
 # --------------------------------------------------------------------
 # you shouldn't need to change anything below this line
 
-PLATFILES = debug.xxx opcodes.xxx
+PLATFILES = debug.xxx opCodes.xxx
 
 SIMFILES  = uiSim.xxx regArray.xxx coreSim.xxx memArray.xxx memSim.xxx
 
