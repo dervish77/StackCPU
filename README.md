@@ -338,7 +338,9 @@ The StackCPU Simulator is a simulation of the StackCPU implemented in C/C++ and 
 
 ![simulator](https://github.com/dervish77/StackCPU/blob/main/docs/StackCPU-SW-Simulator.png?raw=true)
 
-![simulator](https://github.com/dervish77/StackCPU/blob/main/docs/SW-stackSim-class-diagram.png?raw=true)
+The StackCPU Simulator allows the user to load programs into memory, access memory locations, access CPU registers, and control system states.  This access and control is provided by the UI Simulator portion of the StackCPU Simulator.
+
+![simulator](https://github.com/dervish77/StackCPU/blob/main/docs/SW-stackSim-use-case-diagram.png?raw=true)
 
 ##### UI Simulator
 
@@ -386,6 +388,8 @@ t rate                 - set clock tick to rate
 
 q                      - quit the simulator
 ```
+
+![simulator](https://github.com/dervish77/StackCPU/blob/main/docs/SW-stackSim-class-diagram.png?raw=true)
 
 ##### Core Simulator
 
@@ -466,6 +470,7 @@ options:
 
 Example: stackld -m prog.map -o prog.bin math.lib addloop.obj
 ```
+
 
 
 
