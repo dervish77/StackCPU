@@ -18,6 +18,9 @@
 #define MODE_SSTEP      3
 
 
+#define SAVE_NAME_LEN	20
+
+
 class uiSim
 {
 public:
@@ -29,9 +32,6 @@ public:
 
 
     // operators
-    void Load(char *name, FILE *file_p);
-    void Start(int mode);
-	
 	void RunCLI(char *name, int mode);
 	
 
@@ -56,10 +56,10 @@ private:
 	
 	// private accessors
 	void _setReg(int reg, uint16_t data);
-	void _getReg(int reg);
+	uint16_t _getReg(int reg);
 	
 	void _setMem(uint16_t addr, uint8_t data);
-	void _getMem(uint16_t addr);
+	uint8_t _getMem(uint16_t addr);
 
 	void _setMode(int mode);
 	int _getMode();
@@ -71,17 +71,24 @@ private:
 	void _saveMemFile(char *name);
 	void _dumpMemFile(char *name);
 	
-	void _startCore(int mode);
+	void _dumpMemBlock(uint16_t start, uint16_t end);
+	void _fillMemBlock(uint16_t start, uint16_t end, uint8_t data);
+	
+	void _startCore(uint16_t pcaddr, int mode);
+	
 	void _goCore();
 	void _haltCore();
 	void _stepCore();
 	
 	// private helpers
 	FILE* _openFile(char *name, const char *dir);
+	void _closeFile(FILE *file_p);
 
 	// private debug methods
-	void _unitTest(int test);
+	void _unitTest(int testnum);
 
+	void _debugDumpMemory(const char *header, uint16_t start, int bytes);
+	void _debugDumpRegisters(const char *header);
 };
 
 #endif // __uiSim_h

@@ -62,7 +62,6 @@ public:
 	void SetState(int index, int state);
 	int GetState(int index);
 	
-
     // operators
 	void ClockTick();
 	
@@ -79,6 +78,7 @@ private:
 	// private methods
 	void _clearRegisters();
 	void _fillRegisters(uint16_t data);
+	void _resetRegisters();
 	
 	void _incrementRegister(int index);
 	void _decrementRegister(int index);

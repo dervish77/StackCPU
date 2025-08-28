@@ -43,10 +43,7 @@ coreSim::coreSim(memSim *mem)
 	
 	// setup registers
 	pRegisters = new regArray(DEFAULT_REGISTER_SIZE);
-	_clearRegisters();
-	SetReg(REG_INDEX_PC, MEM_PROG_START);
-	SetReg(REG_INDEX_SP, MEM_STACK_END);
-	SetReg(REG_INDEX_DR, MEM_DATA_START);
+	_resetRegisters();
 }
 
 // destructor
@@ -255,6 +252,15 @@ void coreSim::_fillRegisters(uint16_t data)
 	{
 		pRegisters->Set(i, data);
 	}
+}
+
+void coreSim::_resetRegisters()
+{
+	_clearRegisters();
+	
+	pRegisters->Set(REG_INDEX_PC, MEM_PROG_START);
+	pRegisters->Set(REG_INDEX_DR, MEM_DATA_START);
+	pRegisters->Set(REG_INDEX_SP, MEM_STACK_END);	
 }
 
 void coreSim::_incrementRegister(int index)

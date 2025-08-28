@@ -41,36 +41,34 @@ uiSim::~uiSim()
 
 
 
-// operator - load memory sim
-void uiSim::Load(char *name, FILE *file_p)
-{
-	DebugPrint("uiSim::Load");
-
-
-}
-
-// operator - start core sim
-void uiSim::Start(int mode)
-{
-	DebugPrint("uiSim::Start");
-
-
-}
-
 // operator - run CLI interface
 void uiSim::RunCLI(char *name, int mode)
 {
+	char savefilename[SAVE_NAME_LEN];
+	int exit = 0;
+	
 	DebugPrint("uiSim::RunCLI");
 	
 	// load memory file
 	_loadMemFile(name);
 	
 	// start core sim
-	_startCore(mode);
+	_startCore(MEM_PROG_START, mode);
 	
 	// start CLI
-
+	#if 0
+	while( !exit )
+	{
+		if (mode == MODE_EXIT || mode == MODE_HALT) 
+			exit = 1;
+	}
+	#endif
 	
+	// save memory file
+	#if 0
+	strcpy(savefilename, "save.bin");
+	_saveMemFile(savefilename);
+	#endif
 }
 
 //
@@ -80,18 +78,26 @@ void uiSim::RunCLI(char *name, int mode)
 // private accessors
 void uiSim::_setReg(int reg, uint16_t data)
 {
+	pCore->SetReg(reg, data);
 }
 
-void uiSim::_getReg(int reg)
+uint16_t uiSim::_getReg(int reg)
 {
+	uint16_t data;
+	data = pCore->GetReg(reg);
+	return data;
 }
 	
 void uiSim::_setMem(uint16_t addr, uint8_t data)
 {
+	pMem->Write(addr, data);
 }
 
-void uiSim::_getMem(uint16_t addr)
+uint8_t uiSim::_getMem(uint16_t addr)
 {
+	uint8_t data;
+	data = pMem->Read(addr);
+	return data;
 }
 	
 void uiSim::_setMode(int mode)
@@ -112,32 +118,59 @@ void uiSim::_setClock(int rate)
 // private operators
 void uiSim::_loadMemFile(char *name)
 {
+	char c;
+	uint16_t start = MEM_PROG_START;
+	
 	load_file_name = name;
-	load_file_p = _openFile(name, "r");
+	load_file_p = _openFile(load_file_name, "r");
 	
 	if (load_file_p != NULL)
 	{
 		printf("\nLoading %s into memory\n", load_file_name);
 		
+		while ( !feof(load_file_p) )
+		{
+			c = getc(load_file_p);
+			
+			pMem->Write( start, (uint8_t) c );
+			start++;
+		}
+		
+		_closeFile(load_file_p);
 	}
+	
+	DebugPrintNumber("loaded bytes", start);
+	_debugDumpMemory("Memory:", MEM_PROG_START, 18);
 }
 
 void uiSim::_saveMemFile(char *name)
 {
+	uint16_t i;
+	uint8_t c;
+	
 	save_file_name = name;
-	save_file_p = _openFile(name, "w");
+	save_file_p = _openFile(save_file_name, "w");
 	
 	if (save_file_p != NULL)
 	{
 		printf("\nSaving memory to %s\n", save_file_name);	
 		
+		for (i = MEM_PROG_START; i < MEM_DATA_END; i++)
+		{
+			c = pMem->Read( i );
+			
+			fputc( (int) c, save_file_p );
+		}
+		
+		_closeFile(save_file_p);
 	}
+	
 }
 
 void uiSim::_dumpMemFile(char *name)
 {
 	dump_file_name = name;
-	dump_file_p = _openFile(name, "w");
+	dump_file_p = _openFile(dump_file_name, "w");
 	
 	if (dump_file_p != NULL)
 	{
@@ -145,10 +178,30 @@ void uiSim::_dumpMemFile(char *name)
 		
 	}
 }
+
+void uiSim::_dumpMemBlock(uint16_t start, uint16_t end)
+{
 	
-void uiSim::_startCore(int mode)
+}
+	
+void uiSim::_fillMemBlock(uint16_t start, uint16_t end, uint8_t data)
+{
+	uint16_t i;
+	
+	DebugPrintHexHex("Filling memory", start, end);
+	DebugPrintHex("....with", data);
+	
+	for (i = start; i < end; i++)
+	{
+		pMem->Write( i, data );
+	}
+}
+	
+void uiSim::_startCore(uint16_t pcaddr, int mode)
 {
 	_setMode(mode);
+	
+	pCore->SetReg(REG_INDEX_PC, pcaddr);
 	
 	switch (current_mode)
 	{
@@ -173,12 +226,15 @@ void uiSim::_startCore(int mode)
 
 void uiSim::_goCore()
 {
+	current_mode = MODE_RUN;
 }
 void uiSim::_haltCore()
 {
+	current_mode = MODE_HALT;
 }
 void uiSim::_stepCore()
 {
+	current_mode = MODE_SSTEP;
 }
 
 // private helpers
@@ -202,13 +258,21 @@ FILE* uiSim::_openFile(char *name, const char *dir)
 	return(file_p);
 }
 
+void uiSim::_closeFile(FILE *file_p)
+{
+	if (file_p != NULL)
+	{
+		fclose(file_p);
+	}
+}
+
 // private debug
-void uiSim::_unitTest(int test)
+void uiSim::_unitTest(int testnum)
 {
 	int size;
 	uint8_t data;
 
-	switch (test)
+	switch (testnum)
 	{
 		case 1:
 			size = pMem->GetSize();
@@ -239,9 +303,40 @@ void uiSim::_unitTest(int test)
 			pCore->UnitTest(4);
 			break;
 		default:
+			fprintf(stderr, "Unknown testnum %d specified\n", testnum);
 			break;
 	}
 }
 
+void uiSim::_debugDumpMemory(const char *header, uint16_t start, int bytes)
+{
+	uint16_t address, offset;
+	uint8_t data;
+		
+	DebugPrint(header);
+
+	for (offset = 0; offset < bytes; offset++)
+	{
+		address = start + offset;
+		data = pMem->Read(address);
+		DebugPrintHexHex("memory", address, data);
+	}
+}
+
+void uiSim::_debugDumpRegisters(const char *header)
+{
+	int index;
+	const char *labels[8] = { "pc", "sp", "dr", "ac", "ir", "or", "sr", "pr" };
+	
+	uint16_t regdata;
+	
+	DebugPrint(header);
+	
+	for (index = 0; index < DEFAULT_REGISTER_SIZE; index++)
+	{
+		regdata = pCore->GetReg(index);
+		DebugPrintHex16( labels[index], regdata);
+	}
+}
 
 // end of file

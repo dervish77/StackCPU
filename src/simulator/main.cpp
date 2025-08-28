@@ -97,11 +97,7 @@ int main(int argc, char **argv)
     {
 		PrintBanner();
 		
-		// call UI sim start
-		if (mode != MODE_EXIT)
-		{
-			UI.RunCLI(filename, mode);
-		}
+		UI.RunCLI(filename, mode);
     }
 
     exit(0);
