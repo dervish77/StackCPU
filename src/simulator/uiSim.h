@@ -32,21 +32,55 @@ public:
     void Load(char *name, FILE *file_p);
     void Start(int mode);
 	
-	void RunCLI();
+	void RunCLI(char *name, int mode);
 	
 
 private:
 
     // private data
-    FILE *mem_file_p;
-	char *mem_file_name;
+    FILE *load_file_p;
+	char *load_file_name;
+
+    FILE *save_file_p;
+	char *save_file_name;
+
+    FILE *dump_file_p;
+	char *dump_file_name;
+	
     int current_mode;
+	
+	int clock_rate;
 	
 	coreSim *pCore;
 	memSim *pMem;
 	
-	// private methods
+	// private accessors
+	void _setReg(int reg, uint16_t data);
+	void _getReg(int reg);
 	
+	void _setMem(uint16_t addr, uint8_t data);
+	void _getMem(uint16_t addr);
+
+	void _setMode(int mode);
+	int _getMode();
+
+	void _setClock(int rate);
+	
+	// private operators
+	void _loadMemFile(char *name);
+	void _saveMemFile(char *name);
+	void _dumpMemFile(char *name);
+	
+	void _startCore(int mode);
+	void _goCore();
+	void _haltCore();
+	void _stepCore();
+	
+	// private helpers
+	FILE* _openFile(char *name, const char *dir);
+
+	// private debug methods
+	void _unitTest(int test);
 
 };
 

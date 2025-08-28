@@ -45,7 +45,6 @@ uiSim UI;
  */
 int main(int argc, char **argv)
 {
-	FILE *in_file_p;
 	char filename[BUFFER_LEN];
 	int mode = MODE_EXIT;
     int play = 1;
@@ -98,45 +97,10 @@ int main(int argc, char **argv)
     {
 		PrintBanner();
 		
-		// open memory load file
-		if (strlen(filename) != 0)
-		{
-			in_file_p = fopen(filename, "r");
-			if (in_file_p == (FILE *)NULL)
-			{
-				fprintf(stderr, "Couldn't open %s as input\n", filename);
-				exit(0);
-			}
-
-			// call UI sim load memory 
-			printf("\nLoading %s into memory\n", filename);
-			UI.Load(filename, in_file_p);
-		}
-		
-		switch (mode)
-		{
-			case MODE_EXIT:
-			    printf("\nSim is EXITED\n");
-				break;
-			case MODE_HALT:
-			    printf("\nSim is HALTED\n");
-				break;
-			case MODE_RUN:
-			    printf("\nSim is RUNNING\n");
-				break;
-			case MODE_SSTEP:
-			    printf("\nSim is SINGLE STEP\n");
-				break;
-			default:
-				fprintf(stderr, "Unknown mode %d specified\n", mode);
-				exit(0);
-				break;
-		}
-		
 		// call UI sim start
 		if (mode != MODE_EXIT)
 		{
-			UI.Start(mode);
+			UI.RunCLI(filename, mode);
 		}
     }
 

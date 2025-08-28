@@ -16,7 +16,7 @@
 #ifndef __main_h
 #define __main_h
 
-#define VERSION "0.1.0"
+#define VERSION "0.1.1"
 
 
 

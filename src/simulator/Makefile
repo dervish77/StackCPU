@@ -10,7 +10,7 @@ include $(MODROOT)/module.mk
 ##include depend.mk
 
 
-VERSION=0.1.0
+VERSION=0.1.1
 
 
 #
