@@ -19,7 +19,7 @@
 
 #include "main.h"
 
-#include "uisim.h"
+#include "uiSim.h"
 
 #include "debug.h"
 
