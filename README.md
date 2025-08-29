@@ -473,14 +473,15 @@ Example: stackld -m prog.map -o prog.bin math.lib addloop.obj
 
 ## Tools Used
 
-* DrawIO - ![https://www.drawio.com/](https://www.drawio.com/)
-* Notepad++ - ![https://notepad-plus-plus.org/](https://notepad-plus-plus.org/)
-* GVim - ![https://www.vim.org/download.php](https://www.vim.org/download.php)
-* GitHub Desktop - ![https://github.com/apps/desktop](https://github.com/apps/desktop)
-* Cygwin - ![https://www.cygwin.com/](https://www.cygwin.com/)
+* DrawIO - [https://www.drawio.com/](https://www.drawio.com/)
+* Notepad++ - [https://notepad-plus-plus.org/](https://notepad-plus-plus.org/)
+* GVim - [https://www.vim.org/download.php](https://www.vim.org/download.php)
+* GitHub Desktop - [https://github.com/apps/desktop](https://github.com/apps/desktop)
+* Cygwin - [https://www.cygwin.com/](https://www.cygwin.com/)
 ** g++ - from Cygwin
 ** Make - from Cygwin
 ** Git - from Cygwin
+
 
 
 
