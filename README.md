@@ -478,9 +478,11 @@ Example: stackld -m prog.map -o prog.bin math.lib addloop.obj
 * GVim - [https://www.vim.org/download.php](https://www.vim.org/download.php)
 * GitHub Desktop - [https://github.com/apps/desktop](https://github.com/apps/desktop)
 * Cygwin - [https://www.cygwin.com/](https://www.cygwin.com/)
+
 ** g++ - from Cygwin
 ** Make - from Cygwin
 ** Git - from Cygwin
+
 
 
 
