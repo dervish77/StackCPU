@@ -483,8 +483,9 @@ Example: stackld -m prog.map -o prog.bin math.lib addloop.obj
   * make - from Cygwin
   * git - from Cygwin
 * Custom tools
-  * bindump
-  * binedit
-  * bingen
+  * bindump - used to examine binary files
+  * binedit - used to edit contents of binary file
+  * bingen - used to generate binary files
+
 
 
