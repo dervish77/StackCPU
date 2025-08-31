@@ -13,7 +13,7 @@
 #include "memSim.h"
 
 
-#define DEBUG 1
+#define DEBUG 0
 
 
 /*  ConvertData	- copy binary data to appended file 
