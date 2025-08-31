@@ -15,7 +15,7 @@
 
 
 // size of register array
-#define DEFAULT_REGISTER_SIZE	8
+#define DEFAULT_REGISTER_SIZE	9
 
 
 // register indexes
@@ -23,10 +23,11 @@
 #define REG_INDEX_SP	1		// full 16 bits - points to last value put on stack
 #define REG_INDEX_DR	2		// full 16 bits - points to last value accessed in memory
 #define REG_INDEX_AC	3		// only lower 8 bits
-#define REG_INDEX_IR	4		// only lower 8 bits
-#define REG_INDEX_OR	5		// only lower 8 bits
-#define REG_INDEX_SR	6		// only lower 8 bits
-#define REG_INDEX_PR	7		// only lower 8 bits
+#define REG_INDEX_TR	4		// only lower 8 bits
+#define REG_INDEX_IR	5		// only lower 8 bits
+#define REG_INDEX_OR	6		// only lower 8 bits
+#define REG_INDEX_SR	7		// only lower 8 bits
+#define REG_INDEX_PR	8		// only lower 8 bits
 
 
 // state ids

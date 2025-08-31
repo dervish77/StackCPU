@@ -21,10 +21,11 @@
 coreSim::coreSim()
 {
 	pMemSim = NULL;
+
+	memsize = 0;
 	
 	pRegisters = new regArray(DEFAULT_REGISTER_SIZE);
-	
-	memsize = 0;
+	_resetRegisters();
 }
 
 // constructor
@@ -378,7 +379,7 @@ void coreSim::_debugDumpMemory(const char *header, uint16_t start, int bytes)
 void coreSim::_debugDumpRegisters(const char *header)
 {
 	int index;
-	const char *labels[8] = { "pc", "sp", "dr", "ac", "ir", "or", "sr", "pr" };
+	const char *labels[DEFAULT_REGISTER_SIZE] = { "pc", "sp", "dr", "ac", "tr", "ir", "or", "sr", "pr" };
 	
 	uint16_t regdata;
 	

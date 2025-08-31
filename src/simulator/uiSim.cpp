@@ -79,6 +79,8 @@ void uiSim::RunCLI(char *name, int mode)
 	strcpy(dumpfilename, "dump.hex");
 	_dumpMemFile(dumpfilename);
 	#endif
+	
+	pCore->UnitTest(4);
 }
 
 //
@@ -151,7 +153,7 @@ void uiSim::_loadMemFile(char *name)
 		_closeFile(load_file_p);
 	}
 	
-	DebugPrintNumber("loaded bytes", start);
+	DebugPrintNumber("loaded bytes", start-1);
 	_debugDumpMemory("Memory:", MEM_PROG_START, 18);
 }
 
