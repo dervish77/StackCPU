@@ -13,6 +13,8 @@
 #include "coreSim.h"
 #include "memSim.h"
 
+#include "hex.h"
+
 #include "debug.h"
 
 
@@ -45,6 +47,8 @@ uiSim::~uiSim()
 void uiSim::RunCLI(char *name, int mode)
 {
 	char savefilename[SAVE_NAME_LEN];
+	char dumpfilename[DUMP_NAME_LEN];
+
 	int exit = 0;
 	
 	DebugPrint("uiSim::RunCLI");
@@ -68,6 +72,12 @@ void uiSim::RunCLI(char *name, int mode)
 	#if 0
 	strcpy(savefilename, "save.bin");
 	_saveMemFile(savefilename);
+	#endif
+	
+	// dump memory file
+	#if 0
+	strcpy(dumpfilename, "dump.hex");
+	_dumpMemFile(dumpfilename);
 	#endif
 }
 
@@ -124,6 +134,8 @@ void uiSim::_loadMemFile(char *name)
 	load_file_name = name;
 	load_file_p = _openFile(load_file_name, "r");
 	
+	// load binary file into memory
+	
 	if (load_file_p != NULL)
 	{
 		printf("\nLoading %s into memory\n", load_file_name);
@@ -151,6 +163,8 @@ void uiSim::_saveMemFile(char *name)
 	save_file_name = name;
 	save_file_p = _openFile(save_file_name, "w");
 	
+	// save memory into binary file
+	
 	if (save_file_p != NULL)
 	{
 		printf("\nSaving memory to %s\n", save_file_name);	
@@ -169,14 +183,22 @@ void uiSim::_saveMemFile(char *name)
 
 void uiSim::_dumpMemFile(char *name)
 {
+	int count = 0;
 	dump_file_name = name;
 	dump_file_p = _openFile(dump_file_name, "w");
+	
+	// save memory into intel hex file
 	
 	if (dump_file_p != NULL)
 	{
 		printf("\nDumping memory to %s\n", dump_file_name);	
 		
+		count = ConvertData( pMem, dump_file_p, 0, 16);
 	}
+	
+	printf("... dumped %d bytes\n", count);
+	
+	fclose(dump_file_p);
 }
 
 void uiSim::_dumpMemBlock(uint16_t start, uint16_t end)

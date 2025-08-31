@@ -1,0 +1,38 @@
+//
+// hex.h
+//
+// definition of hex utility functions
+//
+
+#ifndef __hex_h
+#define __hex_h
+
+#include "memSim.h"
+
+
+#ifndef TRUE
+#define TRUE 1
+#define FALSE 0
+#endif
+
+typedef char BOOLEAN_T;
+
+#define DEFAULT_BYTES_PER_REC 16
+#define MAX_BYTES_PER_REC 64
+
+#define TYPE_DAT 0
+#define TYPE_EOF 1
+#define TYPE_ESA 2
+#define TYPE_SSA 3
+#define TYPE_ELA 4
+#define TYPE_SLA 5
+
+
+//
+// prototypes
+//
+
+int ConvertData(memSim *mem, FILE *out_file_p, int start, int bytes_rec); 
+
+
+#endif /* __hex_h */

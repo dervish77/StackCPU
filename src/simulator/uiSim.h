@@ -19,6 +19,7 @@
 
 
 #define SAVE_NAME_LEN	20
+#define DUMP_NAME_LEN	20
 
 
 class uiSim
