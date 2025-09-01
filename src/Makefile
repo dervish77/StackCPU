@@ -19,7 +19,7 @@ DIRS = simulator tools
 
 default: all
 
-distro: tar
+distro: install realclean tar
 
 # build all executable files
 
@@ -51,10 +51,11 @@ realclean: clean
 	for dir in $(DIRS);  do               \
 	   cd $$dir ; make realclean ; cd ..; \
 	done;
-	rm -f bin/*.exe
 	rm -f *~
 
 distclean: realclean
+	rm -f bin/*.exe
+	rm -f Version
 
 
 #
