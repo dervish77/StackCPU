@@ -1,8 +1,6 @@
 TODO - StackCPU
 ===============
 
-*- consider adding LDD and STD instructions to decr the DR before using it to load/store from/to data memory
-
 - Specify requirements
 -- not yet specified
 
@@ -23,6 +21,7 @@ TODO - StackCPU
 
 - Detailed design of HW 
 -- not yet started
+
 
 
 
