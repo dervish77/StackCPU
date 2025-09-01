@@ -47,7 +47,7 @@ While all of the StackCPU registers are internally implemented as 16 bit registe
  IR         input register - external input
  OR         output register - external output
  SR         serial register - external input (serial data input)
- PR         print register - external output (used by print instructions)
+ PR         print register - external output (serial data output)
 ```
 
 ### Architecture Diagram
@@ -88,12 +88,20 @@ LDI           increments DR, load data mem to TOS         DR + 1 -> DR
                                                           M[DR] -> AC
                                                           push AC
 
+LDD           decrements DR, load data mem to TOS         DR - 1 -> DR
+                                                          M[DR] -> AC
+                                                          push AC
+
 STM <mem>     stores data from top of stack to memory     fetch op1 -> DRH
                                                           fetch op2 -> DRL
                                                           pop -> AC
                                                           AC -> M[DR]
 
 STI           increments DR, stores TOS to data mem       DR + 1 -> DR
+                                                          pop -> AC
+                                                          AC -> M[DR]
+
+STD           decrements DR, stores TOS to data mem       DR - 1 -> DR
                                                           pop -> AC
                                                           AC -> M[DR]
 ```
@@ -509,6 +517,7 @@ The Discrete Implementation is a HW design of the StackCPU device implemented us
   * bindump - used to examine binary files
   * binedit - used to edit contents of binary file
   * bingen - used to generate binary files
+
 
 
 
