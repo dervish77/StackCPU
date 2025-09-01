@@ -314,40 +314,6 @@ Notes
 
 ## Detailed Design
 
-### Hardware
-
-#### Logic Blocks
-
-##### Fetch Logic
-
-TBD
-
-##### Instruction Decode Logic
-
-TBD
-
-##### ALU Logic
-
-TBD
-
-##### Control SM Logic
-
-TBD
-
-#### Implementations
-
-##### Emulated Implementation
-
-The Emulated Implementation is a simulation of the StackCPU running on a Pi Pico microcontroller.  Basically this is a version of the Core Simulator noted below running on a Pi Pico.
-
-##### FPGA Implementation
-
-The FPGA Implementation is a HW design of the StackCPU device implemented on a TBD FPGA.
-
-##### Discrete Implementation
-
-The Discrete Implementation is a HW design of the StackCPU device implemented using discrete logic devices such as standard 7400 series TTL devices.
-
 
 ### Software
 
@@ -490,6 +456,41 @@ options:
 Example: stackld -m prog.map -o prog.bin math.lib addloop.obj
 ```
 
+### Hardware
+
+#### Logic Blocks
+
+##### Fetch Logic
+
+TBD
+
+##### Instruction Decode Logic
+
+TBD
+
+##### ALU Logic
+
+TBD
+
+##### Control SM Logic
+
+TBD
+
+#### Implementations
+
+##### Emulated Implementation
+
+The Emulated Implementation is a simulation of the StackCPU running on a Pi Pico microcontroller.  Basically this is a version of the Core Simulator noted below running on a Pi Pico.
+
+##### FPGA Implementation
+
+The FPGA Implementation is a HW design of the StackCPU device implemented on a TBD FPGA.
+
+##### Discrete Implementation
+
+The Discrete Implementation is a HW design of the StackCPU device implemented using discrete logic devices such as standard 7400 series TTL devices.
+
+
 ## Tools Used
 
 * DrawIO - [https://www.drawio.com/](https://www.drawio.com/)
@@ -505,6 +506,7 @@ Example: stackld -m prog.map -o prog.bin math.lib addloop.obj
   * bindump - used to examine binary files
   * binedit - used to edit contents of binary file
   * bingen - used to generate binary files
+
 
 
 
