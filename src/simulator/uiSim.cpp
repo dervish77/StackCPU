@@ -75,7 +75,7 @@ void uiSim::RunCLI(char *name, int mode)
 	#endif
 	
 	// dump memory file
-	#if 0
+	#if 1
 	strcpy(dumpfilename, "dump.hex");
 	_dumpMemFile(dumpfilename);
 	#endif
@@ -153,7 +153,8 @@ void uiSim::_loadMemFile(char *name)
 		_closeFile(load_file_p);
 	}
 	
-	DebugPrintNumber("loaded bytes", start-1);
+	printf("... loaded %d bytes\n", start-1);
+
 	_debugDumpMemory("Memory:", MEM_PROG_START, 18);
 }
 
@@ -161,6 +162,7 @@ void uiSim::_saveMemFile(char *name)
 {
 	uint16_t i;
 	uint8_t c;
+	int count = 0;
 	
 	save_file_name = name;
 	save_file_p = _openFile(save_file_name, "w");
@@ -171,16 +173,18 @@ void uiSim::_saveMemFile(char *name)
 	{
 		printf("\nSaving memory to %s\n", save_file_name);	
 		
-		for (i = MEM_PROG_START; i < MEM_DATA_END; i++)
+		for (i = MEM_PROG_START; i <= MEM_DATA_END; i++)
 		{
 			c = pMem->Read( i );
 			
 			fputc( (int) c, save_file_p );
+			count++;
 		}
 		
 		_closeFile(save_file_p);
 	}
-	
+
+	printf("... saved %d bytes\n", count);
 }
 
 void uiSim::_dumpMemFile(char *name)
@@ -195,12 +199,12 @@ void uiSim::_dumpMemFile(char *name)
 	{
 		printf("\nDumping memory to %s\n", dump_file_name);	
 		
-		count = ConvertData( pMem, dump_file_p, 0, 16);
+		count = ConvertDataToHex( pMem, MEM_PROG_START, MEM_DATA_END, dump_file_p, 0, 16);
+		
+		_closeFile(dump_file_p);		
 	}
 	
 	printf("... dumped %d bytes\n", count);
-	
-	fclose(dump_file_p);
 }
 
 void uiSim::_dumpMemBlock(uint16_t start, uint16_t end)

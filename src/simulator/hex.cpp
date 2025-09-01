@@ -16,24 +16,26 @@
 #define DEBUG 0
 
 
-/*  ConvertData	- copy binary data to appended file 
+/*  ConvertDataToHex	- convert binary data to intel hex format
  *
  *  PARAMETERS:
  *	mem     	- input source
+ *  start       - starting address in memSim
+ *  end         - ending address in memSim
  *	out_file_p	- output file pointer
- *  start       - starting address
+ *  addr        - starting address for hex file
  *  bytes_rec   - bytes per record
  *
  *  RETURNS:
  *	count		- number of bytes copied
  */
-int ConvertData(memSim *mem, FILE *out_file_p, int start, int bytes_rec) 
+int ConvertDataToHex(memSim *mem, int start, int end, FILE *out_file_p, int addr, int bytes_rec) 
 {
     int i;
-	int src, end;
+	int src, limit;
     int count = 0;
     int bytes = 0;
-    int address = start;
+    int address = addr;
 
     unsigned char sum = 0;
     unsigned char c;
@@ -47,16 +49,16 @@ int ConvertData(memSim *mem, FILE *out_file_p, int start, int bytes_rec)
 
     //fseek(in_file_p, 0L, SEEK_SET);
 	
-	src = MEM_PROG_START;
-	end = MEM_DATA_END + 1;
+	src = start;
+	limit = end + 1;
 
-    while (src < end) //(!feof(in_file_p)) 
+    while (src < limit) //(!feof(in_file_p)) 
 	{
         // copy data for current record
         for (i = 0; i < bytes_rec; i++) 
 		{
             c = (unsigned char) mem->Read( src ); //fgetc(in_file_p);
-            if (src < end) //(!feof(in_file_p)) 
+            if (src < limit) //(!feof(in_file_p)) 
 			{
                 if (i == 0) 
 				{
@@ -75,7 +77,7 @@ int ConvertData(memSim *mem, FILE *out_file_p, int start, int bytes_rec)
             }
         }
 
-        if (src <= end) //(!feof(in_file_p)) 
+        if (src <= limit) //(!feof(in_file_p)) 
 		{
             // end of current record
             if (DEBUG) printf("..end rec count %d sum %02x\n", count, sum);

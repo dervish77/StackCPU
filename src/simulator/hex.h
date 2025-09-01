@@ -17,6 +17,13 @@
 
 typedef char BOOLEAN_T;
 
+
+
+
+
+//
+// intel hex file 
+//
 #define DEFAULT_BYTES_PER_REC 16
 #define MAX_BYTES_PER_REC 64
 
@@ -32,7 +39,10 @@ typedef char BOOLEAN_T;
 // prototypes
 //
 
-int ConvertData(memSim *mem, FILE *out_file_p, int start, int bytes_rec); 
+
+
+// ConvertDataToHex	- convert binary data to intel hex format
+int ConvertDataToHex(memSim *mem, int start, int end, FILE *out_file_p, int addr, int bytes_rec); 
 
 
 #endif /* __hex_h */
