@@ -34,7 +34,8 @@ Repo contents:
 
 ### Register Model 
 
-(all 16 bits)
+While all of the StackCPU registers are internally implemented as 16 bit registers, several of them only utilize the lower byte and the upper byte is ignored.  Namely, the program counter (PC), the stack pointer (SP), and the data register (DR) are all full 16 bit registers.  All the remaining registers only utilize the lower byte.  Note that several registers are not directly accessible by the programmer, i.e. they are considered "hidden" registers.
+
 ```
  PC         program counter - grows up from <bottom of mem>
  SP         stack pointer - grows down from <top of mem>
@@ -49,7 +50,13 @@ Repo contents:
  PR         print register - external output (used by print instructions)
 ```
 
+### Architecture Diagram
+
+![architecture](https://github.com/dervish77/StackCPU/blob/main/docs/StackCPU-Architecture.png?raw=true)
+
 ### Instruction Model
+
+StackCPU instruction sizes range from one byte to three bytes.  Two byte instructions have a single operand which is a direct data value to be loaded into a register or loaded into the stack.  Three byte instructions have two operands which in all cases these operands form a memory address that is loaded into either the data register (DR) or into the program counter (PC).
 
 ```
  OPERATION
@@ -58,16 +65,13 @@ Repo contents:
  OPERATION <label>                        &label
 ```
 
-### Architecture Diagram
-
-![architecture](https://github.com/dervish77/StackCPU/blob/main/docs/StackCPU-Architecture.png?raw=true)
-
-### Instructions
-
-```
-Instruction Fetch                                         fetch op_code -> <inst dec>
+### Instruction Set Architecture
 
 Transfer Instructions
+
+```
+---           instruction fetch                           fetch op_code -> <inst dec>
+
 PSH <do>      push direct data to top of stack            fetch op -> AC
                                                           push AC
 
@@ -92,8 +96,11 @@ STM <mem>     stores data from top of stack to memory     fetch op1 -> DRH
 STI           increments DR, stores TOS to data mem       DR + 1 -> DR
                                                           pop -> AC
                                                           AC -> M[DR]
+```
 
 Math Instructions
+
+```
 ADD           adds top two stack values                   pop -> TR
               (add replaces top 2 stack with sum)         pop -> AC
                                                           AC = AC + TR
@@ -116,8 +123,11 @@ LSR           logical shift top of stack right            pop -> AC
 LSL           logical shift top of stack left             pop -> AC
                                                           AC = AC << 1
                                                           push AC
+```
 
 Logical Instructions
+```
+
 AND <do>      AND top of stack with data                  fetch op -> TR
                                                           pop -> AC               
                                                           AC = AC & TR
@@ -136,8 +146,11 @@ XOR <do>      XOR top of stack with data                  fetch op -> TR
 INV           Invert top of stack                         pop -> TR               
                                                           AC = invert TR
                                                           push AC
+```
 
 Compare/Branch Instructions
+
+```
 CPE <do>      compare if top of stack is equal            fetch op -> TR
                                                           pop -> AC
                                                           push AC
@@ -169,8 +182,11 @@ BRN <label>   branch if top of stack is not zero          fetch op1 -> DRH
 BRU <label>   branch unconditionally                      fetch op1 -> DRH
                                                           fetch op2 -> DRL
                                                           DR -> PC
+```
 
 I/O instructions
+
+```
 INP           inputs I/O to top of stack                  IR -> AC
                                                           push AC
 
@@ -182,8 +198,11 @@ SER           inputs serial to top of stack               SR -> AC
 
 PRT           outputs top of stack to serial              pop -> AC
                                                           AC -> PR
+```
 
 Special instructions
+
+```
 NOP           no operation                                no state change
 
 CLS           clear the stack                             <mem top> -> SP
@@ -196,8 +215,11 @@ RST           reset cpu                                   0 -> AC
                                                           <data start> -> DR
                                                           <mem top> -> SP
                                                           <mem bot> -> PC
+```
 
 Notes
+
+```
 "fetch"                                                   M[PC] -> <dest>
                                                           PC + 1 -> PC
 
@@ -294,40 +316,6 @@ Notes
 
 
 ## Detailed Design
-
-### Hardware
-
-#### Logic Blocks
-
-##### Fetch Logic
-
-TBD
-
-##### Instruction Decode Logic
-
-TBD
-
-##### ALU Logic
-
-TBD
-
-##### Control SM Logic
-
-TBD
-
-#### Implementations
-
-##### Emulated Implementation
-
-The Emulated Implementation is a simulation of the StackCPU running on a Pi Pico microcontroller.  Basically this is a version of the Core Simulator noted below running on a Pi Pico.
-
-##### FPGA Implementation
-
-The FPGA Implementation is a HW design of the StackCPU device implemented on a TBD FPGA.
-
-##### Discrete Implementation
-
-The Discrete Implementation is a HW design of the StackCPU device implemented using discrete logic devices such as standard 7400 series TTL devices.
 
 
 ### Software
@@ -471,6 +459,41 @@ options:
 Example: stackld -m prog.map -o prog.bin math.lib addloop.obj
 ```
 
+### Hardware
+
+#### Logic Blocks
+
+##### Fetch Logic
+
+TBD
+
+##### Instruction Decode Logic
+
+TBD
+
+##### ALU Logic
+
+TBD
+
+##### Control SM Logic
+
+TBD
+
+#### Implementations
+
+##### Emulated Implementation
+
+The Emulated Implementation is a simulation of the StackCPU running on a Pi Pico microcontroller.  Basically this is a version of the Core Simulator noted below running on a Pi Pico.
+
+##### FPGA Implementation
+
+The FPGA Implementation is a HW design of the StackCPU device implemented on a TBD FPGA.
+
+##### Discrete Implementation
+
+The Discrete Implementation is a HW design of the StackCPU device implemented using discrete logic devices such as standard 7400 series TTL devices.
+
+
 ## Tools Used
 
 * DrawIO - [https://www.drawio.com/](https://www.drawio.com/)
@@ -486,6 +509,10 @@ Example: stackld -m prog.map -o prog.bin math.lib addloop.obj
   * bindump - used to examine binary files
   * binedit - used to edit contents of binary file
   * bingen - used to generate binary files
+
+
+
+
 
 
 

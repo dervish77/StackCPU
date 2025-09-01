@@ -9,15 +9,18 @@ TODO - StackCPU
 --- revisit op codes definitions to make HW imp easier DONE
 
 - Detailed design of SW
--- UML design completed DONE
+-- complete UML design DONE
 -- initial sim code in place and partially tested DONE
 -- need to write instruction table DONE
--- need to write memory loading code
+-- need to write memory loading code DONE
+-- need to write memory saving and dumping code DONE
+-- need to write CLI parser
 -- need to write instruction decoder
 -- need to write ALU functions
 -- need to design control SM
 
 - Detailed design of HW 
 -- not yet started
+
 
 
