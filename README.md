@@ -34,7 +34,8 @@ Repo contents:
 
 ### Register Model 
 
-(all 16 bits)
+While all of the StackCPU registers are internally implemented as 16 bit registers, several of them only utilize the lower byte and the upper byte is ignored.  Namely, the program counter (PC), the stack pointer (SP), and the data register (DR) are all full 16 bit registers.  All the remaining registers only utilize the lower byte.  Note that several registers are not directly accessible by the programmer, i.e. they are considered "hidden" registers.
+
 ```
  PC         program counter - grows up from <bottom of mem>
  SP         stack pointer - grows down from <top of mem>
@@ -508,6 +509,7 @@ The Discrete Implementation is a HW design of the StackCPU device implemented us
   * bindump - used to examine binary files
   * binedit - used to edit contents of binary file
   * bingen - used to generate binary files
+
 
 
 
