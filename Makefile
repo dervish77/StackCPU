@@ -54,7 +54,10 @@ realclean: clean
 	rm -f *~
 
 distclean: realclean
-	rm -f bin/*.exe
+	for dir in $(DIRS);  do               \
+	   cd $$dir ; make distclean ; cd ..; \
+	done;
+	rm -f *~
 	rm -f Version
 
 
