@@ -17,7 +17,7 @@ VERSION=0.1.1
 # --------------------------------------------------------------------
 # you shouldn't need to change anything below this line
 
-PLATFILES = debug.xxx opCodes.xxx hex.xxx parse.xxx
+PLATFILES = debug.xxx opCodes.xxx binUtils.xxx parse.xxx
 
 SIMFILES  = uiSim.xxx regArray.xxx coreSim.xxx memArray.xxx memSim.xxx
 
@@ -90,8 +90,8 @@ run: test
 test: test-host
 
 test-host: all
-	$(TARGET) -m 1
-	
+	$(TARGET) -m 1 -f unit.bin
+
 unit: test-unit
 
 test-unit: all

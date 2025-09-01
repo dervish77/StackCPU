@@ -1,19 +1,25 @@
 //
-// hex.h
+// binUtils.h
 //
-// implementation of intel hex utility function
+// implementation of binary utility functions
 //
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "hex.h"
+#include "binUtils.h"
 
 #include "memSim.h"
 
 
 #define DEBUG 0
+
+
+
+
+
+
 
 
 /*  ConvertDataToHex	- convert binary data to intel hex format
@@ -98,4 +104,4 @@ int ConvertDataToHex(memSim *mem, int start, int end, FILE *out_file_p, int addr
     return (count);
 }
 
-/* end of bin2hex.c */
+/* end of binUtils.cpp */

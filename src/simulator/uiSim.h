@@ -68,6 +68,8 @@ private:
 	void _setClock(int rate);
 	
 	// private operators
+	int _startCLI();
+	
 	void _loadMemFile(char *name);
 	void _saveMemFile(char *name);
 	void _dumpMemFile(char *name);

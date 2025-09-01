@@ -1,11 +1,11 @@
 //
-// hex.h
+// binUtils.h
 //
-// definition of hex utility functions
+// definition of binary utility functions
 //
 
-#ifndef __hex_h
-#define __hex_h
+#ifndef __binUtils_h
+#define __binUtils_h
 
 #include "memSim.h"
 
@@ -45,4 +45,4 @@ typedef char BOOLEAN_T;
 int ConvertDataToHex(memSim *mem, int start, int end, FILE *out_file_p, int addr, int bytes_rec); 
 
 
-#endif /* __hex_h */
+#endif /* __binUtils_h */

@@ -46,7 +46,7 @@ uiSim UI;
 int main(int argc, char **argv)
 {
 	char filename[BUFFER_LEN];
-	int mode = MODE_EXIT;
+	int mode = MODE_HALT;
     int play = 1;
     int i;
 

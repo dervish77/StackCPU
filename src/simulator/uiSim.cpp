@@ -13,7 +13,8 @@
 #include "coreSim.h"
 #include "memSim.h"
 
-#include "hex.h"
+#include "binUtils.h"
+#include "parse.h"
 
 #include "debug.h"
 
@@ -49,7 +50,9 @@ void uiSim::RunCLI(char *name, int mode)
 	char savefilename[SAVE_NAME_LEN];
 	char dumpfilename[DUMP_NAME_LEN];
 
-	int exit = 0;
+	int exit = 1;
+	
+	if (mode != MODE_EXIT) exit = 0;
 	
 	DebugPrint("uiSim::RunCLI");
 	
@@ -60,13 +63,12 @@ void uiSim::RunCLI(char *name, int mode)
 	_startCore(MEM_PROG_START, mode);
 	
 	// start CLI
-	#if 0
 	while( !exit )
 	{
-		if (mode == MODE_EXIT || mode == MODE_HALT) 
-			exit = 1;
+		printf("\nStarting CLI...\n");
+		
+		exit = _startCLI();
 	}
-	#endif
 	
 	// save memory file
 	#if 0
@@ -75,12 +77,15 @@ void uiSim::RunCLI(char *name, int mode)
 	#endif
 	
 	// dump memory file
-	#if 1
+	#if 0
 	strcpy(dumpfilename, "dump.hex");
 	_dumpMemFile(dumpfilename);
 	#endif
 	
+	#if 1
+	_debugDumpMemory("program:", MEM_PROG_START, 18);
 	pCore->UnitTest(4);
+	#endif
 }
 
 //
@@ -128,6 +133,12 @@ void uiSim::_setClock(int rate)
 }
 	
 // private operators
+int uiSim::_startCLI()
+{
+	
+	return(1);
+}
+
 void uiSim::_loadMemFile(char *name)
 {
 	char c;
@@ -155,7 +166,7 @@ void uiSim::_loadMemFile(char *name)
 	
 	printf("... loaded %d bytes\n", start-1);
 
-	_debugDumpMemory("Memory:", MEM_PROG_START, 18);
+	//_debugDumpMemory("Memory:", MEM_PROG_START, 18);
 }
 
 void uiSim::_saveMemFile(char *name)
