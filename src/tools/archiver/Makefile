@@ -1,11 +1,11 @@
-# makefile for stacksim program
+# makefile for stackar program
 #
 
 #------------------------------------------------------------------------
 # Include system make include files
 #------------------------------------------------------------------------
 
-MODROOT	= ../simulator
+MODROOT	= ../archiver
 include $(MODROOT)/module.mk
 ##include depend.mk
 
@@ -13,16 +13,16 @@ include $(MODROOT)/module.mk
 VERSION=0.1.1
 
 
-INSTALL_DIR = ../bin
+INSTALL_DIR = ../../bin
 
 
 #
 # --------------------------------------------------------------------
 # you shouldn't need to change anything below this line
 
-PLATFILES = debug.xxx opCodes.xxx binUtils.xxx parse.xxx
+PLATFILES = 
 
-SIMFILES  = uiSim.xxx regArray.xxx coreSim.xxx memArray.xxx memSim.xxx
+SIMFILES  = 
 
 FILES	  = $(PLATFILES) $(SIMFILES) main.xxx
 
@@ -30,7 +30,7 @@ LIB_FILES =
 
 LIBRARY	= 
 
-TARGET	= stacksim
+TARGET	= stackar
 
 
 #------------------------------------------------------------------------
@@ -93,7 +93,7 @@ run: test
 test: test-host
 
 test-host: all
-	$(TARGET) -m 1 -f unit.bin
+	$(TARGET) 
 
 unit: test-unit
 
@@ -139,8 +139,8 @@ lint: $(CFILES)
 # make distribution file
 #
 
-PKG_HOME = simulator
-PKG_NAME = stacksim-$(VERSION)
+PKG_HOME = archiver
+PKG_NAME = stackar-$(VERSION)
 
 tar: distclean
 	cd .. ; \
