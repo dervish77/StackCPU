@@ -46,12 +46,15 @@ uiSim UI;
 int main(int argc, char **argv)
 {
 	char filename[BUFFER_LEN];
+	char debugname[BUFFER_LEN];
 	int mode = MODE_HALT;
+	int debug_enable = 0;
     int play = 1;
     int i;
 
 	// setup default filename
 	strcpy(filename, "file.bin");
+	strcpy(debugname, "file.log");
 
     // if no command line arguments
     switch (argc)
@@ -71,7 +74,7 @@ int main(int argc, char **argv)
                             PrintUsage();
                             play = 0;
                             break;
-                        case 'v':
+						case 'v':
                             PrintBanner();
                             play = 0;
                             break;
@@ -81,6 +84,11 @@ int main(int argc, char **argv)
                             break;
                         case 'f':
 							strcpy(filename, argv[i+1]);
+							i++;
+                            break;
+                        case 'd':
+							strcpy(debugname, argv[i+1]);
+							debug_enable = 1;
 							i++;
                             break;
                         default:
@@ -112,13 +120,14 @@ void PrintBanner()
 
 void PrintUsage()
 {
-    printf("Usage:  stacksim [-f file] [-m mode] [-h] [-v]\n");
+    printf("Usage:  stacksim [options]\n");
     printf("\n");
-    printf("   -h           display help\n");
-    printf("   -v           display version\n");
-    printf("\n");
+	printf("options:\n");
+    printf("   -d <file>    output debug to log file (default is off)\n");
     printf("   -f <file>    memory file to load\n");
     printf("   -m <mode>    start up mode\n");
+    printf("   -h           display help\n");
+    printf("   -v           display version\n");
     printf("\n");
 }
 
