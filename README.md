@@ -53,9 +53,9 @@ Repo contents:
 
 ![architecture](https://github.com/dervish77/StackCPU/blob/main/docs/StackCPU-Architecture.png?raw=true)
 
-### Instruction Set Architecture
+### Instruction Model
 
-Instruction Model
+StackCPU instruction sizes range from one byte to three bytes.  Two byte instructions have a single operand which is a direct data value to be loaded into a register or loaded into the stack.  Three byte instructions have two operands which in all cases these operands form a memory address that is loaded into either the data register (DR) or into the program counter (PC).
 
 ```
  OPERATION
@@ -63,6 +63,8 @@ Instruction Model
  OPERATION <memory address>               $hhhh or %variable
  OPERATION <label>                        &label
 ```
+
+### Instruction Set Architecture
 
 Transfer Instructions
 
@@ -506,6 +508,7 @@ The Discrete Implementation is a HW design of the StackCPU device implemented us
   * bindump - used to examine binary files
   * binedit - used to edit contents of binary file
   * bingen - used to generate binary files
+
 
 
 
