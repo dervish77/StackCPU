@@ -1,6 +1,72 @@
 CHANGES - StackCPU
 ==================
 
+
+09/01/2025
+    reformatted the instructions section
+    reordered details sections for hw and sw
+    added description of register model
+    added 'incr' blocks to arch diagram
+    added 'inc/dec' block to SP register on arch diagram
+    added LDD and STD instructions
+    added 'inc/dec' block to DR register on arch diagram
+    updated op codes pdf to include LDD and STD instructions
+
+08/30/2205
+    added reference for intel hex format
+    added intel hex convert utility code and modified uiSim to use it
+    added TR register coreSim
+    added general string parser utility code
+
+08/28/2025
+    added initial methods and implementations to uiSim
+    implemented uiSim load and save memory methods
+    added tools used section
+    fixed format of web links
+
+08/26/2025
+    added temp reg to arch diagram
+    fix incorrect clock counts for PSA and POP
+    added initial opcodes source files
+    added TR temp reg to readme
+    added notes for instructions section
+    added note about TR register
+    moved notes to bottom of instruction section
+    updated class diagrams to match latest code design
+    added use case diagram
+    moved StackSim class diagram into UI simulator section
+
+08/25/2025
+    updated instructions groupings and op codes ; added notes file
+    added more comments to code example 3
+    updated code examples to match readme
+    modified coreSim unit test to match new op codes and new ADD execution sequence
+    updated unit.bin to match new op codes
+
+08/24/2025
+    reversed order of inc/dec of SP for push and pop operations
+    added unit.bin ; modified coreSim unit test to include ADD and OUT instructions
+    added PSA instruction
+    modified code example 3 to utilize PSA to correctly create incr list of numbers within the "iloop" section
+
+08/23/2025
+    added descriptions for the assembler tools
+    added command line details for each assembler tool
+    added example for stacksim command
+    moved RunCLI() from mainSim class to uiSim class
+    added memArray class, and wrote memSim code
+    added debug print hex functions
+    fixed "ISO C++ forbids converting a string constant to ‘char*’" by declaring const char *msg in debug functions
+    added GetSize method to memSim class
+    added unit test code of memSim to uiSim class
+    added RunCLI method to uiSim class
+    fixed compiler warning about unused vars when DEBUG is not defined
+    added memory range defines to memSim ; modified unit code to use them
+    in uiSim switched Core and Mem vars to pointers
+    added regArray code and fixed up conflicting names as needed
+    implemented several private methods in coreSim to handle reg and mem access
+    implemented coreSim internal functions and validated via unit testing
+
 08/22/2025
     added LSR, LSL, and XOR instructions
     Edited LSR and LSL descriptions
