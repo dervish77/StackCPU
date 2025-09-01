@@ -109,13 +109,16 @@ void PrintBanner()
 
 void PrintUsage()
 {
-    printf("Usage:  stackar [-f file] [-m mode] [-h] [-v]\n");
+    printf("Usage:  stackar [options] [obj files]\n");
     printf("\n");
-    printf("   -h           display help\n");
-    printf("   -v           display version\n");
-    printf("\n");
-    printf("   -f <file>    memory file to load\n");
-    printf("   -m <mode>    start up mode\n");
+    printf("options:\n");
+    printf("   -a             add obj to lib file\n");
+    printf("   -d             delete obj from lib file\n");
+    printf("   -r             replace obj in lib file\n");
+    printf("   -o <libfile>   output lib file\n");
+    printf("   -h             display help\n");
+    printf("   -v             verbose mode\n");
+    printf("   -V             display version\n");
     printf("\n");
 }
 

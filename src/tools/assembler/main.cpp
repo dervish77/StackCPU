@@ -109,13 +109,18 @@ void PrintBanner()
 
 void PrintUsage()
 {
-    printf("Usage:  stackasm [-f file] [-m mode] [-h] [-v]\n");
+    printf("Usage:  stackasm [options] [source file]\n");
     printf("\n");
-    printf("   -h           display help\n");
-    printf("   -v           display version\n");
-    printf("\n");
-    printf("   -f <file>    memory file to load\n");
-    printf("   -m <mode>    start up mode\n");
+    printf("options:\n");
+    printf("   -g             add debug info to obj file\n");
+    printf("   -D name[=val]  define a symbol\n");
+    printf("   -W n           set warning level n\n");
+    printf("   -I dir         include dir search path\n");
+    printf("   -b <binfile>   output binary exe (bypass obj output)\n");
+    printf("   -o <objfile>   output obj file\n");
+    printf("   -h             display help\n");
+    printf("   -v             verbose mode\n");
+    printf("   -V             display version\n");
     printf("\n");
 }
 

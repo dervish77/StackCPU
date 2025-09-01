@@ -109,13 +109,17 @@ void PrintBanner()
 
 void PrintUsage()
 {
-    printf("Usage:  stackld [-f file] [-m mode] [-h] [-v]\n");
+    printf("Usage:  stackld [options] [lib files] [obj files]\n");
     printf("\n");
-    printf("   -h           display help\n");
-    printf("   -v           display version\n");
-    printf("\n");
-    printf("   -f <file>    memory file to load\n");
-    printf("   -m <mode>    start up mode\n");
+    printf("options:\n");
+    printf("   -C <cfgfile>   linker config file\n");
+    printf("   -L dir         lib file search path\n");
+    printf("   -o <binfile>   output exe bin file\n");
+    printf("   -m <mapfile>   output map file\n");
+    printf("   -x <hexfile>   output hex file\n");
+    printf("   -h             display help\n");
+    printf("   -v             verbose mode\n");
+    printf("   -V             display version\n");
     printf("\n");
 }
 
