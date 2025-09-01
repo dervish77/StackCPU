@@ -18,8 +18,10 @@
 #define OPC_POP		0x14
 #define OPC_LDM		0x21
 #define OPC_LDI		0x22
+#define OPC_LDD		0x24
 #define OPC_STM		0x31
 #define OPC_STI		0x32
+#define OPC_STD		0x34
 
 #define OPC_ADD		0x41
 #define OPC_SUB		0x42

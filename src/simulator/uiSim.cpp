@@ -65,10 +65,12 @@ void uiSim::RunCLI(char *name, int mode)
 	// start CLI
 	while( !exit )
 	{
-		printf("\nStarting CLI...\n");
+		printf("\nStarting CLI ...\n");
 		
 		exit = _startCLI();
 	}
+	
+	printf("\nExiting sim ...\n\n");
 	
 	// save memory file
 	#if 0
@@ -82,7 +84,8 @@ void uiSim::RunCLI(char *name, int mode)
 	_dumpMemFile(dumpfilename);
 	#endif
 	
-	#if 1
+	// dump core state
+	#if 0
 	_debugDumpMemory("program:", MEM_PROG_START, 18);
 	pCore->UnitTest(4);
 	#endif

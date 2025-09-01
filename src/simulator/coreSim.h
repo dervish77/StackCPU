@@ -14,10 +14,6 @@
 #include "regArray.h"
 
 
-// size of register array
-#define DEFAULT_REGISTER_SIZE	9
-
-
 // register indexes
 #define REG_INDEX_PC	0		// full 16 bits - points to next instruction to read
 #define REG_INDEX_SP	1		// full 16 bits - points to last value put on stack
@@ -28,6 +24,9 @@
 #define REG_INDEX_OR	6		// only lower 8 bits
 #define REG_INDEX_SR	7		// only lower 8 bits
 #define REG_INDEX_PR	8		// only lower 8 bits
+
+// size of register array
+#define DEFAULT_REGISTER_SIZE	9
 
 
 // state ids
@@ -60,7 +59,7 @@ public:
 	void SetReg(int index, uint16_t data);
 	uint16_t GetReg(int index);
 	
-	void SetState(int index, int state);
+	int SetState(int index, int state);
 	int GetState(int index);
 	
     // operators

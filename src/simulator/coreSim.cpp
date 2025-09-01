@@ -78,27 +78,30 @@ void coreSim::SetReg(int index, uint16_t data)
 		pRegisters->Set(index, data);
 	}
 }
-	
+
 // accessor - get memSim reference
 uint16_t coreSim::GetReg(int index)
 {
 	return pRegisters->Get(index);
 }
-	
+
 // accessor - set memSim reference
-void coreSim::SetState(int index, int state)
+int coreSim::SetState(int index, int state)
 {
 	UNUSED(index);
 	UNUSED(state);
-}
 	
+	return 0;
+}
+
 // accessor - get memSim reference
 int coreSim::GetState(int index)
 {
 	UNUSED(index);
+	
 	return 0;
 }
-	
+
 
 // operator - tick the clock
 void coreSim::ClockTick()

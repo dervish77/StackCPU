@@ -40,7 +40,6 @@ int ConvertDataToHex(memSim *mem, int start, int end, FILE *out_file_p, int addr
     int i;
 	int src, limit;
     int count = 0;
-    int bytes = 0;
     int address = addr;
 
     unsigned char sum = 0;
