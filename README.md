@@ -49,7 +49,13 @@ Repo contents:
  PR         print register - external output (used by print instructions)
 ```
 
-### Instruction Model
+### Architecture Diagram
+
+![architecture](https://github.com/dervish77/StackCPU/blob/main/docs/StackCPU-Architecture.png?raw=true)
+
+### Instruction Set Architecture
+
+Instruction Model
 
 ```
  OPERATION
@@ -58,16 +64,11 @@ Repo contents:
  OPERATION <label>                        &label
 ```
 
-### Architecture Diagram
-
-![architecture](https://github.com/dervish77/StackCPU/blob/main/docs/StackCPU-Architecture.png?raw=true)
-
-### Instructions
+Transfer Instructions
 
 ```
-Instruction Fetch                                         fetch op_code -> <inst dec>
+---           instruction fetch                           fetch op_code -> <inst dec>
 
-Transfer Instructions
 PSH <do>      push direct data to top of stack            fetch op -> AC
                                                           push AC
 
@@ -92,8 +93,11 @@ STM <mem>     stores data from top of stack to memory     fetch op1 -> DRH
 STI           increments DR, stores TOS to data mem       DR + 1 -> DR
                                                           pop -> AC
                                                           AC -> M[DR]
+```
 
 Math Instructions
+
+```
 ADD           adds top two stack values                   pop -> TR
               (add replaces top 2 stack with sum)         pop -> AC
                                                           AC = AC + TR
@@ -116,8 +120,11 @@ LSR           logical shift top of stack right            pop -> AC
 LSL           logical shift top of stack left             pop -> AC
                                                           AC = AC << 1
                                                           push AC
+```
 
 Logical Instructions
+```
+
 AND <do>      AND top of stack with data                  fetch op -> TR
                                                           pop -> AC               
                                                           AC = AC & TR
@@ -136,8 +143,11 @@ XOR <do>      XOR top of stack with data                  fetch op -> TR
 INV           Invert top of stack                         pop -> TR               
                                                           AC = invert TR
                                                           push AC
+```
 
 Compare/Branch Instructions
+
+```
 CPE <do>      compare if top of stack is equal            fetch op -> TR
                                                           pop -> AC
                                                           push AC
@@ -169,8 +179,11 @@ BRN <label>   branch if top of stack is not zero          fetch op1 -> DRH
 BRU <label>   branch unconditionally                      fetch op1 -> DRH
                                                           fetch op2 -> DRL
                                                           DR -> PC
+```
 
 I/O instructions
+
+```
 INP           inputs I/O to top of stack                  IR -> AC
                                                           push AC
 
@@ -182,8 +195,11 @@ SER           inputs serial to top of stack               SR -> AC
 
 PRT           outputs top of stack to serial              pop -> AC
                                                           AC -> PR
+```
 
 Special instructions
+
+```
 NOP           no operation                                no state change
 
 CLS           clear the stack                             <mem top> -> SP
@@ -196,8 +212,11 @@ RST           reset cpu                                   0 -> AC
                                                           <data start> -> DR
                                                           <mem top> -> SP
                                                           <mem bot> -> PC
+```
 
 Notes
+
+```
 "fetch"                                                   M[PC] -> <dest>
                                                           PC + 1 -> PC
 
@@ -486,6 +505,7 @@ Example: stackld -m prog.map -o prog.bin math.lib addloop.obj
   * bindump - used to examine binary files
   * binedit - used to edit contents of binary file
   * bingen - used to generate binary files
+
 
 
 
