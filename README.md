@@ -449,7 +449,7 @@ Example: stackar -a -o math.lib add.obj
 
 ##### Linker
 
-The Linker tool combines several object modules (libaries and objects) producing an executable output file.  Various options enable control over the linking process, and the additional output of a map file or a hex file in addition to the binary executable output.  The map file is useful when debugging code in the simulator since it gives the address location of symbols within the executable program.  The hex file is useful for programming an executable into a HW implementation.
+The Linker tool combines several object modules (libraries and objects) producing an executable output file.  Various options enable control over the linking process, and the additional output of a map file or a hex file in addition to the binary executable output.  The map file is useful when debugging code in the simulator since it gives the address location of symbols within the executable program.  The hex file is useful for programming an executable into a HW implementation.
 
 ```
 Usage: stackld [options] [lib files] [obj files]
@@ -517,6 +517,7 @@ The Discrete Implementation is a HW design of the StackCPU device implemented us
   * bindump - used to examine binary files
   * binedit - used to edit contents of binary file
   * bingen - used to generate binary files
+
 
 
 
