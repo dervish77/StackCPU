@@ -15,12 +15,17 @@ TODO - StackCPU
 -- need to write memory loading code DONE
 -- need to write memory saving and dumping code DONE
 -- need to write CLI parser
+--- fix save/dump to include 'end' address argument
 -- need to write instruction decoder
+--- consider making this a plugin
 -- need to write ALU functions
+--- consider making this a plugin
 -- need to design control SM
+--- consider making this a plugin
 
 - Detailed design of HW 
 -- not yet started
+
 
 
 
