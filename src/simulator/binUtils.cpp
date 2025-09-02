@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "binUtils.h"
 
@@ -16,9 +17,175 @@
 #define DEBUG 0
 
 
+// static globals used by DumpBlock()
+static BOOLEAN_T	suppress_ascii;
+static int			base;
+static int          count;
 
 
+/*  _DumpBlock	- read a block of size bytes from input source
+ *		and send to output file
+ *
+ *  PARAMETERS:
+ *	mem     	- input source
+ *  offset      - offset address in memSim (of next block)
+ *  end         - ending address in memSim
+ *	size		- size of block in bytes
+ *	bytes_per_row	- bytes per row
+ *	out_file_p	- output file pointer
+ *
+ *  RETURNS:
+ *	eof		- TRUE if at EOF
+ */
+BOOLEAN_T _DumpBlock(memSim *mem, int offset, int end, int size, int bytes_per_row, FILE *out_file_p)
+{
+   int r, b;
+   int num_rows;
+   int actual_bytes_in_row;
 
+   unsigned char row_array[DEFAULT_BYTES_PER_ROW];
+   int c;
+
+   int at_eof;
+
+   int address = offset;
+
+   num_rows = size / bytes_per_row;
+
+   fprintf(out_file_p, "\nByte        Data");
+
+   if (suppress_ascii)
+      fprintf(out_file_p, "\n");
+   else
+   {
+      for (b = 2; b < bytes_per_row; b++)
+      {
+         fprintf(out_file_p, "  ");
+         if ( ((b+1) % 4) == 0 )
+            fprintf(out_file_p, " ");
+      }
+
+      fprintf(out_file_p, "    Ascii\n");
+   }
+
+   at_eof = FALSE;
+
+   for (r = 0; r < num_rows; r++)
+   {
+      fprintf(out_file_p, "%08d    ", ((r * bytes_per_row) + base));
+
+      actual_bytes_in_row = 0;
+
+      for (b = 0; b < bytes_per_row; b++)
+      {
+         //c = getc(in_file_p);
+		 c = mem->Read( address );
+         if (address > end)
+         {
+            at_eof = TRUE;
+            break;
+         }
+		 count++;      // increment count of bytes dumped
+		 address++;    // increment address to next byte in memory
+
+         row_array[b] = (unsigned char) c;
+
+         fprintf(out_file_p, "%02X", row_array[b]);
+
+         if ( ((b+1) % 4) == 0 )
+            fprintf(out_file_p, " ");
+
+         actual_bytes_in_row++;
+      }
+
+      if (!suppress_ascii)
+      {
+         if (actual_bytes_in_row < bytes_per_row)
+         {
+            for (b = actual_bytes_in_row; b < bytes_per_row; b++)
+            {
+               fprintf(out_file_p, "  ");
+               if ( ((b+1) % 4) == 0 )
+                  fprintf(out_file_p, " ");
+            }
+         }
+
+         fprintf(out_file_p, "    ");
+
+         for (b = 0; b < actual_bytes_in_row; b++)
+         {
+            if ( isprint( row_array[b] ) )
+               fprintf(out_file_p, "%c", row_array[b]);
+            else
+               fprintf(out_file_p, ".");
+         }
+      }
+
+      fprintf(out_file_p, "\n");
+
+      if (at_eof)
+         return(TRUE);
+   }
+
+   base += size;
+
+   return(FALSE);
+}
+
+/*  DumpMemory	- dump bytes from input source and send to terminal
+ *
+ *  PARAMETERS:
+ *	mem     	- input source
+ *  start       - start address in memSim (of next block)
+ *  end         - ending address in memSim
+ *  suppress    - suppress ascii output if true
+ *
+ *  RETURNS:
+ *	count		- number of bytes dumped
+ */
+int DumpMemory(memSim *mem, int start, int end, int suppress)
+{
+   BOOLEAN_T done = FALSE;
+      
+   int block_size = DEFAULT_BLOCK_SIZE;
+   int bytes_per_row = DEFAULT_BYTES_PER_ROW;
+
+   char response[20]; /* response buffer */
+
+   int offset = start;
+
+   // init static globals
+   count = 0;
+   base = 0;
+   suppress_ascii = suppress;
+
+   // dump the memory from start to end address
+   while ( !done )
+   {
+      /* if DumpBlock returns EOF, set done flag */
+      if ( _DumpBlock( mem, offset, end, block_size, bytes_per_row, stdout) )
+      {
+         done = TRUE;
+      }
+
+      /* else, prompt for next block */
+      else
+      {
+		 offset += block_size;
+		 
+         printf("\nDump next block (Y/n)? ");
+
+         fgets( &response[0], sizeof(response), stdin );
+
+         if ( (response[0] == 'n') || (response[0] == 'N'))
+         {
+            done = TRUE;
+         }
+      }
+   }
+   
+   return(count);
+}
 
 
 
@@ -33,7 +200,7 @@
  *  bytes_rec   - bytes per record
  *
  *  RETURNS:
- *	count		- number of bytes copied
+ *	count		- number of bytes converted
  */
 int ConvertDataToHex(memSim *mem, int start, int end, FILE *out_file_p, int addr, int bytes_rec) 
 {
@@ -100,7 +267,7 @@ int ConvertDataToHex(memSim *mem, int start, int end, FILE *out_file_p, int addr
     fprintf(out_file_p, "%02X", 255);
     fprintf(out_file_p, "\n");
 
-    return (count);
+    return(count);
 }
 
 /* end of binUtils.cpp */

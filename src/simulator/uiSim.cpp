@@ -50,6 +50,8 @@ void uiSim::RunCLI(char *name, int mode)
 	char savefilename[SAVE_NAME_LEN];
 	char dumpfilename[DUMP_NAME_LEN];
 
+	int count;
+
 	int exit = 1;
 	
 	if (mode != MODE_EXIT) exit = 0;
@@ -88,6 +90,11 @@ void uiSim::RunCLI(char *name, int mode)
 	#if 0
 	_debugDumpMemory("program:", MEM_PROG_START, 18);
 	pCore->UnitTest(4);
+	#endif
+	
+	#if 0
+	count = DumpMemory(pMem, 0, 63); 
+	DebugPrintNumber("dumped", count);
 	#endif
 }
 

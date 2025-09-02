@@ -18,6 +18,11 @@
 typedef char BOOLEAN_T;
 
 
+//
+// dump mem block
+//
+#define DEFAULT_BLOCK_SIZE		256		/* 256 bytes */
+#define DEFAULT_BYTES_PER_ROW	16
 
 
 
@@ -36,10 +41,17 @@ typedef char BOOLEAN_T;
 
 
 //
+// helper functions
+//
+BOOLEAN_T _DumpBlock(memSim *mem, int offset, int end, int size, int bytes_per_row, FILE *out_file_p);
+
+
+//
 // prototypes
 //
 
-
+// DumpMemory - dump bytes from input source and send to terminal
+int DumpMemory(memSim *mem, int start, int end);
 
 // ConvertDataToHex	- convert binary data to intel hex format
 int ConvertDataToHex(memSim *mem, int start, int end, FILE *out_file_p, int addr, int bytes_rec); 
