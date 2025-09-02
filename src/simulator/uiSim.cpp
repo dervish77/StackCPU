@@ -92,8 +92,8 @@ void uiSim::RunCLI(char *name, int mode)
 	pCore->UnitTest(4);
 	#endif
 	
-	#if 0
-	count = DumpMemory(pMem, 0, 63); 
+	#if 1
+	count = DumpMemory(pMem, 0, 127, 0); 
 	DebugPrintNumber("dumped", count);
 	#endif
 }

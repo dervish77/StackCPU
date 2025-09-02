@@ -51,7 +51,7 @@ BOOLEAN_T _DumpBlock(memSim *mem, int offset, int end, int size, int bytes_per_r
 //
 
 // DumpMemory - dump bytes from input source and send to terminal
-int DumpMemory(memSim *mem, int start, int end);
+int DumpMemory(memSim *mem, int start, int end, int suppress);
 
 // ConvertDataToHex	- convert binary data to intel hex format
 int ConvertDataToHex(memSim *mem, int start, int end, FILE *out_file_p, int addr, int bytes_rec); 
