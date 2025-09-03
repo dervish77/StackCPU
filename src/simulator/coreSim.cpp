@@ -13,6 +13,8 @@
 
 #include "regArray.h"
 
+#include "opCodes.h"
+
 #include "debug.h"
 
 
@@ -115,6 +117,7 @@ void coreSim::ClockTick()
 //
 void coreSim::UnitTest(int testnum)
 {
+	int index;
 	uint8_t memdata;
 	uint8_t memdata2;
 	uint16_t address;
@@ -226,6 +229,19 @@ void coreSim::UnitTest(int testnum)
 			_debugDumpMemory("data:", 0x0c00, 4);
 			_debugDumpMemory("stack:", 0x0FFC, 4);
 			_debugDumpRegisters("registers:");
+			break;
+			
+		case 5:	
+			index = SearchOpCode( 0x31 );
+			DebugPrint("Found 0x31");
+			DumpOpCodeRecord(index);
+			index = SearchMnemonic( "CPE" );
+			DebugPrint("Found CPE");
+			DumpOpCodeRecord(index);
+			break;
+			
+		case 6:	
+			DumpOpCodeTable();
 			break;
 			
 		default:

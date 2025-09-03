@@ -59,5 +59,154 @@ Instruction_s_t InstTable[] = {
 };
 
 
+//
+// access functions
+//
+int IsValidOpCode( uint8_t opcode )
+{
+	int valid = 1;
+	
+	if (SearchOpCode( opcode ) == -1)
+	{
+		valid = 0;
+	}
+	
+	return valid;
+}
+
+int SearchOpCode( uint8_t opcode )
+{
+	int i = 0;
+	int index = -1;
+	
+	while( InstTable[i].index != -1 )
+	{
+		if (InstTable[i].opcode == opcode)
+		{
+			index = i;
+			break;
+		}
+		else
+		{
+			i++;
+		}
+	}
+	
+	return index;
+}
+
+int SearchMnemonic( char *opstr )
+{
+	int i = 0;
+	int index = -1;
+	
+	while( InstTable[i].index != -1 )
+	{
+		if (strcmp(InstTable[i].mnemonic, opstr) == 0)
+		{
+			index = i;
+			break;
+		}
+		else
+		{
+			i++;
+		}
+	}
+	
+	return index;
+}
+
+
+int GetOpCodeMnemonic( int index, char *str )
+{
+	int error = -1;
+	
+	if (index != -1)
+	{
+		if (InstTable[index].index == index)
+		{
+			strcpy( str, InstTable[index].mnemonic );
+			error = 0;
+		}
+	}
+	
+	return error;
+}
+
+uint8_t GetOpCodeCode( int index )
+{
+	uint8_t opcode = 0xFF;
+	
+	if (index != -1)
+	{
+		if (InstTable[index].index == index)
+		{
+			opcode = InstTable[index].opcode;
+		}
+	}
+	
+	return opcode;
+}
+
+int GetOpCodeOperands( int index )
+{
+	int operands = -1;
+	
+	if (index != -1)
+	{
+		if (InstTable[index].index == index)
+		{
+			operands = InstTable[index].numops;
+		}
+	}
+	
+	return operands;
+}
+
+int GetOpCodeClocks( int index )
+{
+	int clocks = -1;
+	
+	if (index != -1)
+	{
+		if (InstTable[index].index == index)
+		{
+			clocks = InstTable[index].numclocks;
+		}
+	}
+	
+	return clocks;
+}
+
+
+//
+// debug functions
+//
+void DumpOpCodeRecord( int index )
+{
+	if (index != -1)
+	{
+		printf("index %02d str %s op 0x%02X num %d clk %d\n", 
+			InstTable[index].index,
+			InstTable[index].mnemonic,
+			InstTable[index].opcode,
+			InstTable[index].numops,
+			InstTable[index].numclocks);			
+	}
+}
+
+void DumpOpCodeTable()
+{
+	int i = 0;
+	
+	printf("\n");
+	
+	while( InstTable[i].index != -1 )
+	{
+		DumpOpCodeRecord( i );
+		i++;
+	}
+}
+
 
 // end of file

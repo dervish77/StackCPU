@@ -9,6 +9,7 @@
 
 #include <cstdint>
 
+
 //
 // define op codes
 //
@@ -63,7 +64,25 @@ struct Instruction_s {
 // typedef for instruction op code table
 typedef struct Instruction_s Instruction_s_t;
 
-extern Instruction_s_t InstTable[];
 
+//
+// access functions
+//
+int IsValidOpCode( uint8_t opcode );  // return valid boolean
+
+int SearchOpCode( uint8_t opcode );   // returns index
+int SearchMnemonic( char *opstr );    // returns index
+
+int GetOpCodeMnemonic( int index, char *str ); // returns error boolean
+uint8_t GetOpCodeCode( int index );   // returns opcode
+int GetOpCodeOperands( int index );   // returns numops
+int GetOpCodeClocks( int index );     // returns numclocks
+
+
+//
+// debug functions
+//
+void DumpOpCodeRecord( int index );
+void DumpOpCodeTable();
 
 #endif /* __opCodes_h */
