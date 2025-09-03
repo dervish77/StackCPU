@@ -448,7 +448,7 @@ void uiSim::_writeReg(char *reg, uint16_t data )
 
 void uiSim::_dumpRegs()
 {
-	_debugDumpRegisters( "register" );
+	_debugDumpRegisters( "registers" );
 }
 
 
@@ -545,12 +545,14 @@ void uiSim::_debugDumpRegisters(const char *header)
 	
 	uint16_t regdata;
 	
-	DebugPrint(header);
+	printf("%s\n", header);
+	//DebugPrint(header);
 	
 	for (index = 0; index < DEFAULT_REGISTER_SIZE; index++)
 	{
 		regdata = pCore->GetReg(index);
-		DebugPrintHex16( labels[index], regdata);
+		printf("%s %04X\n", labels[index], regdata);
+		//DebugPrintHex16( labels[index], regdata );
 	}
 }
 

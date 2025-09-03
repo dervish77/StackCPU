@@ -41,7 +41,7 @@ BOOLEAN_T _DumpBlock(memSim *mem, int offset, int end, int size, int bytes_per_r
 {
    int r, b;
    int num_rows;
-   int actual_bytes_in_row;
+   int actual_bytes_in_row;  // tracks bytes read, in case less than a full row
 
    unsigned char row_array[DEFAULT_BYTES_PER_ROW];
    int c;
@@ -78,11 +78,13 @@ BOOLEAN_T _DumpBlock(memSim *mem, int offset, int end, int size, int bytes_per_r
 
       for (b = 0; b < bytes_per_row; b++)
       {
-         //c = getc(in_file_p);
-		 c = mem->Read( address );
-         if (address > end)
+		 if (address <= end) // prevent reading past end of memory
+		 {
+			c = mem->Read( address );
+		 }
+         if (address > end) // are we done reading?
          {
-            at_eof = TRUE;
+            at_eof = TRUE;  // yes, mark "eof" and bail out of loop
             break;
          }
 		 count++;      // increment count of bytes dumped
@@ -156,13 +158,13 @@ int DumpMemory(memSim *mem, int start, int end, int suppress)
 
    // init static globals
    count = 0;
-   base = 0;
+   base = start; // init to start address of dump request
    suppress_ascii = suppress;
 
    // dump the memory from start to end address
    while ( !done )
    {
-      /* if DumpBlock returns EOF, set done flag */
+      /* if _DumpBlock returns EOF, set done flag */
       if ( _DumpBlock( mem, offset, end, block_size, bytes_per_row, stdout) )
       {
          done = TRUE;
