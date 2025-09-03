@@ -28,10 +28,13 @@
 // size of register array
 #define DEFAULT_REGISTER_SIZE	9
 
+// register name length
+#define REG_NAME_LEN	3
+
 // register struct for reg table
 struct Register_s {
 	int index;				// reference index (-1 means end of table)
-	const char regstr[3];	// "PC"
+	const char regstr[REG_NAME_LEN];	// "PC"
 	int regindex;			// see defines above
 	int size;				// size in bytes
 };

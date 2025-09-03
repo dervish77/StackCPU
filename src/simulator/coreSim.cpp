@@ -131,9 +131,17 @@ int coreSim::SearchRegName(char *str)
 	int i = 0;
 	int index = -1;
 	
+	// convert to upper case
+	char upstr[REG_NAME_LEN];
+	for (int j=0; str[j] != '\0'; j++)
+	{
+		upstr[j] = toupper( str[j] );
+	}
+	
+	// search for register name
 	while( RegTable[i].index != -1 )
 	{
-		if (strcmp(RegTable[i].regstr, str) == 0)
+		if (strcmp(RegTable[i].regstr, upstr) == 0)
 		{
 			index = RegTable[i].regindex;
 			break;

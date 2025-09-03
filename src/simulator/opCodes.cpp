@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "opCodes.h"
 
@@ -100,9 +101,17 @@ int SearchMnemonic( char *opstr )
 	int i = 0;
 	int index = -1;
 	
+	// convert to upper case
+	char upstr[OP_NAME_LEN];
+	for (int j=0; opstr[j] != '\0'; j++)
+	{
+		upstr[j] = toupper( opstr[j] );
+	}
+	
+	// search for op code name
 	while( InstTable[i].index != -1 )
 	{
-		if (strcmp(InstTable[i].mnemonic, opstr) == 0)
+		if (strcmp(InstTable[i].mnemonic, upstr) == 0)
 		{
 			index = i;
 			break;

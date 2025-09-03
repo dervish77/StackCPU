@@ -51,11 +51,13 @@
 #define OPC_END		0x98
 #define OPC_RST		0x9F
 
+// opcode string length
+#define OP_NAME_LEN	4
 
 // structure for instruction op code table
 struct Instruction_s {
 	int index;				// reference index (-1 means end of table)
-	const char mnemonic[4];	// "ABC"
+	const char mnemonic[OP_NAME_LEN];	// "ABC"
 	uint8_t opcode;			// see defines above
 	int numops;				// number of operands
 	int numclocks;			// number of clock cycles
