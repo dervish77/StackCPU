@@ -17,9 +17,17 @@
 #define MODE_RUN        2
 #define MODE_SSTEP      3
 
-
+// file names
 #define SAVE_NAME_LEN	20
 #define DUMP_NAME_LEN	20
+
+// CLI defines
+#define PROMPT			"> "
+#define BUFFER_LEN		20
+#define MAX_CMD_ARGS	4
+
+// CLI commands
+
 
 
 class uiSim
@@ -68,7 +76,8 @@ private:
 	void _setClock(int rate);
 	
 	// private operators
-	int _startCLI();
+	int _startCLI(int skip);
+	void _showCliHelp();
 	
 	void _loadMemFile(char *name);
 	void _saveMemFile(char *name);
@@ -82,6 +91,10 @@ private:
 	void _goCore();
 	void _haltCore();
 	void _stepCore();
+	
+	void _readReg(char *reg);
+	void _writeReg(char *reg, uint16_t data );
+	void _dumpRegs();
 	
 	// private helpers
 	FILE* _openFile(char *name, const char *dir);

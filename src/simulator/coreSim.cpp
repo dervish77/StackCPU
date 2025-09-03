@@ -7,6 +7,7 @@
 #include <iostream>
 #include <cstdio>
 #include <cstdint>
+#include <cstring>
 
 #include "coreSim.h"
 #include "memSim.h"
@@ -17,6 +18,26 @@
 
 #include "debug.h"
 
+
+//
+// instruction op code table
+//
+// Format:
+//   index, mnemonic string, op code, num operands, num clocks
+//
+
+Register_s_t RegTable[] = {
+0,	"PC", REG_INDEX_PC, 2,
+1,	"SP", REG_INDEX_SP, 2,
+2,	"DR", REG_INDEX_DR, 2,
+3,	"AC", REG_INDEX_AC, 1,
+4,	"TR", REG_INDEX_TR, 1,
+5,	"IR", REG_INDEX_IR, 1,
+6,	"OR", REG_INDEX_OR, 1,
+7,	"SR", REG_INDEX_SR, 1,
+8,	"PR", REG_INDEX_PR, 1,
+-1,	" ", 0, 0,
+};
 
 
 // default constructor
@@ -104,6 +125,66 @@ int coreSim::GetState(int index)
 	return 0;
 }
 
+// accessor - search register name - returns index
+int coreSim::SearchRegName(char *str)
+{
+	int i = 0;
+	int index = -1;
+	
+	while( RegTable[i].index != -1 )
+	{
+		if (strcmp(RegTable[i].regstr, str) == 0)
+		{
+			index = RegTable[i].regindex;
+			break;
+		}
+		else
+		{
+			i++;
+		}
+	}
+	
+	return index;
+}
+
+// accessor - search register index - returns index
+int coreSim::SearchRegIndex(int regid)
+{
+	int i = 0;
+	int index = -1;
+	
+	while( RegTable[i].index != -1 )
+	{
+		if (RegTable[i].regindex == regid)
+		{
+			index = i;
+			break;
+		}
+		else
+		{
+			i++;
+		}
+	}
+	
+	return index;
+}
+
+// accessor - get register size - returns size in bytes
+int coreSim::GetRegSize(int index)
+{
+	int size = -1;
+	
+	if (index != -1)
+	{
+		if (RegTable[index].index == index)
+		{
+			size = RegTable[index].size;
+		}
+	}
+	
+	return size;
+}
+	
 
 // operator - tick the clock
 void coreSim::ClockTick()

@@ -28,6 +28,17 @@
 // size of register array
 #define DEFAULT_REGISTER_SIZE	9
 
+// register struct for reg table
+struct Register_s {
+	int index;				// reference index (-1 means end of table)
+	const char regstr[3];	// "PC"
+	int regindex;			// see defines above
+	int size;				// size in bytes
+};
+
+// typedef for reg table
+typedef struct Register_s Register_s_t;
+
 
 // state ids
 
@@ -61,6 +72,10 @@ public:
 	
 	int SetState(int index, int state);
 	int GetState(int index);
+	
+	int SearchRegName(char *str);    // returns index
+	int SearchRegIndex(int regid);   // returns index
+	int GetRegSize(int index);       // returns size in bytes
 	
     // operators
 	void ClockTick();

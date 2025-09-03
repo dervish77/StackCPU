@@ -69,7 +69,7 @@ void uiSim::RunCLI(char *name, int mode)
 	{
 		printf("\nStarting CLI ...\n");
 		
-		exit = _startCLI();
+		exit = _startCLI(0);
 	}
 	
 	printf("\nExiting sim ...\n\n");
@@ -97,7 +97,7 @@ void uiSim::RunCLI(char *name, int mode)
 	DebugPrintNumber("dumped", count);
 	#endif
 	
-	#if 1
+	#if 0
 	pCore->UnitTest(5);
 	pCore->UnitTest(6);
 	#endif
@@ -148,10 +148,139 @@ void uiSim::_setClock(int rate)
 }
 	
 // private operators
-int uiSim::_startCLI()
+int uiSim::_startCLI(int skip)
 {
+	int done = 0;
 	
-	return(1);
+	char cmdstr[BUFFER_LEN];
+	char *cmdargs[MAX_CMD_ARGS];
+	int argcount;
+	
+	char cmdltr;
+	uint16_t address1;
+	uint16_t address2;
+	uint8_t data;
+	int value;
+	char *endptr;
+	
+	if (skip) done = 1;
+	
+	while (!done)
+	{
+		// get CLI command
+		printf("\n%s", PROMPT);
+		if ( fgets( cmdstr, BUFFER_LEN, stdin ) == NULL)
+		{
+			fprintf(stderr,"fgets error");
+			exit(1);
+		}
+
+		// parse CLI command string
+		argcount = ParseString( cmdstr, cmdargs );
+		
+		// handle CLI command
+		cmdltr = cmdargs[0][0];  // first letter of first arg
+		switch(cmdltr)
+		{
+			case 'l':
+				_loadMemFile( cmdargs[1] );
+				break;
+
+			case 's':
+				_saveMemFile( cmdargs[1] );
+				break;
+
+			case 'd':
+				_dumpMemFile( cmdargs[1] );
+				break;
+				
+			case 'r':
+				address1 = strtol(cmdargs[1], &endptr, 16);
+				data = pMem->Read( address1 );
+				printf("read %04X is %02X\n", address1, data);
+				break;
+
+			case 'w':
+				address1 = strtol(cmdargs[1], &endptr, 16);
+				data = strtol(cmdargs[2], &endptr, 16);
+				pMem->Write( address1, data );
+				printf("wrote %04X with %02X\n", address1, data);
+				break;
+
+			case 'b':
+				address1 = strtol(cmdargs[1], &endptr, 16);
+				address2 = strtol(cmdargs[2], &endptr, 16);
+				_dumpMemBlock( address1, address2 );
+				break;
+
+			case 'f':
+				address1 = strtol(cmdargs[1], &endptr, 16);
+				address2 = strtol(cmdargs[2], &endptr, 16);
+				data = strtol(cmdargs[3], &endptr, 16);
+				_fillMemBlock( address1, address2, data );
+				break;
+				
+			case 'g':
+				_goCore();
+				break;
+
+			case 'h':
+				_haltCore();
+				break;
+
+			case 'n':
+				_stepCore();
+				break;
+
+			case 'j':
+				address1 = strtol(cmdargs[1], &endptr, 16);
+				_startCore( address1, MODE_RUN );
+				break;
+
+			case 'k':
+				address1 = strtol(cmdargs[1], &endptr, 16);
+				_startCore( address1, MODE_SSTEP );
+				break;
+
+			case 'x':
+				_readReg( cmdargs[1] );
+				break;
+
+			case 'y':
+				data = strtol(cmdargs[2], &endptr, 16);
+				_writeReg( cmdargs[1], data );
+				break;
+
+			case 'z':
+				_dumpRegs();
+				break;
+
+			case 't':
+				value = strtol(cmdargs[1], &endptr, 10);
+				_setClock( value );
+				printf("clock set to %d\n", value);
+				break;
+
+			case '?':
+				_showCliHelp();
+				break;
+				
+			case 'q':
+				printf("goodbye\n");
+				done = 1;
+				break;
+			
+			default:
+				break;
+		}
+	}
+	
+	return(done);
+}
+
+void uiSim::_showCliHelp()
+{
+
 }
 
 void uiSim::_loadMemFile(char *name)
@@ -235,7 +364,7 @@ void uiSim::_dumpMemFile(char *name)
 
 void uiSim::_dumpMemBlock(uint16_t start, uint16_t end)
 {
-	
+	DumpMemory( pMem, start, end, 0 );
 }
 	
 void uiSim::_fillMemBlock(uint16_t start, uint16_t end, uint8_t data)
@@ -290,6 +419,38 @@ void uiSim::_stepCore()
 {
 	current_mode = MODE_SSTEP;
 }
+
+void uiSim::_readReg(char *reg)
+{
+	uint16_t data;
+	
+	int index = pCore->SearchRegName( reg );
+	
+	if (index != -1)
+	{
+		data = pCore->GetReg( index );
+		
+		printf("read reg %s is %04X\n", reg, data);
+	}
+}
+
+void uiSim::_writeReg(char *reg, uint16_t data )
+{
+	int index = pCore->SearchRegName( reg );
+	
+	if (index != -1)
+	{
+		pCore->SetReg( index, data );
+		
+		printf("write reg %s with %04X\n", reg, data);
+	}
+}
+
+void uiSim::_dumpRegs()
+{
+	_debugDumpRegisters( "register" );
+}
+
 
 // private helpers
 FILE* uiSim::_openFile(char *name, const char *dir)
@@ -380,7 +541,7 @@ void uiSim::_debugDumpMemory(const char *header, uint16_t start, int bytes)
 void uiSim::_debugDumpRegisters(const char *header)
 {
 	int index;
-	const char *labels[8] = { "pc", "sp", "dr", "ac", "ir", "or", "sr", "pr" };
+	const char *labels[9] = { "pc", "sp", "dr", "ac", "tr", "ir", "or", "sr", "pr" };
 	
 	uint16_t regdata;
 	
