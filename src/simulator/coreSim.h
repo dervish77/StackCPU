@@ -44,7 +44,10 @@ typedef struct Register_s Register_s_t;
 
 
 // state ids
-
+#define STATE_IDLE		0
+#define STATE_HALT		1
+#define STATE_RUN		2
+#define STATE_SSTEP		3
 
 
 // fetch operation
@@ -81,6 +84,10 @@ public:
 	int GetRegSize(int index);       // returns size in bytes
 	
     // operators
+	int CoreRun();
+	int CoreStep();
+	int CoreHalt();
+	
 	void ClockTick();
 	
 	// unit test methods
@@ -92,6 +99,7 @@ private:
 	memSim *pMemSim;
 	regArray *pRegisters;
 	int memsize;
+	int coreState;
 	
 	// private methods
 	void _clearRegisters();
@@ -109,6 +117,14 @@ private:
 	uint8_t _popStack();
 	
 	void _copyRegister(int fromreg, int toreg);
+	
+	uint8_t _fetchInstruction();
+	uint8_t _fetchOperand();
+	
+	int _executeInstruction(uint8_t inst, uint8_t oper1, uint8_t oper2);
+	int _decodeInstruction(uint8_t inst, uint8_t *oper1, uint8_t *oper2);
+	
+	int _doInstructionCycle();
 	
 	// private debug methods
 	void _debugDumpMemory(const char *header, uint16_t start, int bytes);

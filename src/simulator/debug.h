@@ -8,7 +8,7 @@
 #define __debug_h
 
 
-//#define DEBUG
+#define DEBUG
 
 
 #define UNUSED(x) (void)(x)
@@ -27,6 +27,8 @@ void DebugPrintHex(const char *msg, int value);
 void DebugPrintHex16(const char *msg, int value);
 
 void DebugPrintHexHex(const char *msg, int value1, int value2);
+
+void DebugPrintHexHexHex(const char *msg, int value1, int value2, int value3);
 
 void DebugPrintFloat(const char *msg, float value);
 

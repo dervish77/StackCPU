@@ -49,6 +49,8 @@ coreSim::coreSim()
 	
 	pRegisters = new regArray(DEFAULT_REGISTER_SIZE);
 	_resetRegisters();
+	
+	coreState = STATE_IDLE;
 }
 
 // constructor
@@ -68,6 +70,8 @@ coreSim::coreSim(memSim *mem)
 	// setup registers
 	pRegisters = new regArray(DEFAULT_REGISTER_SIZE);
 	_resetRegisters();
+	
+	coreState = STATE_IDLE;
 }
 
 // destructor
@@ -76,6 +80,7 @@ coreSim::~coreSim()
 	delete pRegisters;
 }
 
+// -------------------------------------------------------------
 
 // accessor - set memSim reference
 void coreSim::SetMemRef(memSim *mem)
@@ -193,6 +198,41 @@ int coreSim::GetRegSize(int index)
 	return size;
 }
 	
+// -------------------------------------------------------------
+
+// operator - run the core
+int coreSim::CoreRun()
+{
+	int done = 0;
+	
+	coreState = STATE_RUN;
+	DebugPrint("CoreRun start");
+	while (!done)
+	{
+		done = _doInstructionCycle();
+	}
+	DebugPrint("CoreRun end");
+	return 1;
+}
+
+// operator - single step the core
+int coreSim::CoreStep()
+{
+	coreState = STATE_SSTEP;
+	DebugPrint("CoreStep start");
+	_doInstructionCycle();
+	DebugPrint("CoreStep end");
+	return 1;
+}
+
+// operator - halt the core
+int coreSim::CoreHalt()
+{
+	coreState = STATE_HALT;
+	DebugPrint("CoreHalt start");
+
+	return 1;
+}
 
 // operator - tick the clock
 void coreSim::ClockTick()
@@ -200,6 +240,7 @@ void coreSim::ClockTick()
 	
 }
 
+// -------------------------------------------------------------
 
 //
 // unit test code
@@ -338,6 +379,7 @@ void coreSim::UnitTest(int testnum)
 	}
 }
 
+// -------------------------------------------------------------
 
 //
 // PRIVATE METHODS
@@ -464,6 +506,94 @@ void coreSim::_copyRegister(int fromreg, int toreg)
 	pRegisters->Set(toreg, regdata);
 }
 
+
+uint8_t coreSim::_fetchInstruction()
+{
+	uint8_t inst;
+	
+	inst = _fetchMemory( REG_INDEX_PC, FETCH_OP_INCR );
+	
+	return inst;
+}
+
+uint8_t coreSim::_fetchOperand()
+{
+	uint8_t oper;
+	
+	oper = _fetchMemory( REG_INDEX_PC, FETCH_OP_INCR );
+	
+	return oper;
+}
+	
+int coreSim::_executeInstruction(uint8_t inst, uint8_t oper1, uint8_t oper2)
+{
+	//DebugPrintHex16("_executeInstruction", inst);
+
+	
+	return 1;
+}
+
+int coreSim::_decodeInstruction(uint8_t inst, uint8_t *oper1, uint8_t *oper2)
+{
+	uint8_t data1 = 0;
+	uint8_t data2 = 0; 
+	int instIndex;
+	int numops;
+	
+	//DebugPrintHex16("_decodeInstruction", inst);
+	
+	if ( IsValidOpCode( inst ) )
+	{
+		instIndex = SearchOpCode( inst );
+		
+		numops = GetOpCodeOperands( instIndex );
+		
+		if (numops == 2)
+		{
+			data1 = _fetchOperand();
+			data2 = _fetchOperand();			
+		}
+		else if (numops == 1)
+		{
+			data1 = _fetchOperand();			
+		}
+	}
+	
+	*oper1 = data1;
+	*oper2 = data2;
+	
+	return 1;
+}
+	
+int coreSim::_doInstructionCycle()
+{
+	int halted = 0;
+	uint8_t instruction;
+	uint8_t operand1;
+	uint8_t operand2;
+	
+	if (coreState == STATE_RUN || coreState == STATE_SSTEP)
+	{
+		instruction = _fetchInstruction();
+	
+		_decodeInstruction( instruction, &operand1, &operand2 );
+		DebugPrintHexHexHex("decoded", instruction, operand1, operand2);
+		
+		_executeInstruction( instruction, operand1, operand2 );
+		DebugPrintHexHexHex("executed", instruction, operand1, operand2);
+
+		if (instruction == OPC_END)
+		{
+			coreState = STATE_HALT;
+			halted = 1;
+		}
+	}
+	
+	return halted;
+}
+
+
+// -------------------------------------------------------------
 
 //
 // DEBUG METHODS

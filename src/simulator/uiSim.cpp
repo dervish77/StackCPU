@@ -410,14 +410,20 @@ void uiSim::_startCore(uint16_t pcaddr, int mode)
 void uiSim::_goCore()
 {
 	current_mode = MODE_RUN;
+	
+	pCore->CoreRun();
 }
 void uiSim::_haltCore()
 {
 	current_mode = MODE_HALT;
+	
+	pCore->CoreHalt();
 }
 void uiSim::_stepCore()
 {
 	current_mode = MODE_SSTEP;
+
+	pCore->CoreStep();
 }
 
 void uiSim::_readReg(char *reg)

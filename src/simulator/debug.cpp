@@ -61,6 +61,18 @@ void DebugPrintHexHex(const char *msg, int value1, int value2)
 	#endif
 }
 
+void DebugPrintHexHexHex(const char *msg, int value1, int value2, int value3)
+{
+	#ifdef DEBUG
+	printf("%s 0x%04X 0x%02X 0x%02X\n", msg, value1, value2, value3);
+	#else
+	UNUSED(msg);
+	UNUSED(value1);
+	UNUSED(value2);
+	UNUSED(value3);
+	#endif
+}
+
 void DebugPrintFloat(const char *msg, float value)
 {
 	#ifdef DEBUG
