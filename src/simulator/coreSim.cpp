@@ -218,9 +218,11 @@ int coreSim::CoreRun()
 // operator - single step the core
 int coreSim::CoreStep()
 {
+	int done = 0;
+	
 	coreState = STATE_SSTEP;
 	DebugPrint("CoreStep start");
-	_doInstructionCycle();
+	done = _doInstructionCycle();
 	DebugPrint("CoreStep end");
 	return 1;
 }
@@ -414,6 +416,13 @@ void coreSim::_resetRegisters()
 	pRegisters->Set(REG_INDEX_SP, MEM_STACK_END);	
 }
 
+void coreSim::_clearStack()
+{
+	pRegisters->Set(REG_INDEX_SP, MEM_STACK_END);
+}
+
+// -------------------------------------------------------------
+
 void coreSim::_incrementRegister(int index)
 {
 	uint16_t regdata;
@@ -429,6 +438,15 @@ void coreSim::_decrementRegister(int index)
 	regdata--;
 	pRegisters->Set(index, regdata);
 }
+
+void coreSim::_copyRegister(int fromreg, int toreg)
+{
+	uint16_t regdata;
+	regdata = pRegisters->Get(fromreg);
+	pRegisters->Set(toreg, regdata);
+}
+
+// -------------------------------------------------------------
 
 uint8_t coreSim::_fetchMemory(int reg, int operation)
 {
@@ -499,13 +517,7 @@ uint8_t coreSim::_popStack()
 	return memdata;
 }
 
-void coreSim::_copyRegister(int fromreg, int toreg)
-{
-	uint16_t regdata;
-	regdata = pRegisters->Get(fromreg);
-	pRegisters->Set(toreg, regdata);
-}
-
+// -------------------------------------------------------------
 
 uint8_t coreSim::_fetchInstruction()
 {
@@ -528,7 +540,110 @@ uint8_t coreSim::_fetchOperand()
 int coreSim::_executeInstruction(uint8_t inst, uint8_t oper1, uint8_t oper2)
 {
 	//DebugPrintHex16("_executeInstruction", inst);
+	
+	switch(inst)
+	{
+		case OPC_PSH:
+			break;
+		
+		case OPC_PSA:
+			break;
 
+		case OPC_POP:
+			break;
+
+		case OPC_LDM:
+			break;
+
+		case OPC_LDI:
+			break;
+
+		case OPC_LDD:
+			break;
+
+		case OPC_STM:
+			break;
+
+		case OPC_STI:
+			break;
+
+		case OPC_STD:
+			break;
+
+		case OPC_ADD:
+			break;
+
+		case OPC_SUB:
+			break;
+
+		case OPC_NEG:
+			break;
+
+		case OPC_LSR:
+			break;
+
+		case OPC_LSL:
+			break;
+
+		case OPC_AND:
+			break;
+			
+		case OPC_ORR:
+			break;
+			
+		case OPC_XOR:
+			break;
+			
+		case OPC_INV:
+			break;
+
+		case OPC_CPE:
+			break;
+			
+		case OPC_CNE:
+			break;
+			
+		case OPC_BRZ:
+			break;
+			
+		case OPC_BRN:
+			break;
+			
+		case OPC_BRU:
+			break;
+
+		case OPC_INP:
+			break;
+			
+		case OPC_OUT:
+			break;
+			
+		case OPC_SER:
+			break;
+			
+		case OPC_PRT:
+			break;
+
+		case OPC_NOP:
+			// do nothing
+			break;
+		
+		case OPC_CLS:
+			_clearStack();
+			break;
+			
+		case OPC_END:
+			_decrementRegister( REG_INDEX_PC );
+			break;
+
+		case OPC_RST:
+			_resetRegisters();
+			break;
+	
+		default:
+			printf("ERROR - attempt to execute invalid instruction!\n");
+			break;
+	}
 	
 	return 1;
 }
@@ -557,6 +672,10 @@ int coreSim::_decodeInstruction(uint8_t inst, uint8_t *oper1, uint8_t *oper2)
 		{
 			data1 = _fetchOperand();			
 		}
+	}
+	else
+	{
+		printf("ERROR - invalid instruction decoded!\n");
 	}
 	
 	*oper1 = data1;
@@ -591,6 +710,20 @@ int coreSim::_doInstructionCycle()
 	
 	return halted;
 }
+
+// -------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // -------------------------------------------------------------

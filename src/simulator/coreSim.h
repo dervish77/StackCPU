@@ -56,6 +56,23 @@ typedef struct Register_s Register_s_t;
 #define FETCH_OP_DECR	2
 
 
+// memory DR operation
+#define MEM_DR_NONE		0
+#define MEM_DR_INCR		1
+#define MEM_DR_DECR		2
+
+
+// compare operation
+#define COMP_EQUAL		1
+#define COMP_NOTEQUAL	2
+
+
+// branch operation
+#define BRANCH_UNCOND	0
+#define BRANCH_ZERO		1
+#define BRANCH_NOTZERO	2
+
+
 // error codes
 #define CORE_NOERROR	0
 #define CORE_ERROR		1
@@ -105,18 +122,19 @@ private:
 	void _clearRegisters();
 	void _fillRegisters(uint16_t data);
 	void _resetRegisters();
+	void _clearStack();
 	
 	void _incrementRegister(int index);
 	void _decrementRegister(int index);
 	
+	void _copyRegister(int fromreg, int toreg);
+
 	uint8_t _fetchMemory(int reg, int operation);
 	uint8_t _readMemory(uint16_t address);
 	void _writeMemory(uint16_t address, uint8_t data);
 	
 	void _pushStack(uint8_t data);
 	uint8_t _popStack();
-	
-	void _copyRegister(int fromreg, int toreg);
 	
 	uint8_t _fetchInstruction();
 	uint8_t _fetchOperand();
@@ -125,6 +143,30 @@ private:
 	int _decodeInstruction(uint8_t inst, uint8_t *oper1, uint8_t *oper2);
 	
 	int _doInstructionCycle();
+	
+	void _stackPushDirect(uint8_t oper);
+	void _stackPushAcc();
+	void _stackPop();
+	
+	void _memDrLoad(uint8_t oper1, uint8_t oper2, int operation);
+	void _memDrStore(uint8_t oper1, uint8_t oper2, int operation);
+	
+	void _aluAddition();
+	void _aluSubtract();
+	void _aluNegate();
+	void _aluShiftRight();
+	void _aluShiftLeft();
+	
+	void _aluLogicalAnd();
+	void _aluLogicalOr();
+	void _aluLogicalXor();
+	void _aluLogicalInv();
+	
+	void _compare(uint8_t oper, int operation);
+	
+	void _branch(uint8_t oper1, uint8_t oper2, int operation);
+	
+	void _inputOutput(int reg, int direction);
 	
 	// private debug methods
 	void _debugDumpMemory(const char *header, uint16_t start, int bytes);
