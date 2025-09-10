@@ -100,6 +100,8 @@ int main(int argc, char **argv)
             }
             break;
     }
+	
+	UNUSED(debug_enable);
 
     if (play)
     {

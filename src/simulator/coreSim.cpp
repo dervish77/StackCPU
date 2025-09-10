@@ -218,11 +218,9 @@ int coreSim::CoreRun()
 // operator - single step the core
 int coreSim::CoreStep()
 {
-	int done = 0;
-	
 	coreState = STATE_SSTEP;
 	DebugPrint("CoreStep start");
-	done = _doInstructionCycle();
+	_doInstructionCycle();
 	DebugPrint("CoreStep end");
 	return 1;
 }

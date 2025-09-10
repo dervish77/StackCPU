@@ -47,10 +47,12 @@ uiSim::~uiSim()
 // operator - run CLI interface
 void uiSim::RunCLI(char *name, int mode)
 {
+	#if 0
 	char savefilename[SAVE_NAME_LEN];
 	char dumpfilename[DUMP_NAME_LEN];
-
+	
 	int count;
+	#endif
 
 	int exit = 1;
 	
@@ -183,7 +185,10 @@ int uiSim::_startCLI(int skip)
 		switch(cmdltr)
 		{
 			case 'l':
-				_loadMemFile( cmdargs[1] );
+				if (argcount == 2)
+					_loadMemFile( cmdargs[1] );
+				else	
+					printf("syntax error\n");
 				break;
 
 			case 's':
