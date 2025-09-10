@@ -10,7 +10,7 @@ include $(MODROOT)/module.mk
 ##include depend.mk
 
 
-VERSION=0.1.1
+VERSION=0.2.0
 
 
 INSTALL_DIR = ../bin
@@ -20,7 +20,7 @@ INSTALL_DIR = ../bin
 # --------------------------------------------------------------------
 # you shouldn't need to change anything below this line
 
-PLATFILES = debug.xxx opCodes.xxx binUtils.xxx parse.xxx
+PLATFILES = debug.xxx parse.xxx binUtils.xxx opCodes.xxx 
 
 SIMFILES  = uiSim.xxx regArray.xxx coreSim.xxx memArray.xxx memSim.xxx
 
@@ -55,6 +55,7 @@ ALL_ARFLAGS	= $(MOD_ARFLAGS)
 
 OFILES	   = $(FILES:xxx=o)
 CFILES	   = $(FILES:xxx=cpp)
+HFILES	   = $(FILES:xxx=h)
 LINTFILES  = $(FILES:xxx=lint)
 
 LIB_OFILES = $(LIB_FILES:.xxx=.o)
@@ -83,8 +84,21 @@ $(LIB_OFILES): %.o: %.cpp *.h
 
 #------------------------------------------------------------------------
 
-ide:
-	codeblocks audio.cbp &
+NPP = /cygdrive/c/Utils/Notepad++/notepad++.exe
+
+ide: ide-npp
+
+ide-atom:
+	atom . &
+
+ide-cb:
+	codeblocks $(TARGET).cbp &
+
+ide-vsc:
+	code -a . &
+	
+ide-npp:
+	$(NPP) Makefile main.cpp uiSim.h uiSim.cpp memSim.h memSim.cpp coreSim.h coreSim.cpp opCodes.h opCodes.cpp &
 
 #------------------------------------------------------------------------
 
