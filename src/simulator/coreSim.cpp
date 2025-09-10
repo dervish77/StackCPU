@@ -544,84 +544,111 @@ int coreSim::_executeInstruction(uint8_t inst, uint8_t oper1, uint8_t oper2)
 	switch(inst)
 	{
 		case OPC_PSH:
+			_stackPushDirect( oper1 );
 			break;
 		
 		case OPC_PSA:
+			_stackPushAcc();
 			break;
 
 		case OPC_POP:
+			_stackPop();
 			break;
 
 		case OPC_LDM:
+			_memDrLoad( oper1, oper2, MEM_DR_NONE );
 			break;
 
 		case OPC_LDI:
+			_memDrLoad( oper1, oper2, MEM_DR_INCR );
 			break;
 
 		case OPC_LDD:
+			_memDrLoad( oper1, oper2, MEM_DR_DECR );
 			break;
 
 		case OPC_STM:
+			_memDrStore( oper1, oper2, MEM_DR_NONE );
 			break;
 
 		case OPC_STI:
+			_memDrStore( oper1, oper2, MEM_DR_INCR );
 			break;
 
 		case OPC_STD:
+			_memDrStore( oper1, oper2, MEM_DR_DECR );
 			break;
 
 		case OPC_ADD:
+			_aluAddition();
 			break;
 
 		case OPC_SUB:
+			_aluSubtract();
 			break;
 
 		case OPC_NEG:
+			_aluNegate();
 			break;
 
 		case OPC_LSR:
+			_aluShiftRight();
 			break;
 
 		case OPC_LSL:
+			_aluShiftLeft();
 			break;
 
 		case OPC_AND:
+			_aluLogicalAnd( oper1 );
 			break;
 			
 		case OPC_ORR:
+			_aluLogicalOr( oper1 );
 			break;
 			
 		case OPC_XOR:
+			_aluLogicalXor( oper1 );
 			break;
 			
 		case OPC_INV:
+			_aluLogicalInv();
 			break;
 
 		case OPC_CPE:
+			_compare( oper1, COMP_EQUAL );
 			break;
 			
 		case OPC_CNE:
+			_compare( oper1, COMP_NOTEQUAL );
 			break;
 			
 		case OPC_BRZ:
+			_branch( oper1, oper2, BRANCH_ZERO );
 			break;
 			
 		case OPC_BRN:
+			_branch( oper1, oper2, BRANCH_NOTZERO );
 			break;
 			
 		case OPC_BRU:
+			_branch( oper1, oper2, BRANCH_UNCOND );
 			break;
 
 		case OPC_INP:
+			_inputOutput( REG_INDEX_IR, IO_DIR_IN );
 			break;
 			
 		case OPC_OUT:
+			_inputOutput( REG_INDEX_OR, IO_DIR_OUT );
 			break;
 			
 		case OPC_SER:
+			_inputOutput( REG_INDEX_SR, IO_DIR_IN );
 			break;
 			
 		case OPC_PRT:
+			_inputOutput( REG_INDEX_PR, IO_DIR_OUT );
 			break;
 
 		case OPC_NOP:
@@ -713,17 +740,314 @@ int coreSim::_doInstructionCycle()
 
 // -------------------------------------------------------------
 
+void coreSim::_stackPushDirect(uint8_t oper)
+{
+	uint8_t data8 = oper;
+	uint16_t data16 = oper;
+	
+	pRegisters->Set( REG_INDEX_AC, data16 );
+	_pushStack( data8 );
+}
+	
+void coreSim::_stackPushAcc()
+{
+	uint8_t data8;
+	uint16_t data16;
+	
+	data16 = pRegisters->Get( REG_INDEX_AC );
+	data8 = data16 & 0x00FF;
+	_pushStack( data8 );
+}
+	
+void coreSim::_stackPop()
+{
+	uint8_t data8;
+	uint16_t data16;
+	
+	data8 = _popStack();
+	data16 = data8;
+	pRegisters->Set( REG_INDEX_AC, data16);
+}
+	
+	
+void coreSim::_memDrLoad(uint8_t oper1, uint8_t oper2, int operation)
+{
+	uint8_t data8;
+	uint16_t data16;
+	
+	switch( operation )
+	{
+		case MEM_DR_NONE:
+			data16 = (oper1 << 8) + oper2;
+			pRegisters->Set( REG_INDEX_DR, data16);
+			break;
+		case MEM_DR_INCR:
+			_incrementRegister( REG_INDEX_DR );
+			break;
+		case MEM_DR_DECR:
+			_decrementRegister( REG_INDEX_DR );
+			break;
+		default:
+			printf("ERROR - unknown memory operation!\n");
+			break;
+	}
+	
+	data8 = pMemSim->Read( pRegisters->Get( REG_INDEX_DR ));
+	pRegisters->Set( REG_INDEX_AC, data8 );	
+	_pushStack( data8 );
+}
+	
+void coreSim::_memDrStore(uint8_t oper1, uint8_t oper2, int operation)
+{
+	uint8_t data8;
+	uint16_t data16;
+	
+	switch( operation )
+	{
+		case MEM_DR_NONE:
+			data16 = (oper1 << 8) + oper2;
+			pRegisters->Set( REG_INDEX_DR, data16);
+			break;
+		case MEM_DR_INCR:
+			_incrementRegister( REG_INDEX_DR );
+			break;
+		case MEM_DR_DECR:
+			_decrementRegister( REG_INDEX_DR );
+			break;
+		default:
+			printf("ERROR - unknown memory operation!\n");
+			break;
+	}
+	
+	data8 = _popStack();
+	pRegisters->Set( REG_INDEX_AC, data8 );	
+	pMemSim->Write( pRegisters->Get( REG_INDEX_DR ), data8);
+}
+	
+	
+void coreSim::_aluAddition()
+{
+	uint8_t temp8;
+	uint8_t data8;
+	
+	temp8 = _popStack();
+	pRegisters->Set( REG_INDEX_TR, temp8 );	
+	
+	data8 = _popStack();
+	pRegisters->Set( REG_INDEX_AC, data8 );	
+	
+	data8 = data8 + temp8;
+	pRegisters->Set( REG_INDEX_AC, data8 );	
+	
+	_pushStack( data8 );
+}
+	
+void coreSim::_aluSubtract()
+{
+	uint8_t temp8;
+	uint8_t data8;
+	
+	temp8 = _popStack();
+	pRegisters->Set( REG_INDEX_TR, temp8 );	
+	
+	data8 = _popStack();
+	pRegisters->Set( REG_INDEX_AC, data8 );	
+	
+	data8 = data8 - temp8;
+	pRegisters->Set( REG_INDEX_AC, data8 );	
+	
+	_pushStack( data8 );
+}
+	
+void coreSim::_aluNegate()
+{
+	uint8_t temp8;
+	uint8_t data8;
+	
+	temp8 = 0;
+	pRegisters->Set( REG_INDEX_TR, temp8 );	
 
+	data8 = _popStack();
+	pRegisters->Set( REG_INDEX_AC, data8 );	
+	
+	data8 = temp8 - data8;
+	pRegisters->Set( REG_INDEX_AC, data8 );	
+	
+	_pushStack( data8 );
+}
+	
+void coreSim::_aluShiftRight()
+{
+	uint8_t data8;
+	
+	data8 = _popStack();
+	pRegisters->Set( REG_INDEX_AC, data8 );	
+	
+	data8 = data8 >> 1;
+	pRegisters->Set( REG_INDEX_AC, data8 );	
+	
+	_pushStack( data8 );
+}
+	
+void coreSim::_aluShiftLeft()
+{
+	uint8_t data8;
+	
+	data8 = _popStack();
+	pRegisters->Set( REG_INDEX_AC, data8 );	
+	
+	data8 = data8 << 1;
+	pRegisters->Set( REG_INDEX_AC, data8 );	
+	
+	_pushStack( data8 );
+}
+	
+	
+void coreSim::_aluLogicalAnd(uint8_t oper)
+{
+	uint8_t data8;
+	
+	data8 = _popStack();
+	pRegisters->Set( REG_INDEX_AC, data8 );	
+	
+	data8 = data8 & oper;
+	pRegisters->Set( REG_INDEX_AC, data8 );	
+	
+	_pushStack( data8 );
+}
+	
+void coreSim::_aluLogicalOr(uint8_t oper)
+{
+	uint8_t data8;
+	
+	data8 = _popStack();
+	pRegisters->Set( REG_INDEX_AC, data8 );	
+	
+	data8 = data8 | oper;
+	pRegisters->Set( REG_INDEX_AC, data8 );	
+	
+	_pushStack( data8 );
+}
 
+void coreSim::_aluLogicalXor(uint8_t oper)
+{
+	uint8_t data8;
+	
+	data8 = _popStack();
+	pRegisters->Set( REG_INDEX_AC, data8 );	
+	
+	data8 = data8 ^ oper;
+	pRegisters->Set( REG_INDEX_AC, data8 );	
+	
+	_pushStack( data8 );	
+}
+	
+void coreSim::_aluLogicalInv()
+{
+	uint8_t temp8;
+	uint8_t data8;
+	
+	temp8 = _popStack();
+	pRegisters->Set( REG_INDEX_TR, temp8 );	
+	
+	data8 = ~temp8;
+	pRegisters->Set( REG_INDEX_AC, data8 );	
+	
+	_pushStack( data8 );	
+}
+	
+	
+void coreSim::_compare(uint8_t oper, int operation)
+{
+	uint8_t data8;
+	
+	data8 = _popStack();
+	pRegisters->Set( REG_INDEX_AC, data8 );	
+	_pushStack( data8 );
 
+	switch (operation)
+	{
+		case COMP_EQUAL:
+			if ( data8 == oper )
+				data8 = 0;
+			else
+				data8 = 1;
+			break;
 
+		case COMP_NOTEQUAL:
+			if ( data8 != oper )
+				data8 = 0;
+			else
+				data8 = 1;
+			break;
 
+		default:
+			printf("ERROR - unknown compare operation!\n");
+			break;
+	}
+	
+	_pushStack( data8 );	
+}
 
+void coreSim::_branch(uint8_t oper1, uint8_t oper2, int operation)
+{
+	uint8_t data8;
+	uint16_t data16;
+	
+	data16 = (oper1 << 8) + oper2;
+	pRegisters->Set( REG_INDEX_DR, data16);
+	
+	switch(operation)
+	{
+		case BRANCH_UNCOND:
+			_copyRegister( REG_INDEX_DR, REG_INDEX_PC );
+			break;
+			
+		case BRANCH_ZERO:
+			data8 = _popStack();
+			pRegisters->Set( REG_INDEX_AC, data8 );	
+			if (data8 == 0)
+				_copyRegister( REG_INDEX_DR, REG_INDEX_PC );
+			break;
+			
+		case BRANCH_NOTZERO:
+			data8 = _popStack();
+			pRegisters->Set( REG_INDEX_AC, data8 );	
+			if (data8 != 0)
+				_copyRegister( REG_INDEX_DR, REG_INDEX_PC );
+			break;
+	
+		default:
+			printf("ERROR - unknown branch operation!\n");
+			break;
+	}
+}
+	
+void coreSim::_inputOutput(int reg, int direction)
+{
+	uint8_t data8;
+	uint16_t data16;
 
+	switch(direction)
+	{
+		case IO_DIR_IN:
+			_copyRegister( reg, REG_INDEX_AC );
+			data16 = pRegisters->Get( REG_INDEX_AC );
+			data8 = data16 & 0x00FF;
+			_pushStack( data8 );
+			break;
+		
+		case IO_DIR_OUT:
+			data8 = _popStack();
+			pRegisters->Set( REG_INDEX_AC, data8 );
+			_copyRegister( REG_INDEX_AC, reg );
+			break;
 
-
-
-
+		default:
+			printf("ERROR - unknown i/o operation!\n");
+			break;
+	}
+}
 
 
 // -------------------------------------------------------------

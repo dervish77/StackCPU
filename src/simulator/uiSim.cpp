@@ -271,6 +271,7 @@ int uiSim::_startCLI(int skip)
 				break;
 			
 			default:
+				printf("unknown command\n");
 				break;
 		}
 	}

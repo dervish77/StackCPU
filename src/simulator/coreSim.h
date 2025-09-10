@@ -73,6 +73,11 @@ typedef struct Register_s Register_s_t;
 #define BRANCH_NOTZERO	2
 
 
+// IO direction
+#define IO_DIR_IN		1
+#define IO_DIR_OUT		2
+
+
 // error codes
 #define CORE_NOERROR	0
 #define CORE_ERROR		1
@@ -157,9 +162,9 @@ private:
 	void _aluShiftRight();
 	void _aluShiftLeft();
 	
-	void _aluLogicalAnd();
-	void _aluLogicalOr();
-	void _aluLogicalXor();
+	void _aluLogicalAnd(uint8_t oper);
+	void _aluLogicalOr(uint8_t oper);
+	void _aluLogicalXor(uint8_t oper);
 	void _aluLogicalInv();
 	
 	void _compare(uint8_t oper, int operation);
