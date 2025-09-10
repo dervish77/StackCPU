@@ -16,14 +16,11 @@
 #ifndef __main_h
 #define __main_h
 
-#define VERSION "0.1.1"
-
-
-
 /*
  *  CONFIGURATION
  */
 
+#define VERSION "0.2.0"
 
 
 /*
