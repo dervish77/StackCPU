@@ -4,24 +4,17 @@ TODO - StackCPU
 - Specify requirements
 -- not yet specified
 
-- Specify instructions
--- instructions specified DONE
---- revisit op codes definitions to make HW imp easier DONE
+- Implementation of SW simulator
+-- disable debug statements
+-- add status output when call of "instruction cycle" completes
+-- modify PRT instruction to output to printf
+-- move unit.bin to test.bin
+-- create new unit.bin to use each valid opcode
+-- add code coverage to makefile
+-- test and improve code coverage as needed
 
-- Detailed design of SW
--- complete UML design DONE
--- initial sim code in place and partially tested DONE
--- need to write instruction table DONE
--- need to write memory loading code DONE
--- need to write memory saving and dumping code DONE
--- need to write CLI parser
---- fix save/dump to include 'end' address argument
--- need to write instruction decoder
---- consider making this a plugin
--- need to write ALU functions
---- consider making this a plugin
--- need to design control SM
---- consider making this a plugin
+- Implementation of assembler tools
+-- not yet started
 
 - Detailed design of HW 
 -- not yet started
