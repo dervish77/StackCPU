@@ -378,7 +378,9 @@ x cc                   - read register "cc"
 y cc dddd              - write dddd to register "cc"
 z                      - dump contents of all registers
 
+c                      - reset core
 t rate                 - set clock tick to rate
+v                      - display versions
 
 ?                      - display CLI help
 
@@ -517,6 +519,7 @@ The Discrete Implementation is a HW design of the StackCPU device implemented us
   * bindump - used to examine binary files
   * binedit - used to edit contents of binary file
   * bingen - used to generate binary files
+
 
 
 
