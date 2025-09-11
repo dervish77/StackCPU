@@ -203,11 +203,13 @@ int uiSim::_startCLI(int skip)
 
 			case 'j':
 				address1 = strtol(cmdargs[1], &endptr, 16);
+				_resetCore();
 				_startCore( address1, MODE_RUN );
 				break;
 
 			case 'k':
 				address1 = strtol(cmdargs[1], &endptr, 16);
+				_resetCore();
 				_startCore( address1, MODE_SSTEP );
 				break;
 
@@ -276,7 +278,9 @@ void uiSim::_showCliHelp()
 	printf("y cc dddd              - write dddd to register 'cc'\n");
 	printf("z                      - dump contents of all registers\n");
 	printf("\n");
+	printf("c                      - reset core\n");
 	printf("t rate                 - set clock tick to rate\n");
+	printf("v                      - display versions\n");
 	printf("\n");
 	printf("?                      - display CLI help\n");
 	printf("\n");
