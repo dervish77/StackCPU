@@ -116,7 +116,7 @@ int main(int argc, char **argv)
 void PrintBanner()
 {
     printf("******************************************************\n");
-    printf("             Welcome to StackSim %s\n", VERSION);
+    printf("                    StackSim %s\n", VERSION);
     printf("******************************************************\n");
 }
 
