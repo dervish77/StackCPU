@@ -22,9 +22,9 @@
 #define DUMP_NAME_LEN	20
 
 // CLI defines
-#define PROMPT			"> "
-#define BUFFER_LEN		20
-#define MAX_CMD_ARGS	4
+#define PROMPT				"> "
+#define CMD_BUFFER_LEN		20
+#define MAX_CMD_ARGS		4
 
 // CLI commands
 

@@ -290,33 +290,12 @@ void coreSim::ClockTick()
 //
 void coreSim::UnitTest(int testnum)
 {
-	int index;
 	uint8_t memdata;
 	uint8_t memdata2;
 	uint16_t address;
-	uint16_t regdata;
 	
 	switch (testnum)
 	{
-		case 1:
-			regdata = GetReg(REG_INDEX_PC);
-			DebugPrintHex16("reg pc", regdata);
-			regdata = GetReg(REG_INDEX_SP);
-			DebugPrintHex16("reg sp", regdata);
-			regdata = GetReg(REG_INDEX_DR);
-			DebugPrintHex16("reg dr", regdata);
-
-			regdata = GetReg(REG_INDEX_AC);
-			DebugPrintHex16("reg ac", regdata);
-			SetReg( REG_INDEX_AC, 0x55 );
-			DebugPrintHex16("write ac", regdata);
-			regdata = GetReg(REG_INDEX_AC);
-			DebugPrintHex16("reg ac", regdata);
-			
-			_copyRegister(REG_INDEX_AC, REG_INDEX_OR);
-			DebugPrintHex16("reg or", regdata);
-			break;
-			
 		case 2:
 			// put program into memory
 			pMemSim->Write(0x0000, 0x92); // CLS
@@ -402,15 +381,6 @@ void coreSim::UnitTest(int testnum)
 			_debugDumpMemory("data:", 0x0c00, 4);
 			_debugDumpMemory("stack:", 0x0FFC, 4);
 			_debugDumpRegisters("registers:");
-			break;
-			
-		case 5:	
-			index = SearchOpCode( 0x31 );
-			DebugPrint("Found 0x31");
-			DumpOpCodeRecord(index);
-			index = SearchMnemonic( "CPE" );
-			DebugPrint("Found CPE");
-			DumpOpCodeRecord(index);
 			break;
 			
 		case 6:	
@@ -1151,7 +1121,6 @@ void coreSim::_debugDumpRegisters(const char *header)
 
 void coreSim::_debugDisplayRegisters(int show_all_regs)
 {
-	int index;
 	const char *labels[DEFAULT_REGISTER_SIZE] = { "pc", "sp", "dr", "ac", "tr", "ir", "or", "sr", "pr" };
 	
 	printf("Status: ");

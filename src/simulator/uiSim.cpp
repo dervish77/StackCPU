@@ -118,7 +118,7 @@ int uiSim::_startCLI(int skip)
 {
 	int done = 0;
 	
-	char cmdstr[BUFFER_LEN];
+	char cmdstr[CMD_BUFFER_LEN];
 	char *cmdargs[MAX_CMD_ARGS];
 	int argcount;
 	
@@ -135,7 +135,7 @@ int uiSim::_startCLI(int skip)
 	{
 		// get CLI command
 		printf("\n%s", PROMPT);
-		if ( fgets( cmdstr, BUFFER_LEN, stdin ) == NULL)
+		if ( fgets( cmdstr, CMD_BUFFER_LEN, stdin ) == NULL)
 		{
 			fprintf(stderr,"fgets error");
 			exit(1);
