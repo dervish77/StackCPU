@@ -134,10 +134,10 @@ int uiSim::_startCLI(int skip)
 	while (!done)
 	{
 		// get CLI command
-		printf("\n%s", PROMPT);
+		printf("\n%s", CMD_PROMPT);
 		if ( fgets( cmdstr, CMD_BUFFER_LEN, stdin ) == NULL)
 		{
-			fprintf(stderr,"fgets error");
+			fprintf(stderr,"CLI: fgets error");
 			exit(1);
 		}
 
@@ -166,14 +166,14 @@ int uiSim::_startCLI(int skip)
 			case 'r':
 				address1 = strtol(cmdargs[1], &endptr, 16);
 				data = _getMem( address1 );
-				printf("read %04X is %02X\n", address1, data);
+				printf("\nRead %04X is %02X\n", address1, data);
 				break;
 
 			case 'w':
 				address1 = strtol(cmdargs[1], &endptr, 16);
 				data = strtol(cmdargs[2], &endptr, 16);
 				_setMem( address1, data );
-				printf("wrote %04X with %02X\n", address1, data);
+				printf("\nWrote %04X with %02X\n", address1, data);
 				break;
 
 			case 'b':
@@ -229,6 +229,10 @@ int uiSim::_startCLI(int skip)
 			case 'c':
 				_resetCore();
 				break;
+
+			case 'm':
+				_displayMode();
+				break;
 				
 			case 't':
 				value = strtol(cmdargs[1], &endptr, 10);
@@ -248,7 +252,7 @@ int uiSim::_startCLI(int skip)
 				break;
 			
 			default:
-				printf("CLI: unknown command\n");
+				fprintf(stderr,"CLI: unknown command\n");
 				break;
 		}
 	}
@@ -279,6 +283,7 @@ void uiSim::_showCliHelp()
 	printf("z                      - dump contents of all registers\n");
 	printf("\n");
 	printf("c                      - reset core\n");
+	printf("m                      - get current mode\n");
 	printf("t rate                 - set clock tick to rate\n");
 	printf("v                      - display versions\n");
 	printf("\n");
@@ -310,11 +315,9 @@ void uiSim::_loadMemFile(char *name)
 		}
 		
 		_closeFile(load_file_p);
+		
+		printf("... loaded %d bytes\n", start-1);
 	}
-	
-	printf("... loaded %d bytes\n", start-1);
-
-	//_debugDumpMemory("Memory:", MEM_PROG_START, 18);
 }
 
 void uiSim::_saveMemFile(char *name)
@@ -358,7 +361,8 @@ void uiSim::_dumpMemFile(char *name)
 	{
 		printf("\nDumping memory to %s\n", dump_file_name);	
 		
-		count = ConvertDataToHex( pMem, MEM_PROG_START, MEM_DATA_END, dump_file_p, 0, 16);
+		// use 0 as start address for hex file / use 16 bytes per record 
+		count = ConvertDataToHex( pMem, MEM_PROG_START, MEM_DATA_END, dump_file_p, 0, 16);  
 		
 		_closeFile(dump_file_p);		
 	}
@@ -375,10 +379,9 @@ void uiSim::_fillMemBlock(uint16_t start, uint16_t end, uint8_t data)
 {
 	uint16_t i;
 	
-	DebugPrintHexHex("Filling memory", start, end);
-	DebugPrintHex("....with", data);
+	printf("\nFilling memory from %04X to %04X with %02X\n", start, end, data);
 	
-	for (i = start; i < end; i++)
+	for (i = start; i <= end; i++)
 	{
 		pMem->Write( i, data );
 	}
@@ -436,6 +439,29 @@ void uiSim::_resetCore()
 	pCore->CoreReset();
 }	
 
+void uiSim::_displayMode()
+{
+	int mode = _getMode(); // TODO consider getting mode from coreSim
+	
+	switch(mode)
+	{
+		case MODE_EXIT:
+			printf("\nMode is EXIT\n");
+			break;
+		case MODE_HALT:
+			printf("\nMode is HALTED\n");
+			break;
+		case MODE_RUN:
+			printf("\nMode is RUN\n");
+			break;
+		case MODE_SSTEP:
+			printf("\nMode is SSTEP\n");
+			break;
+		default:
+			break;
+	}
+}
+
 void uiSim::_readReg(char *reg)
 {
 	uint16_t data;
@@ -446,7 +472,7 @@ void uiSim::_readReg(char *reg)
 	{
 		data = pCore->GetReg( index );
 		
-		printf("read reg %s is %04X\n", reg, data);
+		printf("\nRead reg %s is %04X\n", reg, data);
 	}
 }
 
@@ -458,13 +484,14 @@ void uiSim::_writeReg(char *reg, uint16_t data )
 	{
 		pCore->SetReg( index, data );
 		
-		printf("write reg %s with %04X\n", reg, data);
+		printf("\nWrite reg %s with %04X\n", reg, data);
 	}
 }
 
 void uiSim::_dumpRegs()
 {
-	_debugDumpRegisters( "registers" );
+	printf("\n");
+	_debugDumpRegisters( "Registers" );
 }
 
 
@@ -478,7 +505,7 @@ FILE* uiSim::_openFile(char *name, const char *dir)
 		file_p = fopen(name, dir);
 		if (file_p == (FILE *)NULL)
 		{
-			fprintf(stderr, "Couldn't open %s\n", name);
+			fprintf(stderr, "Couldn't open %s for %s\n", name, dir);
 		}
 	}
 	else
@@ -494,6 +521,10 @@ void uiSim::_closeFile(FILE *file_p)
 	if (file_p != NULL)
 	{
 		fclose(file_p);
+	}
+	else
+	{
+		fprintf(stderr, "Specified file ptr is null\n");		
 	}
 }
 
@@ -562,13 +593,11 @@ void uiSim::_debugDumpRegisters(const char *header)
 	uint16_t regdata;
 	
 	printf("%s\n", header);
-	//DebugPrint(header);
 	
 	for (index = 0; index < DEFAULT_REGISTER_SIZE; index++)
 	{
 		regdata = pCore->GetReg(index);
 		printf("%s %04X\n", labels[index], regdata);
-		//DebugPrintHex16( labels[index], regdata );
 	}
 }
 

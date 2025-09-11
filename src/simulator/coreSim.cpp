@@ -154,7 +154,7 @@ int coreSim::GetState(int index)
 	switch(index)
 	{
 		case CORE_MODE:
-			state = coreState = state;
+			state = coreState;
 			break;
 			
 		case CORE_STATUS:
@@ -1128,10 +1128,10 @@ void coreSim::_debugDisplayRegisters(int show_all_regs)
 	printf("%s 0x%04X  ", labels[REG_INDEX_SP], pRegisters->Get(REG_INDEX_SP));
 	printf("%s 0x%04X  ", labels[REG_INDEX_DR], pRegisters->Get(REG_INDEX_DR));
 	printf("%s 0x%04X  ", labels[REG_INDEX_AC], pRegisters->Get(REG_INDEX_AC));
+	printf("%s 0x%04X  ", labels[REG_INDEX_TR], pRegisters->Get(REG_INDEX_TR));
 	
 	if (show_all_regs)
 	{
-		printf("%s 0x%04X  ", labels[REG_INDEX_TR], pRegisters->Get(REG_INDEX_TR));
 		printf("\n");
 		printf("        ");
 		printf("%s 0x%04X  ", labels[REG_INDEX_IR], pRegisters->Get(REG_INDEX_IR));

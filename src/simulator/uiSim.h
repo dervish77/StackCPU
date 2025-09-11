@@ -22,7 +22,7 @@
 #define DUMP_NAME_LEN	20
 
 // CLI defines
-#define PROMPT				"> "
+#define CMD_PROMPT			"> "
 #define CMD_BUFFER_LEN		20
 #define MAX_CMD_ARGS		4
 
@@ -93,6 +93,8 @@ private:
 	void _stepCore();
 	
 	void _resetCore();
+	
+	void _displayMode();
 	
 	void _readReg(char *reg);
 	void _writeReg(char *reg, uint16_t data );
