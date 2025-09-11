@@ -92,6 +92,8 @@ private:
 	void _haltCore();
 	void _stepCore();
 	
+	void _resetCore();
+	
 	void _readReg(char *reg);
 	void _writeReg(char *reg, uint16_t data );
 	void _dumpRegs();

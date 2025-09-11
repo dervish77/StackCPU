@@ -14,6 +14,10 @@
 #include "regArray.h"
 
 
+#define CPU_NAME		"stackcpu"
+#define CPU_VERSION		"010"
+
+
 // register indexes
 #define REG_INDEX_PC	0		// full 16 bits - points to next instruction to read
 #define REG_INDEX_SP	1		// full 16 bits - points to last value put on stack
@@ -43,11 +47,23 @@ struct Register_s {
 typedef struct Register_s Register_s_t;
 
 
-// state ids
+// core state indexes
+#define CORE_MODE		1
+#define CORE_STATUS		2
+
+
+// core state mode ids
 #define STATE_IDLE		0
 #define STATE_HALT		1
 #define STATE_RUN		2
 #define STATE_SSTEP		3
+
+
+// display state ids
+#define DISPLAY_OFF		0
+#define DISPLAY_REGS	1
+#define DISPLAY_MEM		2
+#define DISPLAY_FULL	3
 
 
 // fetch operation
@@ -110,6 +126,8 @@ public:
 	int CoreStep();
 	int CoreHalt();
 	
+	void CoreReset();
+	
 	void ClockTick();
 	
 	// unit test methods
@@ -122,8 +140,11 @@ private:
 	regArray *pRegisters;
 	int memsize;
 	int coreState;
+	int displayState;
 	
 	// private methods
+	void _displayStatus();
+	
 	void _clearRegisters();
 	void _fillRegisters(uint16_t data);
 	void _resetRegisters();
@@ -176,6 +197,9 @@ private:
 	// private debug methods
 	void _debugDumpMemory(const char *header, uint16_t start, int bytes);
 	void _debugDumpRegisters(const char *header);
+	
+	void _debugDisplayRegisters(int show_all_regs);
+	void _debugDisplayMemory();
 };
 
 #endif // __coreSim_h

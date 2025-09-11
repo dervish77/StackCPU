@@ -47,18 +47,9 @@ uiSim::~uiSim()
 // operator - run CLI interface
 void uiSim::RunCLI(char *name, int mode)
 {
-	#if 0
-	char savefilename[SAVE_NAME_LEN];
-	char dumpfilename[DUMP_NAME_LEN];
-	
-	int count;
-	#endif
-
 	int exit = 1;
 	
 	if (mode != MODE_EXIT) exit = 0;
-	
-	DebugPrint("uiSim::RunCLI");
 	
 	// load memory file
 	_loadMemFile(name);
@@ -75,34 +66,6 @@ void uiSim::RunCLI(char *name, int mode)
 	}
 	
 	printf("\nExiting sim ...\n\n");
-	
-	// save memory file
-	#if 0
-	strcpy(savefilename, "save.bin");
-	_saveMemFile(savefilename);
-	#endif
-	
-	// dump memory file
-	#if 0
-	strcpy(dumpfilename, "dump.hex");
-	_dumpMemFile(dumpfilename);
-	#endif
-	
-	// dump core state
-	#if 0
-	_debugDumpMemory("program:", MEM_PROG_START, 18);
-	pCore->UnitTest(4);
-	#endif
-	
-	#if 0
-	count = DumpMemory(pMem, 0, 127, 0); 
-	DebugPrintNumber("dumped", count);
-	#endif
-	
-	#if 0
-	pCore->UnitTest(5);
-	pCore->UnitTest(6);
-	#endif
 }
 
 //
@@ -147,6 +110,7 @@ int uiSim::_getMode()
 void uiSim::_setClock(int rate)
 {
 	clock_rate = rate;
+	printf("clock set to %d\n", clock_rate);
 }
 	
 // private operators
@@ -188,7 +152,7 @@ int uiSim::_startCLI(int skip)
 				if (argcount == 2)
 					_loadMemFile( cmdargs[1] );
 				else	
-					printf("syntax error\n");
+					printf("CLI: syntax error\n");
 				break;
 
 			case 's':
@@ -201,14 +165,14 @@ int uiSim::_startCLI(int skip)
 				
 			case 'r':
 				address1 = strtol(cmdargs[1], &endptr, 16);
-				data = pMem->Read( address1 );
+				data = _getMem( address1 );
 				printf("read %04X is %02X\n", address1, data);
 				break;
 
 			case 'w':
 				address1 = strtol(cmdargs[1], &endptr, 16);
 				data = strtol(cmdargs[2], &endptr, 16);
-				pMem->Write( address1, data );
+				_setMem( address1, data );
 				printf("wrote %04X with %02X\n", address1, data);
 				break;
 
@@ -260,23 +224,29 @@ int uiSim::_startCLI(int skip)
 				_dumpRegs();
 				break;
 
+			case 'c':
+				_resetCore();
+				break;
+				
 			case 't':
 				value = strtol(cmdargs[1], &endptr, 10);
 				_setClock( value );
-				printf("clock set to %d\n", value);
 				break;
 
+			case 'v':
+				// display versions
+				break;
+				
 			case '?':
 				_showCliHelp();
 				break;
 				
 			case 'q':
-				printf("goodbye\n");
 				done = 1;
 				break;
 			
 			default:
-				printf("unknown command\n");
+				printf("CLI: unknown command\n");
 				break;
 		}
 	}
@@ -286,7 +256,31 @@ int uiSim::_startCLI(int skip)
 
 void uiSim::_showCliHelp()
 {
-
+	printf("Commands:\n");
+	printf("l filename             - load binary 'file' into memory simulator\n");
+	printf("s filename             - save memory simulator to binary 'file'\n");
+	printf("d filename             - dump memory to 'hex file'\n");
+	printf("\n");
+	printf("r hhhh                 - read memory at addess hhhh\n");
+	printf("w hhhh dd              - write dd to memory at address hhhh\n");
+	printf("b ssss eeee            - dump memory block from ssss to eeee\n");
+	printf("f ssss eeee dd         - fill memory block from ssss to eeee with dd\n");
+	printf("\n");
+	printf("g                      - go - i.e. enter 'run' mode\n");
+	printf("h                      - halt - i.e. enter 'halt' mode\n");
+	printf("j hhhh                 - reset core, jump to address hhhh and begin 'run' mode\n");
+	printf("k hhhh                 - reset core, jump to address hhhh and begin 'single step' mode\n");
+	printf("n                      - single step to next instruction\n");
+	printf("\n");
+	printf("x cc                   - read register 'cc'\n");
+	printf("y cc dddd              - write dddd to register 'cc'\n");
+	printf("z                      - dump contents of all registers\n");
+	printf("\n");
+	printf("t rate                 - set clock tick to rate\n");
+	printf("\n");
+	printf("?                      - display CLI help\n");
+	printf("\n");
+	printf("q                      - quit the simulator\n");
 }
 
 void uiSim::_loadMemFile(char *name)
@@ -422,7 +416,7 @@ void uiSim::_goCore()
 void uiSim::_haltCore()
 {
 	current_mode = MODE_HALT;
-	
+	printf("\nSim is HALTED\n");
 	pCore->CoreHalt();
 }
 void uiSim::_stepCore()
@@ -431,6 +425,12 @@ void uiSim::_stepCore()
 
 	pCore->CoreStep();
 }
+
+void uiSim::_resetCore()
+{
+	printf("\nCore reset\n");
+	pCore->CoreReset();
+}	
 
 void uiSim::_readReg(char *reg)
 {

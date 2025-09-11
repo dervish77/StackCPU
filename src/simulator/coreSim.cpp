@@ -16,6 +16,8 @@
 
 #include "opCodes.h"
 
+#include "binUtils.h"
+
 #include "debug.h"
 
 
@@ -51,6 +53,7 @@ coreSim::coreSim()
 	_resetRegisters();
 	
 	coreState = STATE_IDLE;
+	displayState = DISPLAY_REGS;
 }
 
 // constructor
@@ -72,6 +75,7 @@ coreSim::coreSim(memSim *mem)
 	_resetRegisters();
 	
 	coreState = STATE_IDLE;
+	displayState = DISPLAY_REGS;
 }
 
 // destructor
@@ -116,18 +120,52 @@ uint16_t coreSim::GetReg(int index)
 // accessor - set memSim reference
 int coreSim::SetState(int index, int state)
 {
-	UNUSED(index);
-	UNUSED(state);
+	int error = 0;
 	
-	return 0;
+	switch(index)
+	{
+		case CORE_MODE:
+			if (state >= STATE_IDLE && state <= STATE_SSTEP)
+			{
+				coreState = state;
+			}
+			break;
+			
+		case CORE_STATUS:
+			if (state >= DISPLAY_OFF && state <= DISPLAY_FULL)
+			{
+				displayState = state;
+			}
+			break;
+			
+		default:
+			error = 1;
+			break;
+	}
+	
+	return error;
 }
 
 // accessor - get memSim reference
 int coreSim::GetState(int index)
 {
-	UNUSED(index);
+	int state = -1;
 	
-	return 0;
+	switch(index)
+	{
+		case CORE_MODE:
+			state = coreState = state;
+			break;
+			
+		case CORE_STATUS:
+			state = displayState;
+			break;
+			
+		default:
+			break;
+	}
+	
+	return state;
 }
 
 // accessor - search register name - returns index
@@ -206,12 +244,11 @@ int coreSim::CoreRun()
 	int done = 0;
 	
 	coreState = STATE_RUN;
-	DebugPrint("CoreRun start");
 	while (!done)
 	{
 		done = _doInstructionCycle();
+		_displayStatus();
 	}
-	DebugPrint("CoreRun end");
 	return 1;
 }
 
@@ -219,9 +256,8 @@ int coreSim::CoreRun()
 int coreSim::CoreStep()
 {
 	coreState = STATE_SSTEP;
-	DebugPrint("CoreStep start");
 	_doInstructionCycle();
-	DebugPrint("CoreStep end");
+	_displayStatus();
 	return 1;
 }
 
@@ -229,10 +265,17 @@ int coreSim::CoreStep()
 int coreSim::CoreHalt()
 {
 	coreState = STATE_HALT;
-	DebugPrint("CoreHalt start");
 
 	return 1;
 }
+
+
+// operator - reset the core
+void coreSim::CoreReset()
+{
+	_resetRegisters();
+}
+
 
 // operator - tick the clock
 void coreSim::ClockTick()
@@ -385,6 +428,27 @@ void coreSim::UnitTest(int testnum)
 // PRIVATE METHODS
 //
 
+void coreSim::_displayStatus()
+{
+	switch(displayState)
+	{
+		case DISPLAY_OFF:
+			break;
+		case DISPLAY_REGS:
+			_debugDisplayRegisters(0);
+			break;
+		case DISPLAY_MEM:
+			_debugDisplayMemory();
+			break;
+		case DISPLAY_FULL:
+			_debugDisplayRegisters(1);
+			_debugDisplayMemory();
+			break;
+		default:
+			break;
+	}
+}
+
 void coreSim::_clearRegisters()
 {
 	int i;
@@ -454,7 +518,7 @@ uint8_t coreSim::_fetchMemory(int reg, int operation)
 	regdata = pRegisters->Get(reg);
 	memdata = pMemSim->Read( regdata );
 
-	DebugPrintHexHex("fetched", regdata, memdata);
+	//DebugPrintHexHex("fetched", regdata, memdata);
 
 	switch(operation)
 	{
@@ -721,10 +785,10 @@ int coreSim::_doInstructionCycle()
 		instruction = _fetchInstruction();
 	
 		_decodeInstruction( instruction, &operand1, &operand2 );
-		DebugPrintHexHexHex("decoded", instruction, operand1, operand2);
+		//DebugPrintHexHexHex("decoded", instruction, operand1, operand2);
 		
 		_executeInstruction( instruction, operand1, operand2 );
-		DebugPrintHexHexHex("executed", instruction, operand1, operand2);
+		//DebugPrintHexHexHex("executed", instruction, operand1, operand2);
 
 		if (instruction == OPC_END)
 		{
@@ -1085,5 +1149,41 @@ void coreSim::_debugDumpRegisters(const char *header)
 	}
 }
 
+void coreSim::_debugDisplayRegisters(int show_all_regs)
+{
+	int index;
+	const char *labels[DEFAULT_REGISTER_SIZE] = { "pc", "sp", "dr", "ac", "tr", "ir", "or", "sr", "pr" };
+	
+	printf("Status: ");
+	printf("%s 0x%04X  ", labels[REG_INDEX_PC], pRegisters->Get(REG_INDEX_PC));
+	printf("%s 0x%04X  ", labels[REG_INDEX_SP], pRegisters->Get(REG_INDEX_SP));
+	printf("%s 0x%04X  ", labels[REG_INDEX_DR], pRegisters->Get(REG_INDEX_DR));
+	printf("%s 0x%04X  ", labels[REG_INDEX_AC], pRegisters->Get(REG_INDEX_AC));
+	
+	if (show_all_regs)
+	{
+		printf("%s 0x%04X  ", labels[REG_INDEX_TR], pRegisters->Get(REG_INDEX_TR));
+		printf("\n");
+		printf("        ");
+		printf("%s 0x%04X  ", labels[REG_INDEX_IR], pRegisters->Get(REG_INDEX_IR));
+		printf("%s 0x%04X  ", labels[REG_INDEX_OR], pRegisters->Get(REG_INDEX_OR));
+		printf("%s 0x%04X  ", labels[REG_INDEX_SR], pRegisters->Get(REG_INDEX_SR));
+		printf("%s 0x%04X  ", labels[REG_INDEX_PR], pRegisters->Get(REG_INDEX_PR));
+		printf("\n");
+	}
+	else
+	{
+		printf("\n");
+	}	
+}
+
+void coreSim::_debugDisplayMemory()
+{
+	DumpMemory( pMemSim, MEM_PROG_START, MEM_PROG_START+15, 0 );
+
+	DumpMemory( pMemSim, MEM_DATA_START, MEM_DATA_START+15, 0 );
+
+	DumpMemory( pMemSim, MEM_STACK_END-15, MEM_STACK_END, 0 );
+}
 
 // end of file
