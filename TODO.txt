@@ -12,7 +12,8 @@ TODO - StackCPU
    -- have PRT output to prt.txt file
    -- have SER input from ser.txt file
    -- will need to add options to cmd line in main.c, and add methods
-   to uiSim and coreSim to handle the file pointers
+   to uiSim and coreSim to handle the file pointers (alternative is use a
+   uartDevice class that has internal in/out buffers instead of actual files)
 -- code coverage
    -- create new unit.bin to use each valid opcode
    -- add code coverage to makefile
@@ -23,6 +24,7 @@ TODO - StackCPU
 
 - Detailed design of HW 
 -- not yet started
+
 
 
 
