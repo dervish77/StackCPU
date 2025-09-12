@@ -5,19 +5,25 @@ TODO - StackCPU
 -- not yet specified
 
 - Implementation of SW simulator
--- disable debug statements
--- add status output when call of "instruction cycle" completes
--- modify PRT instruction to output to printf
--- move unit.bin to test.bin
--- create new unit.bin to use each valid opcode
--- add code coverage to makefile
--- test and improve code coverage as needed
+-- disable debug statements DONE
+-- add status output when call of "instruction cycle" completes DONE
+-- move unit.bin to test.bin DONE
+-- modify SER and PRT instructions follows
+   -- have PRT output to prt.txt file
+   -- have SER input from ser.txt file
+   -- will need to add options to cmd line in main.c, and add methods
+   to uiSim and coreSim to handle the file pointers
+-- code coverage
+   -- create new unit.bin to use each valid opcode
+   -- add code coverage to makefile
+   -- test and improve code coverage as needed
 
 - Implementation of assembler tools
 -- not yet started
 
 - Detailed design of HW 
 -- not yet started
+
 
 
 
