@@ -1,6 +1,59 @@
 CHANGES - StackCPU
 ==================
 
+09/12/2025
+    added todo items for SER and PRT op codes
+    added -p and -s command line options
+    added i, o, p, and q CLI commands
+    added todo note about possibly using a uartDevice class
+    added unit test infrastructure
+	added code coverage and profiling infrustructure
+	added -u command line option to main.cpp
+	added ability to pass 'unit' flag to key uiSim methods 
+	reordered tests within unit test methods of uiSim and coreSim
+    added cli commands i o p q
+    bumped version to 0.3.1
+
+09/11/2025
+    copied unit.bin to test.bin
+    simplied banner format
+    general cleanup ; added core reset function
+    added c and v ui commands
+    more cleanup ; fixed more compiler warnings
+    more cleanup ; mostly fixing cli output formatting
+
+09/10/2025
+    added framework methods for completing instruction execution
+    completed implementation of instruction execution and verified via unit.bin
+    updated TODO with a few things that stackSim still needs
+	cleaned up compile warnings
+    bumped version to 0.3.0
+
+09/09/2025
+    added 'make ide' target
+    bumped version to 0.2.0
+
+09/04/2025
+    fixed bug when trying to run 'b 0ff0 0fff' on cli
+    added initial coreSim methods to perform instruction fetching and decoding
+
+09/03/2025
+    implemented dump memory and dump block
+    fixed error in calling of DumpMemory in uiSim
+    added access functions to opCodes.xxx and verified via unit tests in coreSim
+    implemented initial CLI in uiSim ; added RegTable to coreSim and accessors for it
+    added convert to upper case to reg search and opcode search
+    regenerated binary files after fixing start byte error in bingen tool (when using count)
+
+09/02/2025
+    added top level makefile, template files for tools
+	added ability to 'make install' all the tools
+    fixed errors in make distro
+    added pdf of readme as user manual
+    added unit asm, obj, and bin files for future use in tools dev
+    added top level makefile
+    fixed 'make distclean' target
+    modified usage to match design for each tool
 
 09/01/2025
     reformatted the instructions section
@@ -11,6 +64,9 @@ CHANGES - StackCPU
     added LDD and STD instructions
     added 'inc/dec' block to DR register on arch diagram
     updated op codes pdf to include LDD and STD instructions
+    added start and end address arguments to ConvertData function
+    renamed hex.xxx to binUtils.xxx
+    modified code to match renamed binUtils.xxx files
 
 08/30/2205
     added reference for intel hex format
