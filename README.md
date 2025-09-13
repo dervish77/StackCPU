@@ -353,7 +353,9 @@ options:
                            where <mode> is 0 for idle, 1 for halt (default), 2 for run, 3 for single step
 -p filename            - set serial 'filename' for output via PRT
 -s filename            - set serial 'filename' for input via SER
--h                     - display command arguments
+-u                     - enable unit testing
+-c string              - pass command 'string' to CLI
+-h                     - display command line arguments
 -v                     - display version
 
 Example: stacksim -m 1 -f myprog.bin
@@ -525,6 +527,7 @@ The Discrete Implementation is a HW design of the StackCPU device implemented us
   * bindump - used to examine binary files
   * binedit - used to edit contents of binary file
   * bingen - used to generate binary files
+
 
 
 
