@@ -146,8 +146,8 @@ int uiSim::_startCLI(int skip)
 		printf("\n%s", CMD_PROMPT);
 		if (skip) // we're running unit tests so let's bail out
 		{
-			printf("e\n");
-			cmdltr = 'e';
+			strcpy( cmdstr, "e\n" );  // set to exit command
+			printf("%s", cmdstr);
 		}
 		else
 		{	
@@ -156,14 +156,13 @@ int uiSim::_startCLI(int skip)
 				fprintf(stderr,"CLI: fgets error");
 				exit(1);
 			}
-
-			// parse CLI command string
-			argcount = ParseString( cmdstr, cmdargs );
-		
-			// handle CLI command
-			cmdltr = cmdargs[0][0];  // first letter of first arg
 		}
-		
+
+		// parse CLI command string
+		argcount = ParseString( cmdstr, cmdargs );
+
+		// handle CLI command
+		cmdltr = cmdargs[0][0];  // first letter of first arg
 		switch(cmdltr)
 		{
 			case 'l':
