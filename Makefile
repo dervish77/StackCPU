@@ -80,7 +80,7 @@ tar: newversion
 	tar -rvf $(PKG_NAME).tar $(PKG_HOME)/README.md ; \
 	tar -rvf $(PKG_NAME).tar $(PKG_HOME)/StackCPU_README.pdf ; \
 	tar -rvf $(PKG_NAME).tar $(PKG_HOME)/TODO.txt ; \
-	tar -rvf $(PKG_NAME).tar $(PKG_HOME)/Version ; \
+	tar -rvf $(PKG_NAME).tar $(PKG_HOME)/Version.txt ; \
 	tar -rvf $(PKG_NAME).tar $(PKG_HOME)/docs/ ; \
 	tar -rvf $(PKG_NAME).tar $(PKG_HOME)/examples/ ; \
 	tar -rvf $(PKG_NAME).tar $(PKG_HOME)/hw/ ; \
@@ -90,9 +90,11 @@ tar: newversion
 	mv $(PKG_NAME).tar.gz $(PKG_NAME).tgz
 	-@echo "Distribution is ../$(PKG_NAME).tgz (also see ../$(PKG_NAME).txt)"
 	-@echo "Distribution is ../$(PKG_NAME).tgz" >> ../$(PKG_NAME).txt
-	-@echo "-----------------------------------" >> ../$(PKG_NAME).txt
-	-@cat Version >> ../$(PKG_NAME).txt
-	-@echo "-----------------------------------" >> ../$(PKG_NAME).txt
+	-@echo "--------------------------------------" >> ../$(PKG_NAME).txt
+	-@cat Version.txt >> ../$(PKG_NAME).txt
+	-@echo "--------------------------------------" >> ../$(PKG_NAME).txt
+	-@echo "see BUILD.txt for build instructions" >> ../$(PKG_NAME).txt
+	-@echo "--------------------------------------" >> ../$(PKG_NAME).txt
 
 newversion:
 	cp /dev/null Version.txt
