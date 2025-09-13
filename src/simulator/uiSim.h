@@ -41,7 +41,7 @@ public:
 
 
     // operators
-	void RunCLI(char *name, int mode);
+	void RunCLI(char *name, int mode, int unit);
 	
 
 private:
@@ -86,7 +86,7 @@ private:
 	void _dumpMemBlock(uint16_t start, uint16_t end);
 	void _fillMemBlock(uint16_t start, uint16_t end, uint8_t data);
 	
-	void _startCore(uint16_t pcaddr, int mode);
+	void _startCore(uint16_t pcaddr, int mode, int unit);
 	
 	void _goCore();
 	void _haltCore();

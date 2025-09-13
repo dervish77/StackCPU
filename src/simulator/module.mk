@@ -26,10 +26,25 @@ LINT  = lint
 TAR   = tar
 GZIP  = gzip
 
-CP = cp
-MV = mv
-RM = rm -f
+CP    = cp
+MV    = mv
+RM    = rm -f
 
+GPROF		= gprof
+KPROF		= kprof
+GCOV		= gcov
+
+VALGRIND	= valgrind
+VG_CALL 	= --tool=callgrind
+VG_MEM		= --tool=memcheck --leak-check=yes -v
+
+GPROF_OPT	= -pg
+GCOV_OPT	= -fprofile-arcs -ftest-coverage
+
+OPT		=
+#OPT		= $(GPROF_OPT)
+#OPT		= $(GCOV_OPT)
+#OPT		= $(GPROF_OPT) $(GCOV_OPT)
 
 #------------------------------------------------------------------------
 # Define some extras
@@ -49,8 +64,8 @@ MOD_INCLUDES	= -I.  $(EXTRA_INCLUDE)
 #------------------------------------------------------------------------
 # Define local cflags
 #------------------------------------------------------------------------
-EXTRA_DEBUG 	= -W -Wall -ggdb -O2
-#EXTRA_DEBUG 	= -g
+EXTRA_DEBUG 	= -W -Wall -ggdb -O2 $(OPT)
+#EXTRA_DEBUG 	= -g $(OPT)
 
 EXTRA_DEFINES   = 
 
@@ -66,7 +81,7 @@ MOD_CPPFLAGS 	= $(EXTRA_DEBUG) $(EXTRA_DEFINES) -Wno-deprecated
 
 #MOD_LDFLAGS 	= -lang-c++ -static
 #MOD_LDFLAGS 	= -static
-MOD_LDFLAGS 	= 
+MOD_LDFLAGS 	= $(OPT)
 
 MOD_LIB_PATHS 	= -L/usr/local/lib
 

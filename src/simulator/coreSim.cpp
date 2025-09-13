@@ -294,8 +294,20 @@ void coreSim::UnitTest(int testnum)
 	uint8_t memdata2;
 	uint16_t address;
 	
+	printf("coreSim::UnitTest test %d\n", testnum);
+
 	switch (testnum)
 	{
+		case 1:
+			CoreRun();
+			CoreReset();
+			CoreStep();
+			CoreStep();
+			CoreStep();
+			CoreStep();
+			CoreHalt();
+			break;
+			
 		case 2:
 			// put program into memory
 			pMemSim->Write(0x0000, 0x92); // CLS
@@ -381,6 +393,9 @@ void coreSim::UnitTest(int testnum)
 			_debugDumpMemory("data:", 0x0c00, 4);
 			_debugDumpMemory("stack:", 0x0FFC, 4);
 			_debugDumpRegisters("registers:");
+			break;
+			
+		case 5:
 			break;
 			
 		case 6:	

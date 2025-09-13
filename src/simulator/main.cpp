@@ -49,6 +49,7 @@ int main(int argc, char **argv)
 	char debugname[BUFFER_LEN];
 	int mode = MODE_HALT;
 	int debug_enable = 0;
+	int unit_test = 0;
     int play = 1;
     int i;
 
@@ -77,6 +78,9 @@ int main(int argc, char **argv)
 						case 'v':
                             PrintBanner();
                             play = 0;
+                            break;
+                        case 'u':
+                            unit_test = 1;
                             break;
                         case 'm':
 							mode = atoi(argv[i+1]);
@@ -107,7 +111,7 @@ int main(int argc, char **argv)
     {
 		PrintBanner();
 		
-		UI.RunCLI(filename, mode);
+		UI.RunCLI(filename, mode, unit_test);
     }
 
     exit(0);

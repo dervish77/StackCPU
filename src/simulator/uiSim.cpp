@@ -45,7 +45,7 @@ uiSim::~uiSim()
 
 
 // operator - run CLI interface
-void uiSim::RunCLI(char *name, int mode)
+void uiSim::RunCLI(char *name, int mode, int unit)
 {
 	int exit = 1;
 	
@@ -55,14 +55,25 @@ void uiSim::RunCLI(char *name, int mode)
 	_loadMemFile(name);
 	
 	// start core sim
-	_startCore(MEM_PROG_START, mode);
+	_startCore(MEM_PROG_START, mode, unit);
 	
 	// start CLI
 	while( !exit )
 	{
 		printf("\nStarting CLI ...\n");
 		
-		exit = _startCLI(0);
+		if (unit)
+			exit = _startCLI(1);
+		else
+			exit = _startCLI(0);
+	}
+	
+	if (mode == 99 && unit == 1)
+	{
+		_unitTest(1);
+		_unitTest(2);
+		_unitTest(3);
+		_unitTest(4);
 	}
 	
 	printf("\nExiting sim ...\n\n");
@@ -129,23 +140,30 @@ int uiSim::_startCLI(int skip)
 	int value;
 	char *endptr;
 	
-	if (skip) done = 1;
-	
 	while (!done)
 	{
 		// get CLI command
 		printf("\n%s", CMD_PROMPT);
-		if ( fgets( cmdstr, CMD_BUFFER_LEN, stdin ) == NULL)
+		if (skip) // we're running unit tests so let's bail out
 		{
-			fprintf(stderr,"CLI: fgets error");
-			exit(1);
+			printf("q\n");
+			cmdltr = 'q';
 		}
+		else
+		{	
+			if ( fgets( cmdstr, CMD_BUFFER_LEN, stdin ) == NULL)
+			{
+				fprintf(stderr,"CLI: fgets error");
+				exit(1);
+			}
 
-		// parse CLI command string
-		argcount = ParseString( cmdstr, cmdargs );
+			// parse CLI command string
+			argcount = ParseString( cmdstr, cmdargs );
 		
-		// handle CLI command
-		cmdltr = cmdargs[0][0];  // first letter of first arg
+			// handle CLI command
+			cmdltr = cmdargs[0][0];  // first letter of first arg
+		}
+		
 		switch(cmdltr)
 		{
 			case 'l':
@@ -204,13 +222,13 @@ int uiSim::_startCLI(int skip)
 			case 'j':
 				address1 = strtol(cmdargs[1], &endptr, 16);
 				_resetCore();
-				_startCore( address1, MODE_RUN );
+				_startCore( address1, MODE_RUN, 0 );
 				break;
 
 			case 'k':
 				address1 = strtol(cmdargs[1], &endptr, 16);
 				_resetCore();
-				_startCore( address1, MODE_SSTEP );
+				_startCore( address1, MODE_SSTEP, 0 );
 				break;
 
 			case 'x':
@@ -387,7 +405,7 @@ void uiSim::_fillMemBlock(uint16_t start, uint16_t end, uint8_t data)
 	}
 }
 	
-void uiSim::_startCore(uint16_t pcaddr, int mode)
+void uiSim::_startCore(uint16_t pcaddr, int mode, int unit)
 {
 	_setMode(mode);
 	
@@ -409,7 +427,7 @@ void uiSim::_startCore(uint16_t pcaddr, int mode)
 			break;
 		default:
 			fprintf(stderr, "Unknown mode %d specified\n", mode);
-			exit(0);
+			if (!unit) exit(0);
 			break;
 	}
 }
@@ -534,9 +552,19 @@ void uiSim::_unitTest(int testnum)
 	int size;
 	uint8_t data;
 
+	printf("uiSim::_unitTest test %d\n", testnum);
+
 	switch (testnum)
 	{
 		case 1:
+			pCore->UnitTest(1);
+			pCore->UnitTest(2);
+			pCore->UnitTest(3);
+			pCore->UnitTest(4);
+			pCore->UnitTest(5);
+			pCore->UnitTest(6);
+			break;
+		case 2:
 			size = pMem->GetSize();
 			DebugPrintNumber("mem size", size);
 			pMem->ClearMemory();
@@ -546,7 +574,7 @@ void uiSim::_unitTest(int testnum)
 			data = pMem->Read( MEM_DATA_START );
 			DebugPrintHex("mem read", data);
 			break;
-		case 2:
+		case 3:
 			data = pMem->Read( 0xAA );
 			DebugPrintHex("mem read", data);
 			pMem->Write( 0xAA, 0xAA );
@@ -558,11 +586,7 @@ void uiSim::_unitTest(int testnum)
 			data = pMem->Read( 0xAA );
 			DebugPrintHex("mem read", data);
 			break;
-		case 3:
-			pCore->UnitTest(1);
-			pCore->UnitTest(2);
-			pCore->UnitTest(3);
-			pCore->UnitTest(4);
+		case 4:
 			break;
 		default:
 			fprintf(stderr, "Unknown testnum %d specified\n", testnum);

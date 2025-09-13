@@ -10,7 +10,7 @@ include $(MODROOT)/module.mk
 ##include depend.mk
 
 
-VERSION=0.3.0
+VERSION=0.3.1
 
 
 INSTALL_DIR = ../bin
@@ -109,19 +109,85 @@ test: test-host
 test-host: all
 	$(TARGET) -m 1 -f unit.bin
 
-unit: test-unit
+unit: test-unit test-code test-error
 
 test-unit: all
-	$(TARGET)
 	$(TARGET) -h 
 	$(TARGET) -v
-	$(TARGET) -m 1
-	$(TARGET) -m 2 -f memory.bin
-	$(TARGET) -f memory.bin -m 2
-	$(TARGET) -m 3
+	$(TARGET) -m 0
+	$(TARGET) -m 1 -u
+	$(TARGET) -m 2 -f memory.bin -u
+	$(TARGET) -f memory.bin -m 2 -u
+	$(TARGET) -m 3 -u
+
+test-code: all
+	$(TARGET) -m 99 -f unit.bin -u
+
+test-error: all
 	$(TARGET) -m 77
-	$(TARGET) -f fail.bin
+	$(TARGET) -f fail.bin -u
 	$(TARGET) -z
+
+perf: all
+	time $(TARGET) -m 2 -f memory.bin -u > $(TARGET).perf
+
+#------------------------------------------------------------------------
+
+gcov-run: unit
+	$(GCOV) binUtils.cpp
+	$(GCOV) coreSim.cpp
+	$(GCOV) debug.cpp
+	$(GCOV) main.cpp
+	$(GCOV) memArray.cpp
+	$(GCOV) memsim.cpp
+	$(GCOV) opCodes.cpp
+	$(GCOV) parse.cpp
+	$(GCOV) regArray.cpp
+	$(GCOV) uisim.cpp
+
+GCOV_REPORT = $(TARGET).gcov
+
+gcov: gcov-run
+	-@echo "COVERAGE REPORT" > $(GCOV_REPORT)	
+	cat binUtils.cpp.gcov >> $(GCOV_REPORT)
+	cat coreSim.cpp.gcov >> $(GCOV_REPORT)
+	cat debug.cpp.gcov >> $(GCOV_REPORT)
+	cat main.cpp.gcov >> $(GCOV_REPORT)
+	cat memArray.cpp.gcov >> $(GCOV_REPORT)
+	cat memSim.cpp.gcov >> $(GCOV_REPORT)
+	cat opCodes.cpp.gcov >> $(GCOV_REPORT)
+	cat parse.cpp.gcov >> $(GCOV_REPORT)
+	cat regArray.cpp.gcov >> $(GCOV_REPORT)
+	cat uiSim.cpp.gcov >> $(GCOV_REPORT)
+	-@echo "END REPORT" >> $(GCOV_REPORT)
+
+coverage: distclean gcov
+	./coverage.sh $(GCOV_REPORT)
+
+#------------------------------------------------------------------------
+
+prof-test: all
+	$(TARGET) -m 0
+	$(TARGET) -m 1 -u
+	$(TARGET) -m 2 -f memory.bin -u
+	$(TARGET) -f memory.bin -m 2 -u
+	$(TARGET) -m 3 -u
+	$(TARGET) -m 99 -f unit.bin -u
+
+gprof: distclean prof-test
+	$(GPROF) -b ./$(TARGET) 
+
+kprof: distclean prof-test
+	$(KPROF) -f ./$(TARGET) &
+
+# #------------------------------------------------------------------------
+
+valcall: all
+	$(VALGRIND) $(VG_CALL) $(TARGET) -m 2 -f memory.bin -u
+	kcachegrind callgrind.out.*
+
+valmem: all
+	$(VALGRIND) $(VG_MEM) $(TARGET) -m 2 -f memory.bin -u
 
 #------------------------------------------------------------------------
 
@@ -132,7 +198,7 @@ clean:
 	$(RM) *.o *% *~ *.bak depend.mk
 
 realclean: clean
-	$(RM) $(TARGET) $(TARGET).exe 
+	$(RM) $(LIBRARY) $(TARGET) $(TARGET).exe 
 	$(RM) *.gcov gmon.out *.gcno *.gcda *.perf callgrind.out.* *.log
 	$(RM) -rf bin lib obj
 
@@ -147,7 +213,6 @@ depend.mk:
 lint: $(CFILES)
 	$(LINT) -preproc $(MOD_INCLUDES) -I$(ENV_PREFIX)/usr/include $<
 
-.PHONY : exe
 
 #------------------------------------------------------------------------
 # make distribution file
@@ -162,6 +227,8 @@ tar: distclean
 	$(GZIP) $(PKG_NAME).tar ; \
 	$(MV) $(PKG_NAME).tar.gz $(PKG_NAME).tgz
 	-@echo "Distribution package is ../$(PKG_NAME).tgz" 
+
+.PHONY : exe
 
 #------------------------------------------------------------------------
 
