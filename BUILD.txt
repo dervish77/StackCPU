@@ -1,0 +1,135 @@
+StackCPU Build and Usage Instructions
+=====================================
+
+Be sure to consult the overview and design information found on the github repo.
+
+https://github.com/dervish77/StackCPU
+
+
+Directory structure:
+
+Makefile  - top level makefile
+docs/     - system design docs, block diagrams, etc
+examples/ - example code using the Stack CPU
+hw/       - hardware design files
+ref/      - reference documents for integrated packages
+src/      - source code for the Stack CPU tools
+
+
+BUILDING
+--------
+
+Prerequisites:
+
+  Requires Cygwin or Linux with g++ tools installed.
+
+
+Building stacksim and assembler tools:
+
+  From the top level directory type
+
+    $ make install
+
+  this will build all the executables and install them to "src/bin".
+
+
+Cleaning up the tree:
+
+  From the top level directory type
+  
+    $ make distclean
+
+  this will clean up all build objects and remove the "src/bin" contents.
+
+
+USING
+-----
+
+Using StackCPU simulator:
+
+  Change directory into either "<top>/src/bin" or "<top>/src/simulator" 
+  and type 'stacksim'
+  
+    $ stacksim
+    ******************************************************
+                    StackSim 0.3.1
+    ******************************************************
+
+    Loading file.bin into memory
+    ... loaded 64 bytes
+
+    Sim is HALTED
+
+    Starting CLI ...
+
+    > 
+
+  to start up the simulator.
+  
+  From within the simulator, type the CLI command '?'
+  
+    > ?
+  
+  to view the CLI help.
+  
+  If you start stacksim from "<top>/src/simulator", you can load a test 
+  program and run it as follows
+  
+    > l test.bin
+
+    Loading test.bin into memory
+    ... loaded 64 bytes
+
+    > j 0
+
+    Core reset
+
+    Sim is RUNNING
+
+    > g
+    Status: pc 0x0001  sp 0x0FFF  dr 0x0C00  ac 0x0000  tr 0x0000
+    Status: pc 0x0003  sp 0x0FFE  dr 0x0C00  ac 0x0022  tr 0x0000
+    Status: pc 0x0005  sp 0x0FFD  dr 0x0C00  ac 0x0055  tr 0x0000
+    Status: pc 0x0008  sp 0x0FFE  dr 0x0C00  ac 0x0055  tr 0x0000
+    Status: pc 0x0009  sp 0x0FFF  dr 0x0C01  ac 0x0022  tr 0x0000
+    Status: pc 0x000C  sp 0x0FFE  dr 0x0C00  ac 0x0055  tr 0x0000
+    Status: pc 0x000D  sp 0x0FFD  dr 0x0C01  ac 0x0022  tr 0x0000
+    Status: pc 0x000E  sp 0x0FFE  dr 0x0C01  ac 0x0077  tr 0x0022
+    Status: pc 0x000F  sp 0x0FFF  dr 0x0C01  ac 0x0077  tr 0x0022
+    Status: pc 0x000F  sp 0x0FFF  dr 0x0C01  ac 0x0077  tr 0x0022
+
+    >
+  
+  When the program completes, type 'o' to see the result output
+  
+    > o
+
+    Output OR is 0077
+	
+	>
+
+  This test program puts two values on the stack '22' and '55', then moves them 
+  to data memory and then back to the stack before doing the 'ADD' operation.  
+  The result of the addition is then sent to the output register OR.
+  
+  The assembly source for this test program is found as "<top>/examples/test.asm".
+  
+  To exit the simulator type
+  
+    > e
+	
+	Exiting sim ...
+  
+
+Using the StackCPU assembler tools:
+
+  TBD
+
+
+DEVELOPMENT
+-----------
+
+  TBD
+
+===========================
+EOF
