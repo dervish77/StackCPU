@@ -5,7 +5,7 @@
 #
 #
 
-VERSION = 0.1.0
+VERSION = 0.3.1
 
 DATE = `date +%D-%T`
 
@@ -18,6 +18,8 @@ DIRS = src
 #
 
 default: all
+
+release: distro
 
 distro: install realclean tar
 
@@ -58,7 +60,7 @@ distclean: realclean
 	   cd $$dir ; make distclean ; cd ..; \
 	done;
 	rm -f *~
-	rm -f Version
+	rm -f Version Version.txt
 
 
 #
@@ -71,7 +73,19 @@ PKG_NAME = stackcpu-$(VERSION)
 tar: newversion
 	cp /dev/null ../$(PKG_NAME).txt
 	cd .. ; \
-	tar -cvf $(PKG_NAME).tar $(PKG_HOME) ; \
+	tar -cvf $(PKG_NAME).tar $(PKG_HOME)/CHANGES.txt ; \
+	tar -rvf $(PKG_NAME).tar $(PKG_HOME)/BUILD.txt ; \
+	tar -rvf $(PKG_NAME).tar $(PKG_HOME)/LICENSE ; \
+	tar -rvf $(PKG_NAME).tar $(PKG_HOME)/Makefile ; \
+	tar -rvf $(PKG_NAME).tar $(PKG_HOME)/README.md ; \
+	tar -rvf $(PKG_NAME).tar $(PKG_HOME)/StackCPU_README.pdf ; \
+	tar -rvf $(PKG_NAME).tar $(PKG_HOME)/TODO.txt ; \
+	tar -rvf $(PKG_NAME).tar $(PKG_HOME)/Version ; \
+	tar -rvf $(PKG_NAME).tar $(PKG_HOME)/docs/ ; \
+	tar -rvf $(PKG_NAME).tar $(PKG_HOME)/examples/ ; \
+	tar -rvf $(PKG_NAME).tar $(PKG_HOME)/hw/ ; \
+	tar -rvf $(PKG_NAME).tar $(PKG_HOME)/ref/ ; \
+	tar -rvf $(PKG_NAME).tar $(PKG_HOME)/src/ ; \
 	gzip $(PKG_NAME).tar ; \
 	mv $(PKG_NAME).tar.gz $(PKG_NAME).tgz
 	-@echo "Distribution is ../$(PKG_NAME).tgz (also see ../$(PKG_NAME).txt)"
@@ -81,8 +95,8 @@ tar: newversion
 	-@echo "-----------------------------------" >> ../$(PKG_NAME).txt
 
 newversion:
-	cp /dev/null Version
-	-@echo "VERSION = $(VERSION)" >> Version
-	-@echo "DATE    = $(DATE)" >> Version
+	cp /dev/null Version.txt
+	-@echo "VERSION = $(VERSION)" >> Version.txt
+	-@echo "DATE    = $(DATE)" >> Version.txt
 
 
