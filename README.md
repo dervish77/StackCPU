@@ -351,6 +351,8 @@ options:
 -f filename            - load memory with data from "filename" (default is "file.bin")
 -m <mode>              - enter <mode> on startup
                            where <mode> is 0 for idle, 1 for halt (default), 2 for run, 3 for single step
+-p filename            - set serial 'filename' for output via PRT
+-s filename            - set serial 'filename' for input via SER
 -h                     - display command arguments
 -v                     - display version
 
@@ -379,6 +381,10 @@ y cc dddd              - write dddd to register "cc"
 z                      - dump contents of all registers
 
 c                      - reset core
+i dd                   - set IR register to dd
+o                      - display OR register
+p                      - display contents of PR serial file
+q                      - display contents of SR serial file
 t rate                 - set clock tick to rate
 v                      - display versions
 
@@ -519,6 +525,7 @@ The Discrete Implementation is a HW design of the StackCPU device implemented us
   * bindump - used to examine binary files
   * binedit - used to edit contents of binary file
   * bingen - used to generate binary files
+
 
 
 
