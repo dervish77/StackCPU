@@ -121,7 +121,7 @@ int uiSim::_getMode()
 void uiSim::_setClock(int rate)
 {
 	clock_rate = rate;
-	printf("clock set to %d\n", clock_rate);
+	printf("\nClock set to %d\n", clock_rate);
 }
 	
 // private operators
@@ -146,8 +146,8 @@ int uiSim::_startCLI(int skip)
 		printf("\n%s", CMD_PROMPT);
 		if (skip) // we're running unit tests so let's bail out
 		{
-			printf("q\n");
-			cmdltr = 'q';
+			printf("e\n");
+			cmdltr = 'e';
 		}
 		else
 		{	
@@ -248,8 +248,25 @@ int uiSim::_startCLI(int skip)
 				_resetCore();
 				break;
 
+			case 'i':
+				data = strtol(cmdargs[1], &endptr, 16);
+				_setInputReg( data );
+				break;
+
+			case 'o':
+				_displayOutputReg();
+				break;
+
 			case 'm':
 				_displayMode();
+				break;
+
+			case 'p':
+				_displaySerialOutput();
+				break;
+
+			case 'q':
+				_displaySerialInput();
 				break;
 				
 			case 't':
@@ -265,7 +282,7 @@ int uiSim::_startCLI(int skip)
 				_showCliHelp();
 				break;
 				
-			case 'q':
+			case 'e':
 				done = 1;
 				break;
 			
@@ -302,12 +319,16 @@ void uiSim::_showCliHelp()
 	printf("\n");
 	printf("c                      - reset core\n");
 	printf("m                      - get current mode\n");
+	printf("i dd                   - set IR register to dd\n");
+	printf("o                      - display OR register\n");
+	printf("p                      - display contents of PR serial file\n");
+	printf("q                      - display contents of SR serial file\n");
 	printf("t rate                 - set clock tick to rate\n");
 	printf("v                      - display versions\n");
 	printf("\n");
 	printf("?                      - display CLI help\n");
 	printf("\n");
-	printf("q                      - quit the simulator\n");
+	printf("e                      - exit the simulator\n");
 }
 
 void uiSim::_loadMemFile(char *name)
@@ -510,6 +531,27 @@ void uiSim::_dumpRegs()
 {
 	printf("\n");
 	_debugDumpRegisters( "Registers" );
+}
+
+void uiSim::_setInputReg( uint8_t data )
+{
+	printf("\nInput IR set to %04X\n", data);
+	pCore->SetReg(REG_INDEX_IR, data);
+}
+
+void uiSim::_displayOutputReg()
+{
+	printf("\nOutput OR is %04X\n", pCore->GetReg(REG_INDEX_OR));
+}
+
+void uiSim::_displaySerialOutput()
+{
+	printf("\nSerial output:\n");
+}
+
+void uiSim::_displaySerialInput()
+{
+	printf("\nSerial input:\n");
 }
 
 

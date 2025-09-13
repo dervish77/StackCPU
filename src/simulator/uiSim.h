@@ -100,6 +100,12 @@ private:
 	void _writeReg(char *reg, uint16_t data );
 	void _dumpRegs();
 	
+	void _setInputReg( uint8_t data );
+	void _displayOutputReg();
+	
+	void _displaySerialOutput();
+	void _displaySerialInput();
+	
 	// private helpers
 	FILE* _openFile(char *name, const char *dir);
 	void _closeFile(FILE *file_p);
