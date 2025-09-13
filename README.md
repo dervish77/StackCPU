@@ -390,7 +390,7 @@ v                      - display versions
 
 ?                      - display CLI help
 
-q                      - quit the simulator
+e                      - exit the simulator
 ```
 
 ![simulator](https://github.com/dervish77/StackCPU/blob/main/docs/SW-stackSim-class-diagram.png?raw=true)
@@ -525,6 +525,7 @@ The Discrete Implementation is a HW design of the StackCPU device implemented us
   * bindump - used to examine binary files
   * binedit - used to edit contents of binary file
   * bingen - used to generate binary files
+
 
 
 
