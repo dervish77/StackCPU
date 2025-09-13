@@ -8,22 +8,26 @@ TODO - StackCPU
 -- disable debug statements DONE
 -- add status output when call of "instruction cycle" completes DONE
 -- move unit.bin to test.bin DONE
--- modify SER and PRT instructions follows
+-- modify SER and PRT instructions as follows
    -- have PRT output to prt.txt file
    -- have SER input from ser.txt file
    -- will need to add options to cmd line in main.c, and add methods
    to uiSim and coreSim to handle the file pointers (alternative is use a
    uartDevice class that has internal in/out buffers instead of actual files)
+   -- add -p and -q CLI commands to display ser and prt files/buffers
 -- code coverage
-   -- create new unit.bin to use each valid opcode
-   -- add code coverage to makefile
+   -- add code coverage to makefile DONE
+   -- add -u option to main.cpp DONE
+   -- add unit test hooks into uiSim and coreSim DONE
    -- test and improve code coverage as needed
+   -- create new unit.bin to use each valid opcode
 
 - Implementation of assembler tools
 -- not yet started
 
 - Detailed design of HW 
 -- not yet started
+
 
 
 
