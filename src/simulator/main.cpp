@@ -47,6 +47,8 @@ int main(int argc, char **argv)
 {
 	char filename[BUFFER_LEN];
 	char debugname[BUFFER_LEN];
+	char cmdstring[BUFFER_LEN];
+	
 	int mode = MODE_HALT;
 	int debug_enable = 0;
 	int unit_test = 0;
@@ -56,6 +58,7 @@ int main(int argc, char **argv)
 	// setup default filename
 	strcpy(filename, "file.bin");
 	strcpy(debugname, "file.log");
+	strcpy(cmdstring, " ");
 
     // if no command line arguments
     switch (argc)
@@ -95,6 +98,10 @@ int main(int argc, char **argv)
 							debug_enable = 1;
 							i++;
                             break;
+						case 'c':
+							strcpy(cmdstring, argv[i+1]);
+							i++;
+							break;
                         default:
                             fprintf(stderr, "Unknown command line argument\n");
                             exit(0);
@@ -104,6 +111,8 @@ int main(int argc, char **argv)
             }
             break;
     }
+	
+	//printf("cmdstring = %s\n", cmdstring);
 	
 	UNUSED(debug_enable);
 
@@ -132,6 +141,8 @@ void PrintUsage()
     printf("   -d <file>    output debug to log file (default is off)\n");
     printf("   -f <file>    memory file to load\n");
     printf("   -m <mode>    start up mode\n");
+	printf("   -u           enable unit testing\n");
+	printf("   -c <string>  pass command 'string' to CLI\n");
     printf("   -h           display help\n");
     printf("   -v           display version\n");
     printf("\n");
